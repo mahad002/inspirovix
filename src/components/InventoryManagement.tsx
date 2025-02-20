@@ -39,13 +39,51 @@ const InventoryManagement = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
+          <h2 className={`text-3xl md:text-4xl font-bold ${styles.text.primary} mb-4`}>
             AI-Driven Inventory & Business Management
           </h2>
         </motion.div>
 
-        <div className="relative">
-          {/* 3D Pyramid */}
+        {/* Mobile Layout */}
+        <div className="md:hidden">
+          {steps.map((step, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className={`mb-6 ${styles.background.card} rounded-xl p-6 relative overflow-hidden ${styles.glow.primary}`}
+            >
+              {/* Decorative line connecting cards */}
+              {index < steps.length - 1 && (
+                <div 
+                  className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-gradient-to-b from-purple-500 to-transparent"
+                  style={{ bottom: '-2rem' }}
+                />
+              )}
+              
+              {/* Step number badge */}
+              <div className="absolute -top0 left-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                Step {step.number}
+              </div>
+
+              <div className="mt-4 flex flex-col items-center text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center mb-4 transform hover:rotate-6 transition-transform">
+                  {step.icon}
+                </div>
+                <h3 className={`text-xl font-semibold ${styles.text.primary} mb-2`}>{step.title}</h3>
+                <p className={`${styles.text.secondary} text-sm`}>{step.description}</p>
+              </div>
+
+              {/* Interactive hover effect */}
+              <div className={`absolute inset-0 bg-gradient-to-r from-purple-500/10 to-fuchsia-500/10 opacity-0 hover:opacity-100 transition-opacity rounded-xl pointer-events-none`} />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Desktop Layout */}
+        <div className="relative hidden md:block">
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
