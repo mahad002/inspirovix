@@ -53,7 +53,7 @@ const PopularPricingCard: React.FC<PopularPricingCardProps> = ({
       className={`group relative ${theme === 'dark' ? 'bg-gradient-to-b from-white/10 to-purple-900/30' : 'bg-gradient-to-b from-purple-50 to-white'} backdrop-blur-lg rounded-2xl p-6 min-w-[300px] min-h-[580px] flex flex-col border-2 border-purple-500 scale-[1.02] overflow-hidden ${styles.glow.accent}`}
     >
       {/* Popular Tag */}
-      <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 z-10000">
+      <div className="absolute -top0 left-1/2 -translate-x-1/2 z10000">
         <div className="relative bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-1.5 rounded-full text-sm font-semibold flex items-center justify-center gap-1.5 shadow-lg whitespace-nowrap">
           <Sparkles className="w-3.5 h-3.5" />
           Most Popular
@@ -62,7 +62,7 @@ const PopularPricingCard: React.FC<PopularPricingCardProps> = ({
       </div>
 
       {/* Card Content */}
-      <div className="transition-opacity duration-300 group-hover:opacity-10 mt-2">
+      <div className="transition-opacity duration-300 group-hover:opacity-10 mt-12">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 shadow-lg shadow-purple-500/30">
             <Icon className="w-6 h-6 text-white animate-pulse" />

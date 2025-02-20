@@ -14,38 +14,66 @@ const Globe: React.FC = () => {
 
     // Scene setup
     const scene = new THREE.Scene();
+    
+    // Responsive camera setup
+    const getAspectRatio = () => window.innerWidth / window.innerHeight;
+    const getFov = () => {
+      // Increase FOV on mobile for better visibility
+      return window.innerWidth < 768 ? 75 : globeConfig.camera.fov;
+    };
+    
     const camera = new THREE.PerspectiveCamera(
-      globeConfig.camera.fov,
-      window.innerWidth / window.innerHeight,
+      getFov(),
+      getAspectRatio(),
       globeConfig.camera.near,
       globeConfig.camera.far
     );
-    camera.position.z = globeConfig.camera.position;
+    
+    // Adjust camera position based on screen size
+    const getCameraPosition = () => {
+      return window.innerWidth < 768 ? 200 : globeConfig.camera.position;
+    };
+    camera.position.z = getCameraPosition();
 
-    // Renderer setup
+    // Renderer setup with responsive size
     const renderer = new THREE.WebGLRenderer({ 
       antialias: true, 
       alpha: true,
       powerPreference: "high-performance"
     });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    
+    const updateSize = () => {
+      const width = containerRef.current?.clientWidth || window.innerWidth;
+      const height = containerRef.current?.clientHeight || window.innerHeight;
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.fov = getFov();
+      camera.position.z = getCameraPosition();
+      camera.updateProjectionMatrix();
+    };
+    
+    updateSize();
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    // Controls
+    // Controls with adjusted settings for mobile
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = globeConfig.controls.dampingFactor;
-    controls.rotateSpeed = globeConfig.controls.rotateSpeed;
+    controls.rotateSpeed = window.innerWidth < 768 ? 0.3 : globeConfig.controls.rotateSpeed;
     controls.enableZoom = true;
-    controls.minDistance = globeConfig.controls.minDistance;
-    controls.maxDistance = globeConfig.controls.maxDistance;
+    controls.minDistance = window.innerWidth < 768 ? 150 : globeConfig.controls.minDistance;
+    controls.maxDistance = window.innerWidth < 768 ? 300 : globeConfig.controls.maxDistance;
     controls.autoRotate = true;
-    controls.autoRotateSpeed = globeConfig.controls.autoRotateSpeed;
+    controls.autoRotateSpeed = window.innerWidth < 768 ? 1 : globeConfig.controls.autoRotateSpeed;
 
-    // Create globe
+    // Create globe with adjusted size for mobile
+    const getGlobeRadius = () => {
+      return window.innerWidth < 768 ? 50 : globeConfig.globe.radius;
+    };
+    
     const geometry = new THREE.SphereGeometry(
-      globeConfig.globe.radius,
+      getGlobeRadius(),
       globeConfig.globe.segments,
       globeConfig.globe.segments
     );
@@ -86,9 +114,9 @@ const Globe: React.FC = () => {
     const globe = new THREE.Mesh(geometry, material);
     scene.add(globe);
 
-    // Add atmosphere glow
+    // Add atmosphere with adjusted size
     const atmosphereGeometry = new THREE.SphereGeometry(
-      globeConfig.globe.radius * 1.1,
+      getGlobeRadius() * 1.1,
       globeConfig.globe.segments,
       globeConfig.globe.segments
     );
@@ -160,10 +188,12 @@ const Globe: React.FC = () => {
       scene.add(stars);
     }
 
+    // Handle window resize
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      updateSize();
+      controls.minDistance = window.innerWidth < 768 ? 150 : globeConfig.controls.minDistance;
+      controls.maxDistance = window.innerWidth < 768 ? 300 : globeConfig.controls.maxDistance;
+      globe.scale.setScalar(window.innerWidth < 768 ? 0.8 : 1);
     };
 
     const animate = () => {
@@ -197,17 +227,17 @@ const Globe: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center"
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center px-4"
         style={{ zIndex: 1 }}
       >
-        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+        <h2 className="text-2xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
           Connecting Dreams Globally
         </h2>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className={`text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
+          className={`text-lg md:text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
         >
           Where innovation meets possibility, and dreams become reality
         </motion.p>
