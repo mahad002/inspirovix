@@ -63,7 +63,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img src="/src/components/1.png" alt="Inspirovix Logo" className="w-10 h-10 object-contain rounded-xl" />
+              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQFazebQXPuv6Q/company-logo_100_100/company-logo_100_100/0/1737872641143/inspirovix_logo?e=1749686400&v=beta&t=NpjZSNlmt7D47F743157vRGMSu1MVnksUQ1coENlUCc" alt="Inspirovix Logo" className="w-10 h-10 object-contain rounded-xl" />
               <span className={`text-lg font-bold ${styles.text.primary}`}>Inspirovix</span>
             </motion.a>
 
