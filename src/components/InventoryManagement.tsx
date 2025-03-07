@@ -64,7 +64,7 @@ const InventoryManagement = () => {
               )}
               
               {/* Step number badge */}
-              <div className="absolute -top0 left-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+              <div className="absolute -top-3 left-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-4 py-1 rounded-full text-sm font-bold">
                 Step {step.number}
               </div>
 

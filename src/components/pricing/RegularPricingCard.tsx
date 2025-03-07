@@ -39,7 +39,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
       } else {
         throw new Error('Failed to send inquiry');
       }
-    } catch {
+    } catch (error) {
       setStatus('error');
     }
   };
@@ -53,7 +53,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
       className={`group relative ${styles.background.card} rounded-2xl p-6 min-w-[300px] min-h-[580px] flex flex-col border ${styles.border.primary} overflow-hidden ${styles.glow.primary}`}
     >
       {/* Card Content */}
-      <div className="transition-opacity duration-300 group-hover:opacity-10 mt-12">
+      <div className="transition-opacity duration-300 group-hover:opacity-10">
         <div className="flex items-center gap-3 mb-4">
           <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${theme === 'dark' ? 'bg-purple-500/20' : 'bg-purple-100'}`}>
             <Icon className={`w-6 h-6 ${styles.text.primary}`} />

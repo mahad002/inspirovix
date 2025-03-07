@@ -216,7 +216,7 @@ const Globe: React.FC = () => {
   }, [theme]); // Add theme as dependency to recreate globe when theme changes
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-[50vh] md:h-screen">
       <div 
         ref={containerRef} 
         className="absolute inset-0"
@@ -227,17 +227,17 @@ const Globe: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
-        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-center px-4"
+        className="absolute bottom-4 md:bottom-10 left-1/2 transform -translate-x-1/2 text-center px-4"
         style={{ zIndex: 1 }}
       >
-        <h2 className="text-2xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+        <h2 className="text-xl md:text-4xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
           Connecting Dreams Globally
         </h2>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className={`text-lg md:text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
+          className={`text-sm md:text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
         >
           Where innovation meets possibility, and dreams become reality
         </motion.p>
