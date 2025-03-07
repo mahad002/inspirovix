@@ -95,7 +95,7 @@ const AIAutomation = () => {
         </div>
 
         {/* Demo Section */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -107,13 +107,12 @@ const AIAutomation = () => {
               See AI Automation in Action
             </h3>
             <div className="aspect-video rounded-lg overflow-hidden bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center">
-              {/* Add demo video or interactive demo here */}
               <p className={`${styles.text.secondary} text-center`}>
                 Interactive Demo Coming Soon
               </p>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Benefits Section */}
         <motion.div
