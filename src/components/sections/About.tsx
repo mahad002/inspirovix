@@ -9,7 +9,7 @@ const About = () => {
   const styles = themes[theme];
 
   const stats = [
-    { icon: <Users />, value: "500+", label: "Clients Worldwide" },
+    { icon: <Users />, value: "30+", label: "Clients Worldwide" },
     { icon: <Award />, value: "98%", label: "Client Satisfaction" },
     { icon: <Globe />, value: "24/7", label: "Support Available" },
     { icon: <Cpu />, value: "1M+", label: "AI Predictions" }
