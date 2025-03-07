@@ -22,7 +22,7 @@ const HeroSection = () => {
         <h1 className={`text-5xl md:text-7xl font-bold ${styles.text.primary} mb-6 font-display`}>
           Revolutionizing Business Operations with{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-            Inspirovex
+            Inspirovix
           </span>
         </h1>
         
