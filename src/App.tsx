@@ -13,6 +13,7 @@ import {
   Contact,
   Blog
 } from './components/sections';
+import Pricing from './components/sections/Pricing';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <CaseStudies />
         <About />
         <Blog />
+        <Pricing />
         <Contact />
       </div>
     </ThemeProvider>
