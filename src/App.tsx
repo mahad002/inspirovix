@@ -27,13 +27,10 @@ function App() {
         <Home />
 
         {/* 3. Solution Presentation */}
-        <Solutions />
         <AIAutomation />
-        <CustomDevelopment />
-        
-        {/* 2. Social Proof & Credibility Building */}
         <CaseStudies />
-        
+        <Solutions />
+        <CustomDevelopment />
         {/* 4. Authority & Trust Building */}
         <About />
         
