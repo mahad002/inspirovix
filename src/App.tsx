@@ -25,21 +25,21 @@ function App() {
         
         {/* 1. Value Proposition & Problem Statement */}
         <Home />
-        
-        {/* 2. Social Proof & Credibility Building */}
-        <CaseStudies />
-        
+
         {/* 3. Solution Presentation */}
         <Solutions />
         <AIAutomation />
         <CustomDevelopment />
+        
+        {/* 2. Social Proof & Credibility Building */}
+        <CaseStudies />
         
         {/* 4. Authority & Trust Building */}
         <About />
         
         {/* 5. Price Placement - After Value Is Established */}
         <Pricing />
-        
+
         {/* 7. Call To Action */}
         <Contact />
         
