@@ -22,6 +22,17 @@ const Contact = () => {
     setStatus('sending');
     
     try {
+      // Validate form data before sending
+      if (!formData.name || !formData.email || !formData.message) {
+        throw new Error('Please fill out all fields');
+      }
+      
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        throw new Error('Please enter a valid email address');
+      }
+      
       const result = await sendContactEmail(formData);
       if (result.success) {
         setStatus('success');
@@ -199,11 +210,15 @@ const Contact = () => {
             </div>
 
             {status === 'error' && (
-              <div className="text-red-500 text-sm">{errorMessage}</div>
+              <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-md border border-red-200">
+                <p>Error: {errorMessage}</p>
+              </div>
             )}
 
             {status === 'success' && (
-              <div className="text-green-500 text-sm">Message sent successfully!</div>
+              <div className="text-green-600 text-sm font-medium bg-green-50 p-3 rounded-md border border-green-200">
+                <p>Thank you! Your message has been sent successfully. We'll get back to you soon.</p>
+              </div>
             )}
 
             <motion.button
@@ -215,8 +230,20 @@ const Contact = () => {
                 status === 'sending' ? 'opacity-75 cursor-not-allowed' : ''
               } ${styles.glow.primary}`}
             >
-              <Send className="w-5 h-5" />
-              {status === 'sending' ? 'Sending...' : 'Send Message'}
+              {status === 'sending' ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="w-5 h-5" />
+                  Send Message
+                </>
+              )}
             </motion.button>
           </motion.form>
         </div>

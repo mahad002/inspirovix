@@ -18,21 +18,30 @@ emailjs.init("7TpUFIasS5eHoxLh_");
 
 export const sendContactEmail = async (data: ContactFormData) => {
   const { name, email, message } = data;
-
+  
+  // Get current date in a readable format
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
   const templateParams = {
     to_name: "Inspirovix Team",
     from_name: name,
+    from_email: email,  // Changed from reply_to to from_email to match template
     message: message,
-    reply_to: email
+    date: today,        // Added date parameter
+    company_name: 'Inspirovix',  // Added company name
+    reply_to: email     // Keep this for EmailJS functionality
   };
-
+  
   try {
     await emailjs.send(
       "service_inspirovix",
       "template_contact",
       templateParams
     );
-
     return { success: true };
   } catch (error) {
     console.error('Email sending failed:', error);
@@ -42,30 +51,29 @@ export const sendContactEmail = async (data: ContactFormData) => {
 
 export const sendPricingInquiryEmail = async (data: PricingInquiryData) => {
   const { planName, price, features, email } = data;
-
+  
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   });
-
+  
   const templateParams = {
     plan_name: planName,
     date: today,
     from_email: email,
     price: price,
     features: features,
-    // message: "Interested in purchasing a package",
-    company_name: 'Inspirovix'
+    company_name: 'Inspirovix',
+    reply_to: email  // Keep this for EmailJS functionality
   };
-
+  
   try {
     const response = await emailjs.send(
       "service_inspirovix",
       "template_pricing",
       templateParams
     );
-
     return { success: true };
   } catch (error) {
     console.error('Email sending failed:', error);
