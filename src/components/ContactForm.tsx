@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Phone, Globe, Mail, Linkedin, Instagram, MapPin, Clock } from 'lucide-react';
+import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock } from 'lucide-react';
 import { sendContactEmail } from '../utils/emailService';
 import { contactInfo, socialLinks, businessHours } from '../data/contact';
 import { useTheme } from '../theme/ThemeContext';

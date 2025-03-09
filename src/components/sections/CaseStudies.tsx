@@ -3,46 +3,12 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, Star } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
+import { caseStudies } from '../../data/caseStudies';
 
 const CaseStudies = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
 
-  const caseStudies = [
-    {
-      title: "E-commerce Revenue Growth",
-      client: "Fashion Retailer",
-      metrics: [
-        { label: "Sales Increase", value: "156%" },
-        { label: "Customer Satisfaction", value: "98%" },
-        { label: "Response Time", value: "< 1min" }
-      ],
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200",
-      tags: ["AI Voice Agent", "Order Automation"]
-    },
-    {
-      title: "Healthcare Efficiency",
-      client: "Medical Center",
-      metrics: [
-        { label: "Wait Time Reduction", value: "75%" },
-        { label: "Patient Satisfaction", value: "96%" },
-        { label: "Staff Productivity", value: "+45%" }
-      ],
-      image: "https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&q=80&w=1200",
-      tags: ["Appointment Scheduling", "Patient Portal"]
-    },
-    {
-      title: "Logistics Optimization",
-      client: "Global Shipping Company",
-      metrics: [
-        { label: "Delivery Speed", value: "+60%" },
-        { label: "Cost Reduction", value: "32%" },
-        { label: "Route Efficiency", value: "+85%" }
-      ],
-      image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=1200",
-      tags: ["Route Optimization", "Fleet Management"]
-    }
-  ];
 
   return (
     <section id="case-studies" className={`${styles.background.primary} py-20`}>
@@ -117,12 +83,15 @@ const CaseStudies = () => {
                   ))}
                 </div>
 
-                <button
+                <a
+                  href={study.slug}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`mt-6 w-full py-2 px-4 rounded-lg ${styles.button.primary} ${styles.text.primary} flex items-center justify-center gap-2 group-hover:gap-3 transition-all`}
                 >
                   View Case Study
                   <ArrowUpRight className="w-4 h-4" />
-                </button>
+                </a>
               </div>
             </motion.div>
           ))}

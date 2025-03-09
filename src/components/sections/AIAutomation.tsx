@@ -1,37 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Bot, MessageSquare, Workflow, Zap } from 'lucide-react';
+import { Bot, MessageSquare } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
 import { contactInfo } from '../../data/contact';
+import { features, benefits } from '../../data/aiAutomation';
 
 const AIAutomation = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
 
-  const features = [
-    {
-      icon: <Bot className="w-6 h-6 text-white" />,
-      title: "AI Voice Agents",
-      description: "Natural conversations with customers using advanced text-to-speech and speech recognition."
-    },
-    {
-      icon: <MessageSquare className="w-6 h-6 text-white" />,
-      title: "Smart Customer Service",
-      description: "24/7 automated support with intelligent issue resolution and human escalation."
-    },
-    {
-      icon: <Workflow className="w-6 h-6 text-white" />,
-      title: "Process Automation",
-      description: "Streamline operations with AI-powered workflow automation and decision making."
-    },
-    {
-      icon: <Zap className="w-6 h-6 text-white" />,
-      title: "Intelligent Analytics",
-      description: "Real-time insights and predictive analytics for business optimization."
-    }
-  ];
 
   return (
     <section id="ai-automation" className={`${styles.background.primary} py-20`}>
@@ -81,7 +60,7 @@ const AIAutomation = () => {
                 className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary}`}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center mb-4">
-                  {feature.icon}
+                  <feature.icon className="w-6 h-6 text-white" />
                 </div>
                 <h3 className={`text-xl font-semibold ${styles.text.primary} mb-2`}>
                   {feature.title}
@@ -126,23 +105,7 @@ const AIAutomation = () => {
             Transform Your Business Operations
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Reduce Costs",
-                value: "60%",
-                description: "Average reduction in operational costs"
-              },
-              {
-                title: "Save Time",
-                value: "80%",
-                description: "Faster response times to customer inquiries"
-              },
-              {
-                title: "Increase Revenue",
-                value: "40%",
-                description: "Average increase in conversion rates"
-              }
-            ].map((benefit, index) => (
+            {benefits.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

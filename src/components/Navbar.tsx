@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Bot, Code, Lightbulb, BookOpen, Users, Phone, Menu, X, FileText, DollarSign, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
+import { menuItems } from '../data/navigation';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,18 +11,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { theme } = useTheme();
   const styles = themes[theme];
-
-  const menuItems = useMemo(() => [
-    { icon: <Home className="w-5 h-5" />, label: 'Home', href: '#home' },
-    { icon: <Bot className="w-5 h-5" />, label: 'AI Automation', href: '#ai-automation' },
-    { icon: <Code className="w-5 h-5" />, label: 'Custom Development', href: '#custom-development' },
-    { icon: <Lightbulb className="w-5 h-5" />, label: 'Solutions', href: '#solutions' },
-    { icon: <BookOpen className="w-5 h-5" />, label: 'Case Studies', href: '#case-studies' },
-    { icon: <Users className="w-5 h-5" />, label: 'About', href: '#about' },
-    { icon: <FileText className="w-5 h-5" />, label: 'Blog', href: '#blog' },
-    { icon: <DollarSign className="w-5 h-5" />, label: 'Pricing', href: '#pricing' },
-    { icon: <Phone className="w-5 h-5" />, label: 'Contact', href: '#contact' }
-  ], []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -156,9 +145,7 @@ const Navbar = () => {
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
                           isActive ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' : 'bg-violet-500/20'
                         } group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500 transition-all duration-300`}>
-                          {React.cloneElement(item.icon, {
-                            className: `w-5 h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`
-                          })}
+                          <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
                         </div>
                         <span className="font-medium">{item.label}</span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${

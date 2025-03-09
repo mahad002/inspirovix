@@ -10,27 +10,41 @@ import {
   Solutions,
   CaseStudies,
   About,
-  Contact,
-  Blog
+  Blog,
+  Contact
 } from './components/sections';
 import Pricing from './components/sections/Pricing';
 
 function App() {
   return (
     <ThemeProvider>
-      <div className="transition-colors duration-200 cursor-glow">
+      <div className="transition-colors duration-200 md:cursor-glow">
         <CustomCursor />
         <Navbar />
         <ThemeToggle />
+        
+        {/* 1. Value Proposition & Problem Statement */}
         <Home />
+        
+        {/* 2. Social Proof & Credibility Building */}
+        <CaseStudies />
+        
+        {/* 3. Solution Presentation */}
+        <Solutions />
         <AIAutomation />
         <CustomDevelopment />
-        <Solutions />
-        <CaseStudies />
+        
+        {/* 4. Authority & Trust Building */}
         <About />
-        <Blog />
+        
+        {/* 5. Price Placement - After Value Is Established */}
         <Pricing />
+        
+        {/* 7. Call To Action */}
         <Contact />
+        
+        {/* 6. Additional Value & Educational Content */}
+        <Blog />
       </div>
     </ThemeProvider>
   );

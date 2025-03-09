@@ -1,19 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Award, Users, Globe, Cpu } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
+import { stats, values } from '../../data/about';
 
 const About = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
 
-  const stats = [
-    { icon: <Users />, value: "100+", label: "Clients Worldwide" },
-    { icon: <Award />, value: "98%", label: "Client Satisfaction" },
-    { icon: <Globe />, value: "24/7", label: "Support Available" },
-    { icon: <Cpu />, value: "1M+", label: "AI Predictions" }
-  ];
 
   return (
     <section id="about" className={`${styles.background.primary} py-20`}>
@@ -52,7 +46,7 @@ const About = () => {
                 className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 rounded-lg flex items-center justify-center mx-auto mb-4 text-fuchsia-400">
-                  {stat.icon}
+                  <stat.icon />
                 </div>
                 <div className={`text-3xl font-bold ${styles.text.primary} mb-2`}>{stat.value}</div>
                 <div className={styles.text.secondary}>{stat.label}</div>
@@ -70,20 +64,7 @@ const About = () => {
         >
           <h3 className={`text-3xl font-bold ${styles.text.primary} text-center mb-12`}>Our Values</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Innovation First",
-                description: "Constantly pushing boundaries with cutting-edge AI solutions"
-              },
-              {
-                title: "Client Success",
-                description: "Your growth and success are our top priorities"
-              },
-              {
-                title: "Excellence",
-                description: "Delivering the highest quality in everything we do"
-              }
-            ].map((value, index) => (
+            {values.map((value, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
