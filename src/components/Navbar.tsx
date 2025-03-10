@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
@@ -91,12 +91,12 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={toggleTheme}
-                className={`p-2.5 rounded-lg ${styles.button.secondary}`}
+                className={`p-2.5 rounded-lg ${theme === 'dark' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-purple-500 hover:bg-purple-600'}`}
               >
                 {theme === 'dark' ? (
-                  <Sun className={`w-5 h-5 ${styles.text.primary}`} />
+                  <Sun className="w-5 h-5 text-white" />
                 ) : (
-                  <Moon className={`w-5 h-5 ${styles.text.primary}`} />
+                  <Moon className="w-5 h-5 text-white" />
                 )}
               </motion.button>
 
