@@ -6,7 +6,7 @@ export const businessHours = {
 export const contactInfo = {
   website: "inspirovix.com",
   phone: "+92 310 5589303",
-  email: "info@inspirovix.com"
+  email: "inspirovix@gmail.com"
 };
 
 export const socialLinks = {
