@@ -8,6 +8,7 @@ import { globeConfig } from '../data/globe';
 const Globe: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -15,25 +16,19 @@ const Globe: React.FC = () => {
     // Scene setup
     const scene = new THREE.Scene();
     
-    // Responsive camera setup
-    const getAspectRatio = () => window.innerWidth / window.innerHeight;
-    const getFov = () => {
-      // Increase FOV on mobile for better visibility
-      return window.innerWidth < 768 ? 75 : globeConfig.camera.fov;
-    };
+    // Fixed camera setup for mobile
+    const aspectRatio = window.innerWidth / window.innerHeight;
+    const fov = isMobile ? 60 : globeConfig.camera.fov;
     
     const camera = new THREE.PerspectiveCamera(
-      getFov(),
-      getAspectRatio(),
+      fov,
+      aspectRatio,
       globeConfig.camera.near,
       globeConfig.camera.far
     );
     
-    // Adjust camera position based on screen size
-    const getCameraPosition = () => {
-      return window.innerWidth < 768 ? 200 : globeConfig.camera.position;
-    };
-    camera.position.z = getCameraPosition();
+    // Fixed camera position for mobile
+    camera.position.z = isMobile ? 180 : globeConfig.camera.position;
 
     // Renderer setup with responsive size
     const renderer = new THREE.WebGLRenderer({ 
@@ -44,11 +39,9 @@ const Globe: React.FC = () => {
     
     const updateSize = () => {
       const width = containerRef.current?.clientWidth || window.innerWidth;
-      const height = containerRef.current?.clientHeight || window.innerHeight;
+      const height = isMobile ? window.innerWidth : (containerRef.current?.clientHeight || window.innerHeight);
       renderer.setSize(width, height);
       camera.aspect = width / height;
-      camera.fov = getFov();
-      camera.position.z = getCameraPosition();
       camera.updateProjectionMatrix();
     };
     
@@ -59,21 +52,18 @@ const Globe: React.FC = () => {
     // Controls with adjusted settings for mobile
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = globeConfig.controls.dampingFactor;
-    controls.rotateSpeed = window.innerWidth < 768 ? 0.3 : globeConfig.controls.rotateSpeed;
-    controls.enableZoom = true;
-    controls.minDistance = window.innerWidth < 768 ? 150 : globeConfig.controls.minDistance;
-    controls.maxDistance = window.innerWidth < 768 ? 300 : globeConfig.controls.maxDistance;
+    controls.dampingFactor = 0.05;
+    controls.rotateSpeed = isMobile ? 0.5 : globeConfig.controls.rotateSpeed;
+    controls.enableZoom = !isMobile;
+    controls.enablePan = !isMobile;
+    controls.minDistance = isMobile ? 180 : globeConfig.controls.minDistance;
+    controls.maxDistance = isMobile ? 180 : globeConfig.controls.maxDistance;
     controls.autoRotate = true;
-    controls.autoRotateSpeed = window.innerWidth < 768 ? 1 : globeConfig.controls.autoRotateSpeed;
+    controls.autoRotateSpeed = isMobile ? 0.8 : globeConfig.controls.autoRotateSpeed;
 
     // Create globe with adjusted size for mobile
-    const getGlobeRadius = () => {
-      return window.innerWidth < 768 ? 50 : globeConfig.globe.radius;
-    };
-    
     const geometry = new THREE.SphereGeometry(
-      getGlobeRadius(),
+      isMobile ? 60 : globeConfig.globe.radius,
       globeConfig.globe.segments,
       globeConfig.globe.segments
     );
@@ -116,7 +106,7 @@ const Globe: React.FC = () => {
 
     // Add atmosphere with adjusted size
     const atmosphereGeometry = new THREE.SphereGeometry(
-      getGlobeRadius() * 1.1,
+      (isMobile ? 60 : globeConfig.globe.radius) * 1.1,
       globeConfig.globe.segments,
       globeConfig.globe.segments
     );
@@ -219,7 +209,7 @@ const Globe: React.FC = () => {
     <div className="relative w-full h-[50vh] md:h-screen">
       <div 
         ref={containerRef} 
-        className="absolute inset-0"
+        className={`absolute inset-0 ${isMobile ? 'h-[400px]' : ''}`}
         style={{ zIndex: 0 }}
       />
       
