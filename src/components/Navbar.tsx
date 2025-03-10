@@ -94,9 +94,9 @@ const Navbar = () => {
                 className={`p-2.5 rounded-lg ${styles.button.secondary}`}
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-white" />
+                  <Sun className={`w-5 h-5 ${styles.text.primary}`} />
                 ) : (
-                  <Moon className="w-5 h-5 text-white" />
+                  <Moon className={`w-5 h-5 ${styles.text.primary}`} />
                 )}
               </motion.button>
 
