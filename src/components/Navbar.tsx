@@ -43,12 +43,12 @@ const Navbar = () => {
           scrolled ? `${styles.background.card} shadow-lg backdrop-blur-lg` : 'bg-transparent'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <motion.a
               href="#home"
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 -ml-2 sm:ml-0"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -91,12 +91,12 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={toggleTheme}
-                className={`p-2.5 rounded-lg ${theme === 'dark' ? 'bg-purple-600 hover:bg-purple-700' : 'bg-purple-500 hover:bg-purple-600'}`}
+                className={`p-2 rounded-lg ${styles.button.secondary}`}
               >
                 {theme === 'dark' ? (
-                  <Sun className="w-5 h-5 text-white" />
+                  <Sun className={`w-5 h-5 ${styles.text.primary}`} />
                 ) : (
-                  <Moon className="w-5 h-5 text-white" />
+                  <Moon className={`w-5 h-5 ${styles.text.primary}`} />
                 )}
               </motion.button>
 
@@ -105,7 +105,7 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(true)}
-                className={`p-2.5 rounded-lg ${styles.button.secondary}`}
+                className={`p-2 -mr-2 sm:mr-0 rounded-lg ${styles.button.secondary}`}
               >
                 <Menu className={`w-6 h-6 ${styles.text.primary}`} />
               </motion.button>
