@@ -24,14 +24,14 @@ const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className={`text-5xl md:text-7xl font-bold ${styles.text.primary} mb-6 font-display`}>
+          <h1 className={`text-4xl sm:text-5xl md:text-7xl font-bold ${styles.text.primary} mb-4 md:mb-6 font-display leading-tight`}>
             Revolutionizing Business Operations with{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               Inspirovix
             </span>
           </h1>
           
-          <div className="mb-8">
+          <div className="mb-4 md:mb-8">
             <TypewriterEffect 
               phrases={heroTypingPhrases}
               typingSpeed={100}
@@ -40,11 +40,11 @@ const Home = () => {
             />
           </div>
 
-          <p className={`text-xl ${styles.text.secondary} mb-8 max-w-3xl mx-auto`}>
+          <p className={`text-base sm:text-lg md:text-xl ${styles.text.secondary} mb-6 md:mb-8 max-w-3xl mx-auto px-4`}>
             Streamline your business workflows and enhance customer experience through AI-powered automation.
           </p>
 
-          <div className="flex justify-center gap-8">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 px-4">
             <ActionButton
               href={`mailto:${contactInfo.email}`}
               icon={<Bot className="w-5 h-5" />}

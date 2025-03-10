@@ -21,7 +21,9 @@ function App() {
       <div className="transition-colors duration-200 md:cursor-glow">
         <CustomCursor />
         <Navbar />
-        <ThemeToggle />
+        <div className="hidden lg:block">
+          <ThemeToggle />
+        </div>
         
         {/* 1. Value Proposition & Problem Statement */}
         <Home />

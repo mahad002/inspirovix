@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronRight } from 'lucide-react';
+import { Menu, X, ChevronRight, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 import { menuItems } from '../data/navigation';
@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const styles = themes[theme];
 
   useEffect(() => {
@@ -48,12 +48,12 @@ const Navbar = () => {
             {/* Logo */}
             <motion.a
               href="#home"
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 -ml-2 sm:ml-0"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQFazebQXPuv6Q/company-logo_100_100/company-logo_100_100/0/1737872641143/inspirovix_logo?e=1749686400&v=beta&t=NpjZSNlmt7D47F743157vRGMSu1MVnksUQ1coENlUCc" alt="Inspirovix Logo" className="w-10 h-10 object-contain rounded-xl" />
-              <span className={`text-lg font-bold ${styles.text.primary}`}>Inspirovix</span>
+              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQFazebQXPuv6Q/company-logo_100_100/company-logo_100_100/0/1737872641143/inspirovix_logo?e=1749686400&v=beta&t=NpjZSNlmt7D47F743157vRGMSu1MVnksUQ1coENlUCc" alt="Inspirovix Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-xl" />
+              <span className={`text-base sm:text-lg font-bold ${styles.text.primary}`}>Inspirovix</span>
             </motion.a>
 
             {/* Desktop Navigation */}
@@ -84,15 +84,32 @@ const Navbar = () => {
               })}
             </nav>
 
-            {/* Mobile Menu Button */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(true)}
-              className={`lg:hidden p-2 rounded-lg ${styles.button.secondary}`}
-            >
-              <Menu className={`w-6 h-6 ${styles.text.primary}`} />
-            </motion.button>
+            {/* Mobile Controls */}
+            <div className="flex items-center gap-2 lg:hidden">
+              {/* Theme Toggle */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg ${styles.button.secondary}`}
+              >
+                {theme === 'dark' ? (
+                  <Sun className={`w-5 h-5 ${styles.text.primary}`} />
+                ) : (
+                  <Moon className={`w-5 h-5 ${styles.text.primary}`} />
+                )}
+              </motion.button>
+
+              {/* Menu Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsOpen(true)}
+                className={`p-2 -mr-2 sm:mr-0 rounded-lg ${styles.button.secondary}`}
+              >
+                <Menu className={`w-6 h-6 ${styles.text.primary}`} />
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.header>
@@ -113,11 +130,11 @@ const Navbar = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className={`fixed right-0 top-0 bottom-0 w-80 ${styles.background.card} backdrop-blur-lg z-50 lg:hidden overflow-y-auto`}
+              className={`fixed right-0 top-0 bottom-0 w-[85vw] sm:w-80 ${styles.background.card} backdrop-blur-lg z-50 lg:hidden overflow-y-auto`}
             >
               <div className="p-6">
                 <div className="flex justify-between items-center mb-8">
-                  <h2 className={`text-xl font-bold ${styles.text.primary}`}>Navigation</h2>
+                  <h2 className={`text-lg sm:text-xl font-bold ${styles.text.primary}`}>Navigation</h2>
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -142,12 +159,12 @@ const Navbar = () => {
                           isActive ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` : styles.text.secondary
                         }`}
                       >
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${
                           isActive ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' : 'bg-violet-500/20'
                         } group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500 transition-all duration-300`}>
-                          <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
+                          <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
                         </div>
-                        <span className="font-medium">{item.label}</span>
+                        <span className="font-medium text-sm sm:text-base">{item.label}</span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                           isActive ? 'text-violet-400' : 'text-violet-500'
                         }`} />
