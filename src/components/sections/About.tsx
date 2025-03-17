@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
-import { stats, values } from '../../data/about';
+import { stats, values, sustainability } from '../../data/about';
 
 const About = () => {
   const { theme } = useTheme();
@@ -75,6 +75,34 @@ const About = () => {
               >
                 <h4 className={`text-xl font-semibold ${styles.text.primary} mb-4`}>{value.title}</h4>
                 <p className={styles.text.secondary}>{value.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-20"
+        >
+          <h3 className={`text-3xl font-bold ${styles.text.primary} text-center mb-12`}>Our Commitment to Sustainability</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {sustainability.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary}`}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mb-4">
+                  <item.icon className="w-6 h-6 text-white" />
+                </div>
+                <h4 className={`text-xl font-semibold ${styles.text.primary} mb-4`}>{item.title}</h4>
+                <p className={styles.text.secondary}>{item.description}</p>
               </motion.div>
             ))}
           </div>
