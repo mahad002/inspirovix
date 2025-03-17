@@ -12,7 +12,7 @@ export interface PricingPlan {
 export const pricingPlans: PricingPlan[] = [
   {
     title: "Starter",
-    price: "$99",
+    price: "Custom",
     description: "Perfect for small businesses starting their automation journey",
     icon: Bot,
     features: [
@@ -25,7 +25,7 @@ export const pricingPlans: PricingPlan[] = [
   },
   {
     title: "Professional",
-    price: "$299",
+    price: "Custom",
     description: "Ideal for growing companies with advanced needs",
     icon: Zap,
     features: [
@@ -55,7 +55,7 @@ export const pricingPlans: PricingPlan[] = [
   },
   {
     title: "Scale",
-    price: "$999",
+    price: "Custom",
     description: "For businesses requiring high-volume processing",
     icon: Rocket,
     features: [
@@ -70,7 +70,7 @@ export const pricingPlans: PricingPlan[] = [
   },
   {
     title: "Cloud",
-    price: "$599",
+    price: "Custom",
     description: "Cloud-optimized solution for distributed teams",
     icon: Cloud,
     features: [
@@ -85,7 +85,7 @@ export const pricingPlans: PricingPlan[] = [
   },
   {
     title: "Security+",
-    price: "$799",
+    price: "Custom",
     description: "Enhanced security features for regulated industries",
     icon: Lock,
     features: [
