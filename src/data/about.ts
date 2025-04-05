@@ -1,10 +1,10 @@
 import { Users, Award, Globe, Cpu, Leaf, Cloud, Recycle, Zap } from 'lucide-react';
 
 export const stats = [
-  { icon: Users, value: "500+", label: "Clients Worldwide" },
+  { icon: Users, value: "20+", label: "Clients Worldwide" },
   { icon: Award, value: "98%", label: "Client Satisfaction" },
   { icon: Globe, value: "24/7", label: "Support Available" },
-  { icon: Cpu, value: "1M+", label: "AI Predictions" }
+  { icon: Cpu, value: "Best", label: "AI Predictions" }
 ];
 
 export const values = [

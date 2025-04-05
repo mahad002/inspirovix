@@ -1,10 +1,10 @@
-import { Bot, Zap, Shield, Rocket, Cloud, Lock } from 'lucide-react';
+import { Bot, Zap, Shield, Rocket, Cloud, Lock, Globe, Smartphone } from 'lucide-react';
 
 export interface PricingPlan {
   title: string;
   price: string;
   description: string;
-  icon: typeof Bot | typeof Zap | typeof Shield | typeof Rocket | typeof Cloud | typeof Lock;
+  icon: typeof Bot | typeof Zap | typeof Shield | typeof Rocket | typeof Cloud | typeof Lock | typeof Globe | typeof Smartphone;
   features: string[];
   isPopular?: boolean;
 }
@@ -21,6 +21,20 @@ export const pricingPlans: PricingPlan[] = [
       "5 team members",
       "8/5 support",
       "1,000 API calls/month"
+    ]
+  },
+  {
+    title: "Web Development",
+    price: "Custom",
+    description: "Comprehensive web development solutions for businesses",
+    icon: Globe,
+    features: [
+      "Responsive web design",
+      "SEO optimization",
+      "E-commerce integration",
+      "Custom CMS development",
+      "Cross-browser compatibility",
+      "Performance optimization"
     ]
   },
   {
@@ -51,6 +65,20 @@ export const pricingPlans: PricingPlan[] = [
       "Unlimited API calls",
       "SLA guarantee",
       "On-premise deployment"
+    ]
+  },
+  {
+    title: "Mobile Development",
+    price: "Custom",
+    description: "End-to-end mobile app development for iOS and Android",
+    icon: Smartphone, 
+    features: [
+      "Native iOS and Android apps",
+      "Cross-platform development",
+      "UI/UX design",
+      "App store deployment",
+      "Push notifications",
+      "API integration"
     ]
   },
   {
