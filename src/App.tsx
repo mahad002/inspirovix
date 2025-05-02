@@ -11,9 +11,10 @@ import {
   CaseStudies,
   About,
   Blog,
-  Contact
+  Contact,
 } from './components/sections';
 import Pricing from './components/sections/Pricing';
+import AssociatedCompanies from './components/sections/AssociatedCompanies';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <CustomDevelopment />
         {/* 4. Authority & Trust Building */}
         <About />
+        <AssociatedCompanies />
         
         {/* 5. Price Placement - After Value Is Established */}
         <Pricing />
