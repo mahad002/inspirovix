@@ -6,7 +6,7 @@ import { themes } from '../../theme/themes';
 const companies = [
   {
     name: "MajorWerks",
-    logo: "https://media.licdn.com/dms/image/D4E0BAQFazebQXPuv6Q/company-logo_100_100/0/1737872641143/inspirovix_logo?e=1749686400&v=beta&t=NpjZSNlmt7D47F743157vRGMSu1MVnksUQ1coENlUCc",
+    logo: "https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/8f3964378c2dc37b31247f550df5582c~tplv-tiktokx-cropcenter:1080:1080.jpeg?dr=14579&refresh_token=73a0142e&x-expires=1748365200&x-signature=QM6S763c4gLRMmoj4uBJQdUzxMk%3D&t=4d5b0474&ps=13740610&shp=a5d48078&shcp=81f88b70&idc=my",
     description: "Innovative Software Solutions"
   },
   {
