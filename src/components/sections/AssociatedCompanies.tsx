@@ -36,7 +36,7 @@ const AssociatedCompanies = () => {
   const styles = themes[theme];
 
   return (
-    <section id="associated-companies" className={`${styles.background.primary} py-20`}>
+    <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -53,38 +53,79 @@ const AssociatedCompanies = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {companies.map((company, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden`}
-            >
-              <div className="relative w-40 h-24 mb-6 flex items-center justify-center">
-                <img
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  className={`w-full h-full object-contain ${
-                    theme === 'dark' ? 'brightness-100 contrast-125' : 'brightness-90 contrast-100'
-                  } transition-all duration-300 group-hover:scale-110`}
-                />
-              </div>
-              <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
-                {company.name}
-              </h3>
-              <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
-                {company.description}
-              </p>
-              <div className={`absolute inset-0 bg-gradient-to-t ${
-                theme === 'dark' 
-                  ? 'from-purple-900/20 to-transparent' 
-                  : 'from-purple-100/30 to-transparent'
-              } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-            </motion.div>
-          ))}
+        <div className="relative w-full overflow-hidden">
+          <motion.div
+            className="flex space-x-8"
+            animate={{
+              x: [0, -1000],
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: 20,
+                ease: "linear",
+              },
+            }}
+          >
+            {/* First set of companies */}
+            {companies.map((company, index) => (
+              <motion.div
+                key={`first-${index}`}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+              >
+                <div className="relative w-40 h-24 mb-6 flex items-center justify-center">
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    className={`w-full h-full object-contain ${
+                      theme === 'dark' ? 'brightness-100 contrast-125' : 'brightness-90 contrast-100'
+                    } transition-all duration-300 group-hover:scale-110`}
+                  />
+                </div>
+                <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
+                  {company.name}
+                </h3>
+                <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
+                  {company.description}
+                </p>
+                <div className={`absolute inset-0 bg-gradient-to-t ${
+                  theme === 'dark' 
+                    ? 'from-purple-900/20 to-transparent' 
+                    : 'from-purple-100/30 to-transparent'
+                } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              </motion.div>
+            ))}
+            
+            {/* Duplicate set of companies for seamless loop */}
+            {companies.map((company, index) => (
+              <motion.div
+                key={`second-${index}`}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+              >
+                <div className="relative w-40 h-24 mb-6 flex items-center justify-center">
+                  <img
+                    src={company.logo}
+                    alt={`${company.name} logo`}
+                    className={`w-full h-full object-contain ${
+                      theme === 'dark' ? 'brightness-100 contrast-125' : 'brightness-90 contrast-100'
+                    } transition-all duration-300 group-hover:scale-110`}
+                  />
+                </div>
+                <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
+                  {company.name}
+                </h3>
+                <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
+                  {company.description}
+                </p>
+                <div className={`absolute inset-0 bg-gradient-to-t ${
+                  theme === 'dark' 
+                    ? 'from-purple-900/20 to-transparent' 
+                    : 'from-purple-100/30 to-transparent'
+                } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
