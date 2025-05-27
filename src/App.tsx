@@ -29,22 +29,27 @@ function App() {
         {/* 1. Value Proposition & Problem Statement */}
         <Home />
 
-        {/* 3. Solution Presentation */}
+        {/* 2. Solution Presentation */}
         <AIAutomation />
+
+        {/* 3. Associated Companies */}
+        <AssociatedCompanies />
+
+        {/* 4. Additional Solutions */}
         <CaseStudies />
         <Solutions />
         <CustomDevelopment />
-        {/* 4. Authority & Trust Building */}
+
+        {/* 5. Authority & Trust Building */}
         <About />
-        <AssociatedCompanies />
         
-        {/* 5. Price Placement - After Value Is Established */}
+        {/* 6. Price Placement - After Value Is Established */}
         <Pricing />
 
         {/* 7. Call To Action */}
         <Contact />
         
-        {/* 6. Additional Value & Educational Content */}
+        {/* 8. Additional Value & Educational Content */}
         <Blog />
       </div>
     </ThemeProvider>
