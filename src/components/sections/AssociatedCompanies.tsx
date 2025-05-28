@@ -6,23 +6,28 @@ import { themes } from '../../theme/themes';
 const companies = [
   {
     name: "MajorWerks",
-    logo: "https://majorwerks.s3.us-east-2.amazonaws.com/Majorwerks+Logo.jpg",
+    logo: "https://i0.wp.com/majorwerks.com/wp-content/uploads/2024/02/MajorWerks-Logo.png?fit=243%2C46&ssl=1",
     description: "Innovative Software Solutions"
+  },
+  {
+    name: "Exec Chauffeur Group",
+    logo: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/Exec-Chauffeur.png?fit=243%2C46&ssl=1",
+    description: "Leading SUV Brand"
   },
   {
     name: "Haval",
     logo: "https://1000logos.net/wp-content/uploads/2020/10/Haval-Logo-2013.png",
-    description: "Leading SUV Brand"
+    description: "Global Automotive Excellence"
   },
   {
     name: "GWM",
     logo: "https://i0.wp.com/southernqueenstown.co.nz/wp-content/uploads/2023/05/GWM-Logo-Grid-Web-Res-PNG.png?ssl=1",
-    description: "Global Automotive Excellence"
+    description: "Automotive Innovation"
   },
   {
     name: "Sazgar",
     logo: "https://sazgarpk.s3.ap-southeast-1.amazonaws.com/2022/02/Ai-sazgar-logo-min.webp",
-    description: "Automotive Innovation"
+    description: "Leading Automotive Group"
   },
   {
     name: "BAIC",
