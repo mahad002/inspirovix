@@ -12,7 +12,7 @@ const companies = [
   {
     name: "Exec Chauffeur Group",
     logo: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/Exec-Chauffeur.png?fit=243%2C46&ssl=1",
-    description: "Leading SUV Brand"
+    description: "Executive Car Services"
   },
   {
     name: "Haval",
@@ -75,31 +75,33 @@ const AssociatedCompanies = () => {
           >
             {/* First set of companies */}
             {companies.map((company, index) => (
-              <motion.div
+              <div
                 key={`first-${index}`}
                 className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  y: {
-                    repeat: Infinity,
-                    duration: 3,
-                    ease: "easeInOut",
-                    delay: index * 0.2,
-                  },
-                }}
               >
-                <div className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
-                  company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
-                  company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
-                }`}>
+                <motion.div
+                  className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+                    company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
+                    company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
+                  }`}
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    y: {
+                      repeat: Infinity,
+                      duration: 3,
+                      ease: "easeInOut",
+                      delay: index * 0.2,
+                    },
+                  }}
+                >
                   <img
                     src={company.logo}
                     alt={`${company.name} logo`}
                     className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
                   />
-                </div>
+                </motion.div>
                 <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
                   {company.name}
                 </h3>
@@ -111,36 +113,38 @@ const AssociatedCompanies = () => {
                     ? 'from-purple-900/20 to-transparent' 
                     : 'from-purple-100/30 to-transparent'
                 } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </motion.div>
+              </div>
             ))}
             
             {/* Duplicate set of companies for seamless loop */}
             {companies.map((company, index) => (
-              <motion.div
+              <div
                 key={`second-${index}`}
                 className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
-                animate={{
-                  y: [0, -10, 0],
-                }}
-                transition={{
-                  y: {
-                    repeat: Infinity,
-                    duration: 3,
-                    ease: "easeInOut",
-                    delay: index * 0.2,
-                  },
-                }}
               >
-                <div className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
-                  company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
-                  company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
-                }`}>
+                <motion.div
+                  className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+                    company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
+                    company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
+                  }`}
+                  animate={{
+                    y: [0, -10, 0],
+                  }}
+                  transition={{
+                    y: {
+                      repeat: Infinity,
+                      duration: 3,
+                      ease: "easeInOut",
+                      delay: index * 0.2,
+                    },
+                  }}
+                >
                   <img
                     src={company.logo}
                     alt={`${company.name} logo`}
                     className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
                   />
-                </div>
+                </motion.div>
                 <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
                   {company.name}
                 </h3>
@@ -152,7 +156,7 @@ const AssociatedCompanies = () => {
                     ? 'from-purple-900/20 to-transparent' 
                     : 'from-purple-100/30 to-transparent'
                 } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </motion.div>
+              </div>
             ))}
           </motion.div>
         </div>
