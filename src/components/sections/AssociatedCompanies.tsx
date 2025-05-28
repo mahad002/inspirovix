@@ -77,9 +77,15 @@ const AssociatedCompanies = () => {
             {companies.map((company, index) => (
               <motion.div
                 key={`first-${index}`}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] ${
+                  company.name === "Exec Chauffeur Group" ? "bg-gradient-to-br from-gray-900 to-gray-800" : 
+                  company.name === "Sazgar" ? "bg-gradient-to-br from-blue-900 to-blue-800" : ""
+                }`}
               >
-                <div className="relative w-40 h-24 mb-6 flex items-center justify-center">
+                <div className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+                  company.name === "Exec Chauffeur Group" ? "bg-white/10 rounded-lg p-4" :
+                  company.name === "Sazgar" ? "bg-white/10 rounded-lg p-4" : ""
+                }`}>
                   <img
                     src={company.logo}
                     alt={`${company.name} logo`}
@@ -106,9 +112,15 @@ const AssociatedCompanies = () => {
             {companies.map((company, index) => (
               <motion.div
                 key={`second-${index}`}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] ${
+                  company.name === "Exec Chauffeur Group" ? "bg-gradient-to-br from-gray-900 to-gray-800" :
+                  company.name === "Sazgar" ? "bg-gradient-to-br from-blue-900 to-blue-800" : ""
+                }`}
               >
-                <div className="relative w-40 h-24 mb-6 flex items-center justify-center">
+                <div className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+                  company.name === "Exec Chauffeur Group" ? "bg-white/10 rounded-lg p-4" :
+                  company.name === "Sazgar" ? "bg-white/10 rounded-lg p-4" : ""
+                }`}>
                   <img
                     src={company.logo}
                     alt={`${company.name} logo`}
