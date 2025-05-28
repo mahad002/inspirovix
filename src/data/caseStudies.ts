@@ -12,27 +12,27 @@ export const caseStudies = [
       slug: "https://alayajunior.com/"
     },
     {
-      title: "Healthcare Efficiency",
-      client: "Medical Center",
+      title: "Automotive Digital Transformation",
+      client: "Haval.pk",
       metrics: [
-        { label: "Wait Time Reduction", value: "75%" },
-        { label: "Patient Satisfaction", value: "96%" },
-        { label: "Staff Productivity", value: "+45%" }
+        { label: "Customer Engagement", value: "85%" },
+        { label: "Lead Generation", value: "+120%" },
+        { label: "Sales Conversion", value: "+45%" }
       ],
-      image: "https://images.unsplash.com/photo-1504813184591-01572f98c85f?auto=format&fit=crop&q=80&w=1200",
-      tags: ["Appointment Scheduling", "Patient Portal"],
-      slug: "healthcare-efficiency"
+      image: "https://1000logos.net/wp-content/uploads/2020/10/Haval-Logo-2013.png",
+      tags: ["Digital Marketing", "Lead Management", "Customer Experience"],
+      slug: "https://haval.pk/"
     },
     {
-      title: "Logistics Optimization",
-      client: "Global Shipping Company",
+      title: "Fleet Management Optimization",
+      client: "Exec Chauffeur Group",
       metrics: [
-        { label: "Delivery Speed", value: "+60%" },
-        { label: "Cost Reduction", value: "32%" },
-        { label: "Route Efficiency", value: "+85%" }
+        { label: "Route Efficiency", value: "+75%" },
+        { label: "Customer Satisfaction", value: "98%" },
+        { label: "Cost Reduction", value: "35%" }
       ],
-      image: "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&q=80&w=1200",
-      tags: ["Route Optimization", "Fleet Management"],
-      slug: "logistics-optimization"
+      image: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/Exec-Chauffeur.png?fit=243%2C46&ssl=1",
+      tags: ["Fleet Management", "Route Optimization", "Customer Service"],
+      slug: "https://execchauffeurgroup.co.uk/"
     }
   ];
