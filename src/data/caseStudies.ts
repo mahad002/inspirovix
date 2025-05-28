@@ -19,7 +19,7 @@ export const caseStudies = [
         { label: "Lead Generation", value: "+120%" },
         { label: "Sales Conversion", value: "+45%" }
       ],
-      image: "https://1000logos.net/wp-content/uploads/2020/10/Haval-Logo-2013.png",
+      image: "https://www.gwm-global.com/dist/images/home-page/haval_pic.jpg",
       tags: ["Digital Marketing", "Lead Management", "Customer Experience"],
       slug: "https://haval.pk/"
     },
@@ -31,7 +31,7 @@ export const caseStudies = [
         { label: "Customer Satisfaction", value: "98%" },
         { label: "Cost Reduction", value: "35%" }
       ],
-      image: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/Exec-Chauffeur.png?fit=243%2C46&ssl=1",
+      image: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/unnamed-13.jpg?w=1024&ssl=1",
       tags: ["Fleet Management", "Route Optimization", "Customer Service"],
       slug: "https://execchauffeurgroup.co.uk/"
     }
