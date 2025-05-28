@@ -6,7 +6,7 @@ import { themes } from '../../theme/themes';
 const companies = [
   {
     name: "MajorWerks",
-    logo: "https://i0.wp.com/majorwerks.com/wp-content/uploads/2024/02/MajorWerks-Logo.png?fit=243%2C46&ssl=1",
+    logo: "https://majorwerks.s3.us-east-2.amazonaws.com/Majorwerks+Logo.jpg",
     description: "Innovative Software Solutions"
   },
   {
