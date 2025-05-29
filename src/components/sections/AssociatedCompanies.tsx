@@ -33,6 +33,11 @@ const companies = [
     name: "BAIC",
     logo: "https://brandlogos.net/wp-content/uploads/2022/09/baic_group-logo_brandlogos.net_8rlab.png",
     description: "Leading Automotive Group"
+  },
+  {
+    name: "Unlock Real Estate",
+    logo: "https://inspirovix.s3.us-east-2.amazonaws.com/unlock+real+estate+logo.png",
+    description: "Custom CRM Solutions"
   }
 ];
 
