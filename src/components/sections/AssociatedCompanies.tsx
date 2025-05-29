@@ -46,8 +46,8 @@ const AssociatedCompanies = () => {
   const styles = themes[theme];
 
   return (
-    <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden w-full`}>
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -67,13 +67,13 @@ const AssociatedCompanies = () => {
           <motion.div
             className="flex space-x-8"
             animate={{
-              x: [0, -1000],
+              x: [0, -2000],
             }}
             transition={{
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 20,
+                duration: 30,
                 ease: "linear",
               },
             }}
