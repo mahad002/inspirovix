@@ -38,6 +38,11 @@ const companies = [
     name: "Unlock Real Estate",
     logo: "https://inspirovix.s3.us-east-2.amazonaws.com/unlock+real+estate+logo.png",
     description: "Custom CRM Solutions"
+  },
+  {
+    name: "AutoShield Insurance",
+    logo: "https://cdn-icons-png.flaticon.com/512/1048/1048955.png",
+    description: "Comprehensive Auto Insurance Solutions"
   }
 ];
 
