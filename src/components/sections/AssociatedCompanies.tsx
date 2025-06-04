@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
@@ -7,48 +7,63 @@ const companies = [
   {
     name: "MajorWerks",
     logo: "https://majorwerks.s3.us-east-2.amazonaws.com/Majorwerks+Logo.jpg",
-    description: "Innovative Software Solutions"
+    description: "Innovative Software Solutions",
+    website: "https://majorwerks.com"
   },
   {
     name: "Exec Chauffeur Group",
     logo: "https://i0.wp.com/execchauffeurgroup.co.uk/wp-content/uploads/2025/05/Exec-Chauffeur.png?fit=243%2C46&ssl=1",
-    description: "Executive Car Services"
+    description: "Executive Car Services",
+    website: "https://execchauffeurgroup.co.uk"
   },
   {
     name: "Haval",
     logo: "https://1000logos.net/wp-content/uploads/2020/10/Haval-Logo-2013.png",
-    description: "Global Automotive Excellence"
+    description: "Global Automotive Excellence",
+    website: "https://www.haval.pk"
   },
   {
     name: "GWM",
     logo: "https://i0.wp.com/southernqueenstown.co.nz/wp-content/uploads/2023/05/GWM-Logo-Grid-Web-Res-PNG.png?ssl=1",
-    description: "Automotive Innovation"
+    description: "Automotive Innovation",
+    website: "https://www.gwm-global.com"
   },
   {
     name: "Sazgar",
     logo: "https://sazgarpk.s3.ap-southeast-1.amazonaws.com/2022/02/Ai-sazgar-logo-min.webp",
-    description: "Leading Automotive Group"
+    description: "Leading Automotive Group",
+    website: "https://sazgarautos.com"
   },
   {
     name: "BAIC",
     logo: "https://brandlogos.net/wp-content/uploads/2022/09/baic_group-logo_brandlogos.net_8rlab.png",
-    description: "Leading Automotive Group"
+    description: "Leading Automotive Group",
+    website: "https://www.sazgarbaic.com"
   },
   {
     name: "Unlock Real Estate",
     logo: "https://inspirovix.s3.us-east-2.amazonaws.com/unlock+real+estate+logo.png",
-    description: "Custom CRM Solutions"
+    description: "Custom CRM Solutions",
+    website: "https://unlockrealestate.com"
   },
   {
     name: "AutoShield Insurance",
     logo: "https://cdn-icons-png.flaticon.com/512/1048/1048955.png",
-    description: "Comprehensive Auto Insurance Solutions"
+    description: "Comprehensive Auto Insurance Solutions",
+    website: "https://www.your-goshorty.com"
+  },
+  {
+    name: "GuruisOnline",
+    logo: "https://inspirovix.s3.us-east-2.amazonaws.com/gurusonline_logo.webp",
+    description: "Your guide to Personal Growth and Mandarin Mastery",
+    website: "https://guruisonline.com"
   }
 ];
 
 const AssociatedCompanies = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
+  const [isHovering, setIsHovering] = useState(false);
 
   return (
     <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden w-full`}>
@@ -78,16 +93,21 @@ const AssociatedCompanies = () => {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 30,
+                duration: isHovering ? 60 : 30,
                 ease: "linear",
               },
             }}
           >
             {/* First set of companies */}
             {companies.map((company, index) => (
-              <div
+              <a
                 key={`first-${index}`}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+                href={company.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
               >
                 <motion.div
                   className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
@@ -123,14 +143,19 @@ const AssociatedCompanies = () => {
                     ? 'from-purple-900/20 to-transparent' 
                     : 'from-purple-100/30 to-transparent'
                 } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </div>
+              </a>
             ))}
             
             {/* Duplicate set of companies for seamless loop */}
             {companies.map((company, index) => (
-              <div
+              <a
                 key={`second-${index}`}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px]`}
+                href={company.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
               >
                 <motion.div
                   className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
@@ -166,7 +191,7 @@ const AssociatedCompanies = () => {
                     ? 'from-purple-900/20 to-transparent' 
                     : 'from-purple-100/30 to-transparent'
                 } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </div>
+              </a>
             ))}
           </motion.div>
         </div>
