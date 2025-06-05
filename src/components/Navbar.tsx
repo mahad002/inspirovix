@@ -1,37 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronRight, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 import { menuItems } from '../data/navigation';
+import ThemeToggle from './ThemeToggle';
 
-const Navbar = () => {
+const Navbar = React.memo(() => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [scrolled, setScrolled] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
+
+  const handleScroll = useCallback(() => {
+    setScrolled(window.scrollY > 20);
+
+    // Update active section based on scroll position
+    const sections = menuItems.map(item => item.href.substring(1));
+    const current = sections.find(section => {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        return rect.top <= 100 && rect.bottom >= 100;
+      }
+      return false;
+    });
+    if (current) setActiveSection(current);
+  }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-
-      // Update active section based on scroll position
-      const sections = menuItems.map(item => item.href.substring(1));
-      const current = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      if (current) setActiveSection(current);
-    };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [menuItems]);
+  }, [handleScroll]);
+
+  const toggleMobileMenu = useCallback(() => {
+    setIsOpen(prev => !prev);
+  }, []);
 
   return (
     <>
@@ -82,6 +87,7 @@ const Navbar = () => {
                   </motion.a>
                 );
               })}
+              <ThemeToggle />
             </nav>
 
             {/* Mobile Controls */}
@@ -104,7 +110,7 @@ const Navbar = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(true)}
+                onClick={toggleMobileMenu}
                 className={`p-2.5 rounded-lg ${styles.button.secondary}`}
               >
                 <Menu className={`w-6 h-6 ${styles.text.primary}`} />
@@ -180,6 +186,8 @@ const Navbar = () => {
       </AnimatePresence>
     </>
   );
-};
+});
+
+Navbar.displayName = 'Navbar';
 
 export default Navbar;

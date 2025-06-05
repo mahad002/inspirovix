@@ -1,54 +1,15 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock } from 'lucide-react';
-import { sendContactEmail } from '../utils/emailService';
-import { contactInfo, socialLinks, businessHours } from '../data/contact';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 
-const Contact = () => {
+const Contact = React.memo(() => {
   const { theme } = useTheme();
-  const styles = themes[theme];
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    
-    try {
-      // Validate form data before sending
-      if (!formData.name || !formData.email || !formData.message) {
-        throw new Error('Please fill out all fields');
-      }
-      
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email)) {
-        throw new Error('Please enter a valid email address');
-      }
-      
-      const result = await sendContactEmail(formData);
-      if (result.success) {
-        setStatus('success');
-        setFormData({ name: '', email: '', message: '' });
-      } else {
-        throw new Error(result.error || 'Failed to send message');
-      }
-    } catch (error) {
-      setStatus('error');
-      setErrorMessage(error instanceof Error ? error.message : 'Failed to send message');
-    }
-  };
+  const styles = useMemo(() => themes[theme], [theme]);
 
   return (
     <section id="contact" className={`${styles.background.primary} py-20`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -56,200 +17,123 @@ const Contact = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>Get in Touch</h2>
-          <p className={`${styles.text.secondary} text-lg`}>Ready to revolutionize your business? Let's connect!</p>
+          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
+            Get in Touch
+          </h2>
+          <p className={`text-xl ${styles.text.secondary} max-w-3xl mx-auto`}>
+            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="space-y-8"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}
           >
+            <h3 className={`text-2xl font-bold ${styles.text.primary} mb-6`}>
+              Contact Information
+            </h3>
             <div className="space-y-6">
-              <motion.a
-                href={`https://${contactInfo.website}`}
-                whileHover={{ scale: 1.05 }}
-                className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
-              >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Globe className="w-6 h-6" />
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-lg ${styles.background.secondary}`}>
+                  <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
                 </div>
                 <div>
-                  <span className="block font-semibold">Website</span>
-                  <span>{contactInfo.website}</span>
+                  <h4 className={`font-semibold ${styles.text.primary}`}>Phone</h4>
+                  <p className={`${styles.text.secondary}`}>+1 (555) 123-4567</p>
                 </div>
-              </motion.a>
-              
-              <motion.a
-                href={`tel:${contactInfo.phone}`}
-                whileHover={{ scale: 1.05 }}
-                className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
-              >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Phone className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="block font-semibold">Phone</span>
-                  <span>{contactInfo.phone}</span>
-                </div>
-              </motion.a>
-
-              <motion.a
-                href={`mailto:${contactInfo.email}`}
-                whileHover={{ scale: 1.05 }}
-                className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
-              >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Mail className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className="block font-semibold">Email</span>
-                  <span>{contactInfo.email}</span>
-                </div>
-              </motion.a>
-            </div>
-
-            {/* Social Media Links */}
-            <div className={`pt-8 border-t ${styles.border.primary}`}>
-              <h3 className={`text-xl font-semibold ${styles.text.primary} mb-6`}>Connect With Us</h3>
-              <div className="flex gap-4">
-                <motion.a
-                  href={socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
-                >
-                  <Linkedin className="w-6 h-6" />
-                </motion.a>
-                <motion.a
-                  href={socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
-                >
-                  <Instagram className="w-6 h-6" />
-                </motion.a>
               </div>
-            </div>
-
-            {/* Business Hours */}
-            <div className={`pt-8 border-t ${styles.border.primary}`}>
-              <div className={`flex items-center gap-4 ${styles.text.secondary}`}>
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Clock className="w-6 h-6" />
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-lg ${styles.background.secondary}`}>
+                  <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
                 </div>
                 <div>
-                  <span className={`block font-semibold ${styles.text.primary}`}>Business Hours</span>
-                  <span>{businessHours.weekdays}</span>
-                  <span className="block">{businessHours.saturday}</span>
+                  <h4 className={`font-semibold ${styles.text.primary}`}>Email</h4>
+                  <p className={`${styles.text.secondary}`}>contact@inspirovix.com</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <div className={`p-3 rounded-lg ${styles.background.secondary}`}>
+                  <svg className="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className={`font-semibold ${styles.text.primary}`}>Location</h4>
+                  <p className={`${styles.text.secondary}`}>123 Business Street, Suite 100, City, Country</p>
                 </div>
               </div>
             </div>
           </motion.div>
 
           {/* Contact Form */}
-          <motion.form
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            onSubmit={handleSubmit}
-            className={`space-y-6 ${styles.background.card} p-8 rounded-xl ${styles.glow.primary}`}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}
           >
-            <h3 className={`text-2xl font-bold ${styles.text.primary} mb-6`}>Send Us a Message</h3>
-            
-            <div>
-              <label htmlFor="name" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                disabled={status === 'sending'}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                disabled={status === 'sending'}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="message" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Message
-              </label>
-              <textarea
-                id="message"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                rows={4}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                disabled={status === 'sending'}
-              />
-            </div>
-
-            {status === 'error' && (
-              <div className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-md border border-red-200">
-                <p>Error: {errorMessage}</p>
+            <h3 className={`text-2xl font-bold ${styles.text.primary} mb-6`}>
+              Send Us a Message
+            </h3>
+            <form className="space-y-6">
+              <div>
+                <label htmlFor="name" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                />
               </div>
-            )}
-
-            {status === 'success' && (
-              <div className="text-green-600 text-sm font-medium bg-green-50 p-3 rounded-md border border-green-200">
-                <p>Thank you! Your message has been sent successfully. We'll get back to you soon.</p>
+              <div>
+                <label htmlFor="email" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                />
               </div>
-            )}
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              disabled={status === 'sending'}
-              className={`w-full px-8 py-4 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${
-                status === 'sending' ? 'opacity-75 cursor-not-allowed' : ''
-              } ${styles.glow.primary}`}
-            >
-              {status === 'sending' ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="w-5 h-5" />
-                  Send Message
-                </>
-              )}
-            </motion.button>
-          </motion.form>
+              <div>
+                <label htmlFor="message" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className={`w-full px-8 py-4 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${styles.glow.primary}`}
+              >
+                Send Message
+              </button>
+            </form>
+          </motion.div>
         </div>
       </div>
     </section>
   );
-};
+});
+
+Contact.displayName = 'Contact';
 
 export default Contact;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 
+// Lazy load the company data
 const companies = [
   {
     name: "MajorWerks",
@@ -60,10 +61,120 @@ const companies = [
   }
 ];
 
+type ThemeStyles = {
+  background: {
+    primary: string;
+    secondary: string;
+    card: string;
+    cardHover: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+  glow: {
+    primary: string;
+  };
+};
+
+// Memoized Company Card Component
+const CompanyCard = React.memo(({ 
+  company, 
+  index, 
+  onHover, 
+  styles, 
+  theme 
+}: { 
+  company: typeof companies[0], 
+  index: number, 
+  onHover: (hovering: boolean) => void,
+  styles: ThemeStyles,
+  theme: string
+}) => {
+  const handleMouseEnter = useCallback(() => onHover(true), [onHover]);
+  const handleMouseLeave = useCallback(() => onHover(false), [onHover]);
+
+  return (
+    <a
+      href={company.website}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
+    >
+      <motion.div
+        className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+          company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
+          company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
+        }`}
+        animate={{
+          y: [0, -10, 0],
+        }}
+        transition={{
+          y: {
+            repeat: Infinity,
+            duration: 3,
+            ease: "easeInOut",
+            delay: index * 0.2,
+          },
+        }}
+      >
+        <img
+          src={company.logo}
+          alt={`${company.name} logo`}
+          loading="lazy"
+          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
+        />
+      </motion.div>
+      <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
+        {company.name}
+      </h3>
+      <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
+        {company.description}
+      </p>
+      <div className={`absolute inset-0 bg-gradient-to-t ${
+        theme === 'dark' 
+          ? 'from-purple-900/20 to-transparent' 
+          : 'from-purple-100/30 to-transparent'
+      } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+    </a>
+  );
+});
+
+CompanyCard.displayName = 'CompanyCard';
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="w-full h-40 flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+);
+
 const AssociatedCompanies = () => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
   const [isHovering, setIsHovering] = useState(false);
+
+  const handleHover = useCallback((hovering: boolean) => {
+    setIsHovering(hovering);
+  }, []);
+
+  const scrollDuration = useMemo(() => isHovering ? 60 : 30, [isHovering]);
+
+  const renderCompanies = useCallback((startIndex: number) => (
+    companies.map((company, index) => (
+      <CompanyCard
+        key={`${startIndex}-${index}`}
+        company={company}
+        index={index}
+        onHover={handleHover}
+        styles={styles}
+        theme={theme}
+      />
+    ))
+  ), [handleHover, styles, theme]);
 
   return (
     <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden w-full`}>
@@ -84,120 +195,29 @@ const AssociatedCompanies = () => {
         </motion.div>
 
         <div className="relative w-full overflow-hidden">
-          <motion.div
-            className="flex space-x-8"
-            animate={{
-              x: [0, -2000],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: "loop",
-                duration: isHovering ? 60 : 30,
-                ease: "linear",
-              },
-            }}
-          >
-            {/* First set of companies */}
-            {companies.map((company, index) => (
-              <a
-                key={`first-${index}`}
-                href={company.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
-              >
-                <motion.div
-                  className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
-                    company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
-                    company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
-                  }`}
-                  animate={{
-                    y: [0, -10, 0],
-                  }}
-                  transition={{
-                    y: {
-                      repeat: Infinity,
-                      duration: 3,
-                      ease: "easeInOut",
-                      delay: index * 0.2,
-                    },
-                  }}
-                >
-                  <img
-                    src={company.logo}
-                    alt={`${company.name} logo`}
-                    className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
-                  />
-                </motion.div>
-                <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
-                  {company.name}
-                </h3>
-                <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
-                  {company.description}
-                </p>
-                <div className={`absolute inset-0 bg-gradient-to-t ${
-                  theme === 'dark' 
-                    ? 'from-purple-900/20 to-transparent' 
-                    : 'from-purple-100/30 to-transparent'
-                } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </a>
-            ))}
-            
-            {/* Duplicate set of companies for seamless loop */}
-            {companies.map((company, index) => (
-              <a
-                key={`second-${index}`}
-                href={company.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
-              >
-                <motion.div
-                  className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
-                    company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
-                    company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
-                  }`}
-                  animate={{
-                    y: [0, -10, 0],
-                  }}
-                  transition={{
-                    y: {
-                      repeat: Infinity,
-                      duration: 3,
-                      ease: "easeInOut",
-                      delay: index * 0.2,
-                    },
-                  }}
-                >
-                  <img
-                    src={company.logo}
-                    alt={`${company.name} logo`}
-                    className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
-                  />
-                </motion.div>
-                <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
-                  {company.name}
-                </h3>
-                <p className={`text-sm ${styles.text.secondary} text-center transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}>
-                  {company.description}
-                </p>
-                <div className={`absolute inset-0 bg-gradient-to-t ${
-                  theme === 'dark' 
-                    ? 'from-purple-900/20 to-transparent' 
-                    : 'from-purple-100/30 to-transparent'
-                } opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-              </a>
-            ))}
-          </motion.div>
+          <Suspense fallback={<LoadingFallback />}>
+            <motion.div
+              className="flex space-x-8"
+              animate={{
+                x: [0, -2000],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: scrollDuration,
+                  ease: "linear",
+                },
+              }}
+            >
+              {renderCompanies(0)}
+              {renderCompanies(1)}
+            </motion.div>
+          </Suspense>
         </div>
       </div>
     </section>
   );
 };
 
-export default AssociatedCompanies;
+export default React.memo(AssociatedCompanies);

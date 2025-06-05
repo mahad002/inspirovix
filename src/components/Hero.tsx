@@ -1,57 +1,99 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Bot, Sparkles } from 'lucide-react';
+import { useTheme } from '../theme/ThemeContext';
+import { themes } from '../theme/themes';
+import TypewriterEffect from './TypewriterEffect';
 
-const Hero = () => {
+const Hero = React.memo(() => {
+  const { theme } = useTheme();
+  const styles = useMemo(() => themes[theme], [theme]);
+
+  const heroContent = useMemo(() => ({
+    title: "Transform Your Business with InspiroVix",
+    subtitle: "Innovative Solutions for Modern Enterprises",
+    description: "We help businesses streamline operations, enhance customer experiences, and drive growth through cutting-edge technology solutions.",
+    cta: "Get Started",
+    features: [
+      "Custom Software Development",
+      "Digital Transformation",
+      "Cloud Solutions",
+      "AI & Machine Learning"
+    ]
+  }), []);
+
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-navy-900 to-purple-900 overflow-hidden">
-      {/* Animated background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 font-display">
-            Revolutionizing Business Operations with{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-              Inspirovex
-            </span>
-          </h1>
-          
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Streamline your business workflows and enhance customer experience through AI-powered automation.
-          </p>
+    <div className="relative min-h-screen flex items-center justify-center py-20">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Column - Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
+          >
+            <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${styles.text.primary} mb-6`}>
+              {heroContent.title}
+            </h1>
+            <h2 className={`text-2xl md:text-3xl font-semibold ${styles.text.secondary} mb-6`}>
+              <TypewriterEffect text={heroContent.subtitle} />
+            </h2>
+            <p className={`text-lg ${styles.text.secondary} mb-8 max-w-2xl mx-auto lg:mx-0`}>
+              {heroContent.description}
+            </p>
+            <motion.a
+              href="#contact"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`inline-block px-8 py-4 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold ${styles.glow.primary}`}
+            >
+              {heroContent.cta}
+            </motion.a>
+          </motion.div>
 
-          <div className="flex justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg text-white font-semibold flex items-center gap-2"
-            >
-              <Bot className="w-5 h-5" />
-              Get Started
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-white/10 backdrop-blur-sm rounded-lg text-white font-semibold flex items-center gap-2"
-            >
-              <Sparkles className="w-5 h-5" />
-              Learn More
-            </motion.button>
-          </div>
-        </motion.div>
+          {/* Right Column - Features List */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}
+          >
+            <h3 className={`text-2xl font-bold ${styles.text.primary} mb-6`}>
+              Our Expertise
+            </h3>
+            <ul className="space-y-4">
+              {heroContent.features.map((feature, index) => (
+                <motion.li
+                  key={feature}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className={`flex items-center space-x-3 ${styles.text.secondary}`}
+                >
+                  <svg
+                    className="w-6 h-6 text-purple-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>{feature}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
       </div>
-
-      {/* Animated gradient orbs */}
-      <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
-      <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
     </div>
   );
-};
+});
+
+Hero.displayName = 'Hero';
 
 export default Hero;
