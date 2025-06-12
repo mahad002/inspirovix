@@ -102,30 +102,31 @@ const AIAutomation = () => {
                     height="300"
                     viewBox="0 0 400 300"
                   >
-                    {features.map((_, index) => {
-                      const centerX = 200; // Center of mobile viewBox
+                    {/* Hierarchical Connection Pattern */}
+                    {(() => {
+                      const centerX = 200; // Center logo position
                       const centerY = 0;   // Top of the lines
                       
-                      // Mobile grid: 2 columns, 2 rows
-                      const col = index % 2;
-                      const row = Math.floor(index / 2);
-                      
-                      // Calculate positions for 2x2 grid
+                      // Grid positions for 2x2 layout
                       const boxWidth = 120;
                       const boxHeight = 80;
                       const gridStartX = centerX - boxWidth;
-                      const gridStartY = 200;
+                      const firstRowY = 120;  // First row (top two boxes)
+                      const secondRowY = 200; // Second row (bottom two boxes)
                       
-                      const boxCenterX = gridStartX + (col * boxWidth * 1.2);
-                      const boxCenterY = gridStartY + (row * boxHeight);
+                      // Calculate box centers
+                      const topLeft = { x: gridStartX + (0 * boxWidth * 1.2), y: firstRowY };
+                      const topRight = { x: gridStartX + (1 * boxWidth * 1.2), y: firstRowY };
+                      const bottomLeft = { x: gridStartX + (0 * boxWidth * 1.2), y: secondRowY };
+                      const bottomRight = { x: gridStartX + (1 * boxWidth * 1.2), y: secondRowY };
                       
-                      // Control point for smooth curve
-                      const controlY = 100;
+                      const connections = [];
                       
-                      return (
+                      // 1. Logo to first two boxes (top row)
+                      connections.push(
                         <motion.path
-                          key={index}
-                          d={`M ${centerX} ${centerY} Q ${centerX} ${controlY} ${boxCenterX} ${boxCenterY}`}
+                          key="logo-to-top-left"
+                          d={`M ${centerX} ${centerY} Q ${centerX - 40} ${60} ${topLeft.x} ${topLeft.y}`}
                           stroke="#8B5CF6"
                           strokeWidth="2"
                           fill="none"
@@ -134,12 +135,70 @@ const AIAutomation = () => {
                           viewport={{ once: true }}
                           transition={{ 
                             duration: 0.8, 
-                            delay: 0.7 + index * 0.1,
+                            delay: 0.7,
                             ease: "easeOut"
                           }}
                         />
                       );
-                    })}
+                      
+                      connections.push(
+                        <motion.path
+                          key="logo-to-top-right"
+                          d={`M ${centerX} ${centerY} Q ${centerX + 40} ${60} ${topRight.x} ${topRight.y}`}
+                          stroke="#8B5CF6"
+                          strokeWidth="2"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          whileInView={{ pathLength: 1, opacity: 0.8 }}
+                          viewport={{ once: true }}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: 0.8,
+                            ease: "easeOut"
+                          }}
+                        />
+                      );
+                      
+                      // 2. Top left box to bottom left box
+                      connections.push(
+                        <motion.path
+                          key="top-left-to-bottom-left"
+                          d={`M ${topLeft.x} ${topLeft.y} L ${bottomLeft.x} ${bottomLeft.y}`}
+                          stroke="#8B5CF6"
+                          strokeWidth="2"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          whileInView={{ pathLength: 1, opacity: 0.8 }}
+                          viewport={{ once: true }}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: 0.9,
+                            ease: "easeOut"
+                          }}
+                        />
+                      );
+                      
+                      // 3. Top right box to bottom right box
+                      connections.push(
+                        <motion.path
+                          key="top-right-to-bottom-right"
+                          d={`M ${topRight.x} ${topRight.y} L ${bottomRight.x} ${bottomRight.y}`}
+                          stroke="#8B5CF6"
+                          strokeWidth="2"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          whileInView={{ pathLength: 1, opacity: 0.8 }}
+                          viewport={{ once: true }}
+                          transition={{ 
+                            duration: 0.8, 
+                            delay: 1.0,
+                            ease: "easeOut"
+                          }}
+                        />
+                      );
+                      
+                      return connections;
+                    })()}
                   </svg>
 
                   {/* Service Boxes - Mobile Grid */}
