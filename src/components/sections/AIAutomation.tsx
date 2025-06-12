@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Bot, MessageSquare, Workflow, Zap, Brain, Mic, Phone, Calendar, Shield, Database } from 'lucide-react';
+import { Bot, MessageSquare, Workflow, Zap, Brain, Mic, Phone, Calendar, Shield } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
@@ -20,56 +20,32 @@ const AIAutomation = () => {
     { 
       icon: Bot, 
       label: 'AI Voice Agents',
-      hoverText: 'Voice AI',
-      description: 'Natural conversations with customers'
+      hoverText: 'Voice AI'
     },
     { 
       icon: MessageSquare, 
       label: 'Smart Chat Bots',
-      hoverText: 'Chat AI',
-      description: '24/7 intelligent customer support'
+      hoverText: 'Chat AI'
     },
     { 
       icon: Workflow, 
       label: 'Process Automation',
-      hoverText: 'Workflow',
-      description: 'Streamlined business operations'
+      hoverText: 'Workflow'
     },
     { 
       icon: Brain, 
       label: 'Predictive Analytics',
-      hoverText: 'Analytics',
-      description: 'Data-driven business insights'
+      hoverText: 'Analytics'
     },
     { 
       icon: Mic, 
       label: 'Speech Recognition',
-      hoverText: 'Speech',
-      description: 'Advanced voice processing'
+      hoverText: 'Speech'
     },
     { 
       icon: Phone, 
       label: 'Call Automation',
-      hoverText: 'Calls',
-      description: 'Automated phone interactions'
-    },
-    { 
-      icon: Calendar, 
-      label: 'Smart Scheduling',
-      hoverText: 'Schedule',
-      description: 'Intelligent appointment management'
-    },
-    { 
-      icon: Shield, 
-      label: 'Security & Compliance',
-      hoverText: 'Security',
-      description: 'Enterprise-grade protection'
-    },
-    { 
-      icon: Database, 
-      label: 'Data Processing',
-      hoverText: 'Data',
-      description: 'Real-time data analysis'
+      hoverText: 'Calls'
     }
   ];
 
@@ -92,87 +68,93 @@ const AIAutomation = () => {
   ];
 
   return (
-    <section id="ai-automation" className={`${styles.background.primary} py-20 overflow-hidden`}>
+    <section id="ai-automation" className={`${styles.background.primary} py-20`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
-        <div className="text-center mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className={`text-4xl md:text-5xl font-bold ${styles.text.primary} mb-4`}
-          >
-            Your AI Operations. One Platform.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className={`text-xl md:text-2xl ${styles.text.secondary}`}
-          >
-            With intelligent automation at its core.
-          </motion.p>
+        <div className="pt-16 pb-12">
+          <div className="max-w-7xl mx-auto px-6 text-center">
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1 }}
+              className={`text-5xl md:text-6xl font-bold ${styles.text.primary} mb-4 transition-all duration-1000 ${
+                isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              Your AI operations. One platform.
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className={`text-2xl md:text-3xl ${styles.text.secondary} transition-all duration-1000 delay-200 ${
+                isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+            >
+              With AI-powered automation at its core.
+            </motion.p>
+          </div>
         </div>
 
         {/* Main Platform Visualization */}
-        <div className="flex items-center justify-center mb-20">
-          <div className="w-full max-w-6xl mx-auto">
-            <motion.div
+        <div className="flex-1 flex items-center justify-center px-6 mb-20">
+          <div className="w-full max-w-7xl mx-auto">
+            <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3 }}
-              className={`relative ${theme === 'dark' ? 'bg-gradient-to-br from-gray-900 via-purple-900/30 to-gray-900' : 'bg-gradient-to-br from-white via-purple-50/50 to-white'} rounded-3xl p-8 md:p-16 ${styles.glow.primary}`}
-              style={{ minHeight: '500px' }}
+              className={`relative ${
+                theme === 'dark' 
+                  ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+                  : 'bg-gradient-to-br from-white via-purple-50/30 to-white'
+              } rounded-3xl p-16 transition-all duration-1000 delay-300 ${
+                isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+              } ${styles.glow.primary}`}
+              style={{ minHeight: '400px' }}
             >
               {/* Grid Background */}
               <div className="absolute inset-0 rounded-3xl overflow-hidden">
                 <div className="absolute inset-0 opacity-20">
                   <svg className="w-full h-full">
                     <defs>
-                      <pattern id="ai-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                      <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
                         <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#8B5CF6" strokeWidth="1" opacity="0.3"/>
                       </pattern>
                     </defs>
-                    <rect width="100%" height="100%" fill="url(#ai-grid)" />
+                    <rect width="100%" height="100%" fill="url(#grid)" />
                   </svg>
                 </div>
               </div>
 
               {/* Central AI Core */}
               <div className="relative flex flex-col items-center">
-                <motion.div
+                <motion.div 
                   initial={{ opacity: 0, scale: 0.5, rotate: 180 }}
                   whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.5 }}
-                  className="w-32 h-32 md:w-44 md:h-20 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center shadow-2xl mb-12 md:mb-16"
+                  className="w-44 h-20 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center shadow-2xl mb-16"
                 >
-                  <div className="flex items-center gap-2">
-                    <Brain className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    <span className="text-white text-lg md:text-2xl font-bold">AI Core</span>
-                  </div>
+                  <Brain className="w-6 h-6 text-white mr-2" />
+                  <span className="text-white text-2xl font-bold">AI Core</span>
                 </motion.div>
 
-                {/* Connecting Lines - Hidden on mobile */}
+                {/* Connecting Lines */}
                 <svg 
-                  className="absolute top-16 md:top-20 left-1/2 transform -translate-x-1/2 pointer-events-none hidden md:block"
-                  width="800" 
-                  height="220"
-                  viewBox="0 0 800 220"
+                  className="absolute top-20 left-1/2 transform -translate-x-1/2 pointer-events-none"
+                  width="600" 
+                  height="180"
+                  viewBox="0 0 600 180"
                 >
                   {aiServices.map((_, index) => {
-                    const startX = 400; // Center
+                    const startX = 300; // Center of the 600px width
                     const startY = 0;
-                    const cols = 3;
-                    const rows = Math.ceil(aiServices.length / cols);
-                    const row = Math.floor(index / cols);
-                    const col = index % cols;
-                    const endX = 100 + (col * 300); // Spaced across width
-                    const endY = 180 + (row * 40); // Multiple rows
-                    const controlY = 100;
+                    const endX = 50 + (index * 100); // Evenly spaced across 600px width
+                    const endY = 160;
+                    const controlY = 80;
                     
                     return (
                       <motion.path
@@ -195,43 +177,36 @@ const AIAutomation = () => {
                 </svg>
 
                 {/* Service Boxes */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mt-20 md:mt-32 w-full max-w-4xl">
+                <div className="flex justify-center space-x-4 mt-28">
                   {aiServices.map((service, index) => {
                     const gradients = [
-                      'from-violet-600 to-violet-500',
-                      'from-violet-500 to-purple-500', 
+                      'from-violet-700 to-violet-600',
+                      'from-violet-600 to-violet-500', 
+                      'from-violet-500 to-purple-500',
                       'from-purple-500 to-fuchsia-500',
                       'from-fuchsia-500 to-pink-500',
-                      'from-pink-500 to-rose-500',
-                      'from-rose-500 to-red-500',
-                      'from-red-500 to-orange-500',
-                      'from-orange-500 to-amber-500',
-                      'from-amber-500 to-yellow-500'
+                      'from-pink-500 to-rose-500'
                     ];
 
                     return (
                       <motion.div
                         key={index}
-                        initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                        initial={{ opacity: 0, y: 20, scale: 0.75 }}
                         whileInView={{ opacity: 1, y: 0, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ 
-                          duration: 0.6, 
+                        transition={{
+                          duration: 1,
                           delay: 0.8 + index * 0.1,
-                          ease: "easeOut"
                         }}
-                        whileHover={{ scale: 1.05, y: -5 }}
-                        className={`group relative w-full h-20 md:w-24 md:h-24 bg-gradient-to-br ${gradients[index % gradients.length]} rounded-xl md:rounded-2xl border-2 ${theme === 'dark' ? 'border-gray-600' : 'border-gray-300'} flex flex-col items-center justify-center shadow-xl cursor-pointer overflow-hidden`}
+                        whileHover={{ scale: 1.1, y: -5 }}
+                        className={`group w-24 h-24 bg-gradient-to-br ${gradients[index]} rounded-2xl border-4 ${
+                          theme === 'dark' ? 'border-gray-600' : 'border-gray-300'
+                        } flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer relative`}
                       >
-                        <service.icon className="w-6 h-6 md:w-8 md:h-8 text-white transition-all duration-300 group-hover:opacity-0 group-hover:scale-75" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-xs md:text-sm font-semibold transition-all duration-300 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100">
+                        <service.icon className="w-8 h-8 text-white transition-all duration-300 group-hover:opacity-0 group-hover:scale-75" />
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold transition-all duration-300 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100">
                           {service.hoverText}
                         </span>
-                        
-                        {/* Tooltip */}
-                        <div className={`absolute -top-12 left-1/2 transform -translate-x-1/2 ${styles.background.card} px-3 py-1 rounded-lg text-xs ${styles.text.primary} opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap z-10 hidden md:block`}>
-                          {service.description}
-                        </div>
                       </motion.div>
                     );
                   })}
