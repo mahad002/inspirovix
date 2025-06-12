@@ -93,24 +93,34 @@ const AIAutomation = () => {
                   <span className="text-white text-3xl font-bold italic">Inspirovix</span>
                 </motion.div>
 
-                {/* Connecting Lines */}
+                {/* Connecting Lines - Fixed positioning */}
                 <svg 
                   className="absolute top-24 left-1/2 transform -translate-x-1/2 pointer-events-none"
-                  width="800" 
-                  height="220"
-                  viewBox="0 0 800 220"
+                  width="100%" 
+                  height="240"
+                  viewBox="0 0 1000 240"
+                  style={{ maxWidth: '1000px' }}
                 >
                   {features.map((_, index) => {
-                    const startX = 400; // Center of the 800px width
-                    const startY = 0;
-                    const endX = 100 + (index * 150); // More spacing for larger boxes
-                    const endY = 200;
-                    const controlY = 100;
+                    // Calculate exact positions
+                    const centerX = 500; // Center of viewBox
+                    const centerY = 0;   // Top of the lines (bottom of Inspirovix box)
+                    
+                    // Calculate service box positions
+                    const totalBoxes = features.length;
+                    const boxSpacing = 180; // Space between box centers
+                    const totalWidth = (totalBoxes - 1) * boxSpacing;
+                    const startX = centerX - (totalWidth / 2);
+                    const boxCenterX = startX + (index * boxSpacing);
+                    const boxCenterY = 220; // Bottom of the lines (center of service boxes)
+                    
+                    // Control point for smooth curve
+                    const controlY = 110;
                     
                     return (
                       <motion.path
                         key={index}
-                        d={`M ${startX} ${startY} Q ${startX} ${controlY} ${endX} ${endY}`}
+                        d={`M ${centerX} ${centerY} Q ${centerX} ${controlY} ${boxCenterX} ${boxCenterY}`}
                         stroke="#8B5CF6"
                         strokeWidth="3"
                         fill="none"
@@ -127,43 +137,45 @@ const AIAutomation = () => {
                   })}
                 </svg>
 
-                {/* Service Boxes - Larger with Text */}
-                <div className="flex justify-center space-x-6 mt-32">
-                  {features.map((feature, index) => {
-                    const gradients = [
-                      'from-violet-600 to-violet-700',
-                      'from-purple-600 to-purple-700', 
-                      'from-fuchsia-600 to-fuchsia-700',
-                      'from-pink-600 to-pink-700'
-                    ];
+                {/* Service Boxes - Positioned to match line endpoints */}
+                <div className="flex justify-center items-center mt-32 w-full max-w-4xl mx-auto">
+                  <div className="grid grid-cols-4 gap-8 w-full justify-items-center">
+                    {features.map((feature, index) => {
+                      const gradients = [
+                        'from-violet-600 to-violet-700',
+                        'from-purple-600 to-purple-700', 
+                        'from-fuchsia-600 to-fuchsia-700',
+                        'from-pink-600 to-pink-700'
+                      ];
 
-                    return (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20, scale: 0.75 }}
-                        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          duration: 1,
-                          delay: 0.8 + index * 0.1,
-                        }}
-                        whileHover={{ scale: 1.05, y: -8 }}
-                        className={`group w-36 h-36 bg-gradient-to-br ${gradients[index]} rounded-2xl border-2 border-violet-400/30 flex flex-col items-center justify-center shadow-xl transition-all duration-300 cursor-pointer relative hover:shadow-2xl hover:border-violet-300/50 p-4`}
-                      >
-                        <feature.icon className="w-10 h-10 text-white mb-2 transition-all duration-300 group-hover:scale-110" />
-                        <span className="text-white text-sm font-semibold text-center leading-tight">
-                          {feature.title}
-                        </span>
-                        
-                        {/* Tooltip on hover */}
-                        <div className="absolute -bottom-16 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-lg rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none min-w-[200px] z-10">
-                          <p className="text-white text-xs text-center">
-                            {feature.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20, scale: 0.75 }}
+                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{
+                            duration: 1,
+                            delay: 0.8 + index * 0.1,
+                          }}
+                          whileHover={{ scale: 1.05, y: -8 }}
+                          className={`group w-36 h-36 bg-gradient-to-br ${gradients[index]} rounded-2xl border-2 border-violet-400/30 flex flex-col items-center justify-center shadow-xl transition-all duration-300 cursor-pointer relative hover:shadow-2xl hover:border-violet-300/50 p-4`}
+                        >
+                          <feature.icon className="w-10 h-10 text-white mb-2 transition-all duration-300 group-hover:scale-110" />
+                          <span className="text-white text-sm font-semibold text-center leading-tight">
+                            {feature.title}
+                          </span>
+                          
+                          {/* Tooltip on hover */}
+                          <div className="absolute -bottom-20 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-lg rounded-lg p-3 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none min-w-[200px] z-10">
+                            <p className="text-white text-xs text-center">
+                              {feature.description}
+                            </p>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </motion.div>
