@@ -20,32 +20,38 @@ const AIAutomation = () => {
     { 
       icon: Bot, 
       label: 'AI Voice Agents',
-      hoverText: 'Voice AI'
+      hoverText: 'Voice AI',
+      color: theme === 'dark' ? 'from-blue-600 to-blue-700' : 'from-blue-500 to-blue-600'
     },
     { 
       icon: MessageSquare, 
       label: 'Smart Chat Bots',
-      hoverText: 'Chat AI'
+      hoverText: 'Chat AI',
+      color: theme === 'dark' ? 'from-indigo-600 to-indigo-700' : 'from-indigo-500 to-indigo-600'
     },
     { 
       icon: Workflow, 
       label: 'Process Automation',
-      hoverText: 'Workflow'
+      hoverText: 'Workflow',
+      color: theme === 'dark' ? 'from-purple-600 to-purple-700' : 'from-purple-500 to-purple-600'
     },
     { 
       icon: Brain, 
       label: 'Predictive Analytics',
-      hoverText: 'Analytics'
+      hoverText: 'Analytics',
+      color: theme === 'dark' ? 'from-violet-600 to-violet-700' : 'from-violet-500 to-violet-600'
     },
     { 
       icon: Mic, 
       label: 'Speech Recognition',
-      hoverText: 'Speech'
+      hoverText: 'Speech',
+      color: theme === 'dark' ? 'from-fuchsia-600 to-fuchsia-700' : 'from-fuchsia-500 to-fuchsia-600'
     },
     { 
       icon: Phone, 
       label: 'Call Automation',
-      hoverText: 'Calls'
+      hoverText: 'Calls',
+      color: theme === 'dark' ? 'from-pink-600 to-pink-700' : 'from-pink-500 to-pink-600'
     }
   ];
 
@@ -108,20 +114,26 @@ const AIAutomation = () => {
               transition={{ duration: 1, delay: 0.3 }}
               className={`relative ${
                 theme === 'dark' 
-                  ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
-                  : 'bg-gradient-to-br from-white via-purple-50/30 to-white'
+                  ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50' 
+                  : 'bg-gradient-to-br from-white via-slate-50 to-white border border-slate-200/50'
               } rounded-3xl p-16 transition-all duration-1000 delay-300 ${
                 isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-              } ${styles.glow.primary}`}
+              } shadow-2xl`}
               style={{ minHeight: '400px' }}
             >
               {/* Grid Background */}
               <div className="absolute inset-0 rounded-3xl overflow-hidden">
-                <div className="absolute inset-0 opacity-20">
+                <div className="absolute inset-0 opacity-10">
                   <svg className="w-full h-full">
                     <defs>
                       <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#8B5CF6" strokeWidth="1" opacity="0.3"/>
+                        <path 
+                          d="M 40 0 L 0 0 0 40" 
+                          fill="none" 
+                          stroke={theme === 'dark' ? '#3B82F6' : '#6366F1'} 
+                          strokeWidth="1" 
+                          opacity="0.3"
+                        />
                       </pattern>
                     </defs>
                     <rect width="100%" height="100%" fill="url(#grid)" />
@@ -136,7 +148,13 @@ const AIAutomation = () => {
                   whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: 0.5 }}
-                  className="w-44 h-20 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center shadow-2xl mb-16"
+                  className={`w-44 h-20 ${
+                    theme === 'dark' 
+                      ? 'bg-gradient-to-br from-blue-600 to-indigo-700' 
+                      : 'bg-gradient-to-br from-blue-500 to-indigo-600'
+                  } rounded-2xl flex items-center justify-center shadow-2xl mb-16 border ${
+                    theme === 'dark' ? 'border-blue-500/30' : 'border-blue-400/30'
+                  }`}
                 >
                   <Brain className="w-6 h-6 text-white mr-2" />
                   <span className="text-white text-2xl font-bold">AI Core</span>
@@ -150,9 +168,9 @@ const AIAutomation = () => {
                   viewBox="0 0 600 180"
                 >
                   {aiServices.map((_, index) => {
-                    const startX = 300; // Center of the 600px width
+                    const startX = 300;
                     const startY = 0;
-                    const endX = 50 + (index * 100); // Evenly spaced across 600px width
+                    const endX = 50 + (index * 100);
                     const endY = 160;
                     const controlY = 80;
                     
@@ -160,11 +178,11 @@ const AIAutomation = () => {
                       <motion.path
                         key={index}
                         d={`M ${startX} ${startY} Q ${startX} ${controlY} ${endX} ${endY}`}
-                        stroke="#8B5CF6"
+                        stroke={theme === 'dark' ? '#6366F1' : '#4F46E5'}
                         strokeWidth="2"
                         fill="none"
                         initial={{ pathLength: 0, opacity: 0 }}
-                        whileInView={{ pathLength: 1, opacity: 0.6 }}
+                        whileInView={{ pathLength: 1, opacity: 0.7 }}
                         viewport={{ once: true }}
                         transition={{ 
                           duration: 0.8, 
@@ -179,15 +197,6 @@ const AIAutomation = () => {
                 {/* Service Boxes */}
                 <div className="flex justify-center space-x-4 mt-28">
                   {aiServices.map((service, index) => {
-                    const gradients = [
-                      'from-violet-700 to-violet-600',
-                      'from-violet-600 to-violet-500', 
-                      'from-violet-500 to-purple-500',
-                      'from-purple-500 to-fuchsia-500',
-                      'from-fuchsia-500 to-pink-500',
-                      'from-pink-500 to-rose-500'
-                    ];
-
                     return (
                       <motion.div
                         key={index}
@@ -199,9 +208,9 @@ const AIAutomation = () => {
                           delay: 0.8 + index * 0.1,
                         }}
                         whileHover={{ scale: 1.1, y: -5 }}
-                        className={`group w-24 h-24 bg-gradient-to-br ${gradients[index]} rounded-2xl border-4 ${
-                          theme === 'dark' ? 'border-gray-600' : 'border-gray-300'
-                        } flex items-center justify-center shadow-2xl transition-all duration-300 cursor-pointer relative`}
+                        className={`group w-24 h-24 bg-gradient-to-br ${service.color} rounded-2xl border-2 ${
+                          theme === 'dark' ? 'border-slate-600/50' : 'border-slate-300/50'
+                        } flex items-center justify-center shadow-xl transition-all duration-300 cursor-pointer relative hover:shadow-2xl`}
                       >
                         <service.icon className="w-8 h-8 text-white transition-all duration-300 group-hover:opacity-0 group-hover:scale-75" />
                         <span className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold transition-all duration-300 opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100">
@@ -237,7 +246,11 @@ const AIAutomation = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary}`}
               >
-                <div className={`text-4xl font-bold bg-gradient-to-r from-violet-400 to-fuchsia-500 text-transparent bg-clip-text mb-2`}>
+                <div className={`text-4xl font-bold ${
+                  theme === 'dark' 
+                    ? 'bg-gradient-to-r from-blue-400 to-indigo-500' 
+                    : 'bg-gradient-to-r from-blue-600 to-indigo-600'
+                } text-transparent bg-clip-text mb-2`}>
                   {benefit.value}
                 </div>
                 <h4 className={`text-xl font-semibold ${styles.text.primary} mb-2`}>
