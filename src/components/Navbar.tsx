@@ -57,7 +57,7 @@ const Navbar = React.memo(() => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <img src="https://media.licdn.com/dms/image/v2/D4E0BAQFazebQXPuv6Q/company-logo_100_100/company-logo_100_100/0/1737872641143/inspirovix_logo?e=1749686400&v=beta&t=NpjZSNlmt7D47F743157vRGMSu1MVnksUQ1coENlUCc" alt="Inspirovix Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-xl" />
+              <img src="https://inspirovix.s3.us-east-2.amazonaws.com/Inspirovix+-+11.png" alt="Inspirovix Logo" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-xl" />
               <span className={`text-base sm:text-lg font-bold ${styles.text.primary}`}>Inspirovix</span>
             </motion.a>
 
