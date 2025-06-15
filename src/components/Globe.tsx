@@ -1,215 +1,125 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { motion } from 'framer-motion';
 import { useTheme } from '../theme/ThemeContext';
-import { globeConfig } from '../data/globe';
 
 const Globe: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
-  const isMobile = window.innerWidth < 768;
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const animationRef = useRef<number | null>(null);
+
+  const isMobile = useMemo(() => window.innerWidth < 768, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // Cleanup previous scene
+    if (sceneRef.current && rendererRef.current) {
+      sceneRef.current.clear();
+      rendererRef.current.dispose();
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    }
+
     // Scene setup
     const scene = new THREE.Scene();
+    sceneRef.current = scene;
     
-    // Fixed camera setup for mobile
+    // Optimized camera setup
     const aspectRatio = window.innerWidth / window.innerHeight;
-    const fov = isMobile ? 60 : globeConfig.camera.fov;
+    const fov = isMobile ? 50 : 45;
     
-    const camera = new THREE.PerspectiveCamera(
-      fov,
-      aspectRatio,
-      globeConfig.camera.near,
-      globeConfig.camera.far
-    );
-    
-    // Fixed camera position for mobile
-    camera.position.z = isMobile ? 180 : globeConfig.camera.position;
+    const camera = new THREE.PerspectiveCamera(fov, aspectRatio, 0.1, 1000);
+    camera.position.z = isMobile ? 150 : 200;
 
-    // Renderer setup with responsive size
+    // Optimized renderer setup
     const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+      antialias: false, // Disable for better performance
       alpha: true,
       powerPreference: "high-performance"
     });
+    rendererRef.current = renderer;
     
     const updateSize = () => {
       const width = containerRef.current?.clientWidth || window.innerWidth;
-      const height = isMobile ? window.innerWidth : (containerRef.current?.clientHeight || window.innerHeight);
+      const height = isMobile ? 300 : (containerRef.current?.clientHeight || 400);
       renderer.setSize(width, height);
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
     };
     
     updateSize();
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Limit pixel ratio for performance
     containerRef.current.appendChild(renderer.domElement);
 
-    // Controls with adjusted settings for mobile
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.rotateSpeed = isMobile ? 0.5 : globeConfig.controls.rotateSpeed;
-    controls.enableZoom = !isMobile;
-    controls.enablePan = !isMobile;
-    controls.minDistance = isMobile ? 180 : globeConfig.controls.minDistance;
-    controls.maxDistance = isMobile ? 180 : globeConfig.controls.maxDistance;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = isMobile ? 0.8 : globeConfig.controls.autoRotateSpeed;
-
-    // Create globe with adjusted size for mobile
+    // Simplified globe geometry
     const geometry = new THREE.SphereGeometry(
-      isMobile ? 60 : globeConfig.globe.radius,
-      globeConfig.globe.segments,
-      globeConfig.globe.segments
+      isMobile ? 50 : 60,
+      32, // Reduced segments for better performance
+      32
     );
 
-    // Load textures based on theme
-    const textureLoader = new THREE.TextureLoader();
-    const earthTexture = textureLoader.load(
-      theme === 'dark' 
-        ? globeConfig.textures.dark.earth
-        : globeConfig.textures.light.earth,
-      () => {
-        earthTexture.colorSpace = THREE.SRGBColorSpace;
-      }
-    );
-
-    const bumpMap = textureLoader.load(
-      theme === 'dark'
-        ? globeConfig.textures.dark.bump
-        : globeConfig.textures.light.bump
-    );
-    
-    const specularMap = textureLoader.load(
-      theme === 'dark'
-        ? globeConfig.textures.dark.specular
-        : globeConfig.textures.light.specular
-    );
-
-    // Material with improved lighting
-    const material = new THREE.MeshStandardMaterial({
-      map: earthTexture,
-      normalMap: bumpMap,
-      normalScale: new THREE.Vector2(0.5, 0.5),
-      roughnessMap: specularMap,
-      roughness: theme === 'dark' ? 0.5 : 0.7,
-      metalness: theme === 'dark' ? 0.1 : 0.2,
+    // Simplified material
+    const material = new THREE.MeshBasicMaterial({
+      color: theme === 'dark' ? 0x4c1d95 : 0x7c3aed,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.6
     });
 
     const globe = new THREE.Mesh(geometry, material);
     scene.add(globe);
 
-    // Add atmosphere with adjusted size
-    const atmosphereGeometry = new THREE.SphereGeometry(
-      (isMobile ? 60 : globeConfig.globe.radius) * 1.1,
-      globeConfig.globe.segments,
-      globeConfig.globe.segments
-    );
-    const atmosphereMaterial = new THREE.ShaderMaterial({
-      vertexShader: `
-        varying vec3 vNormal;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        varying vec3 vNormal;
-        void main() {
-          float intensity = pow(0.6 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 1.5);
-          gl_FragColor = vec4(${theme === 'dark' ? '0.3, 0.6, 1.0, 0.5' : '0.4, 0.7, 1.0, 0.3'}) * intensity;
-        }
-      `,
-      blending: THREE.AdditiveBlending,
-      side: THREE.BackSide,
-      transparent: true
-    });
-
-    const atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-    scene.add(atmosphere);
-
-    // Enhanced lighting setup
-    const ambientLight = new THREE.AmbientLight(
-      theme === 'dark' ? 0xffffff : 0xcccccc,
-      theme === 'dark' ? 1.5 : 2
-    );
+    // Simplified lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     scene.add(ambientLight);
 
-    globeConfig.lights.forEach(({ position, intensity }) => {
-      const light = new THREE.DirectionalLight(
-        theme === 'dark' ? 0xffffff : 0xdddddd,
-        theme === 'dark' ? intensity : intensity * 1.2
-      );
-      light.position.set(...position);
-      scene.add(light);
-    });
+    // Optimized animation loop
+    let lastTime = 0;
+    const targetFPS = 30; // Limit FPS for better performance
+    const frameInterval = 1000 / targetFPS;
 
-    const hemisphereLight = new THREE.HemisphereLight(
-      theme === 'dark' ? 0xffffff : 0xdddddd,
-      theme === 'dark' ? 0x444444 : 0x666666,
-      theme === 'dark' ? 0.5 : 0.7
-    );
-    scene.add(hemisphereLight);
-
-    // Stars background (only in dark theme)
-    if (theme === 'dark') {
-      const starGeometry = new THREE.BufferGeometry();
-      const starMaterial = new THREE.PointsMaterial({
-        color: 0xffffff,
-        size: 0.5,
-        transparent: true
-      });
-
-      const starVertices = [];
-      for (let i = 0; i < 10000; i++) {
-        const x = (Math.random() - 0.5) * 2000;
-        const y = (Math.random() - 0.5) * 2000;
-        const z = (Math.random() - 0.5) * 2000;
-        starVertices.push(x, y, z);
+    const animate = (currentTime: number) => {
+      animationRef.current = requestAnimationFrame(animate);
+      
+      if (currentTime - lastTime >= frameInterval) {
+        globe.rotation.y += 0.005;
+        globe.rotation.x += 0.002;
+        renderer.render(scene, camera);
+        lastTime = currentTime;
       }
+    };
 
-      starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-      const stars = new THREE.Points(starGeometry, starMaterial);
-      scene.add(stars);
-    }
+    animate(0);
 
-    // Handle window resize
+    // Handle resize
     const handleResize = () => {
       updateSize();
-      controls.minDistance = window.innerWidth < 768 ? 150 : globeConfig.controls.minDistance;
-      controls.maxDistance = window.innerWidth < 768 ? 300 : globeConfig.controls.maxDistance;
-      globe.scale.setScalar(window.innerWidth < 768 ? 0.8 : 1);
     };
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    };
-
-    animate();
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
       if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
       scene.clear();
       renderer.dispose();
     };
-  }, [theme]); // Add theme as dependency to recreate globe when theme changes
+  }, [theme, isMobile]);
 
   return (
-    <div className="relative w-full h-[50vh] md:h-screen">
+    <div className="relative w-full h-[40vh] md:h-[60vh]">
       <div 
         ref={containerRef} 
-        className={`absolute inset-0 ${isMobile ? 'h-[400px]' : ''}`}
+        className="absolute inset-0"
         style={{ zIndex: 0 }}
       />
       
@@ -220,14 +130,14 @@ const Globe: React.FC = () => {
         className="absolute bottom-4 md:bottom-10 left-1/2 transform -translate-x-1/2 text-center px-4"
         style={{ zIndex: 1 }}
       >
-        <h2 className="text-xl md:text-4xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+        <h2 className="text-xl md:text-3xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
           Connecting Dreams Globally
         </h2>
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className={`text-sm md:text-xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
+          className={`text-sm md:text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} max-w-2xl`}
         >
           Where innovation meets possibility, and dreams become reality
         </motion.p>
@@ -236,4 +146,4 @@ const Globe: React.FC = () => {
   );
 };
 
-export default Globe;
+export default React.memo(Globe);

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion } from 'framer-motion';
 
 interface TypewriterEffectProps {
   phrases: string[];
@@ -10,17 +10,17 @@ interface TypewriterEffectProps {
 
 const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   phrases,
-  typingSpeed = 150,
-  deletingSpeed = 100,
-  pauseDuration = 2000,
+  typingSpeed = 100,
+  deletingSpeed = 50,
+  pauseDuration = 1500,
 }) => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const currentPhrase = useMemo(() => phrases[currentPhraseIndex], [phrases, currentPhraseIndex]);
+
   useEffect(() => {
-    const currentPhrase = phrases[currentPhraseIndex];
-    
     const timer = setTimeout(() => {
       if (isDeleting) {
         setCurrentText(prev => prev.slice(0, -1));
@@ -37,31 +37,25 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
     }, isDeleting ? deletingSpeed : typingSpeed);
 
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, currentPhraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]);
+  }, [currentText, isDeleting, currentPhrase, phrases.length, typingSpeed, deletingSpeed, pauseDuration]);
 
   return (
-    <AnimatePresence mode="wait">
-      <div className="relative h-20 flex items-center justify-center overflow-hidden">
-        <motion.div
-          key={currentText}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="flex items-center gap-2"
-        >
-          <span className="text-2xl bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text font-bold">
-            {currentText}
-          </span>
-          <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
-            className="inline-block w-0.5 h-8 bg-purple-500"
-          />
-        </motion.div>
-      </div>
-    </AnimatePresence>
+    <div className="relative h-16 flex items-center justify-center">
+      <motion.div
+        key={currentText}
+        className="flex items-center gap-2"
+      >
+        <span className="text-lg sm:text-xl md:text-2xl bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text font-bold">
+          {currentText}
+        </span>
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+          className="inline-block w-0.5 h-6 sm:h-7 md:h-8 bg-purple-500"
+        />
+      </motion.div>
+    </div>
   );
 };
 
-export default TypewriterEffect;
+export default React.memo(TypewriterEffect);
