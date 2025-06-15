@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Sparkles } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
@@ -9,29 +9,9 @@ import Globe from '../Globe';
 import TypewriterEffect from '../TypewriterEffect';
 import { heroTypingPhrases } from '../../data/phrases';
 
-// Lazy load heavy components
-const Features = lazy(() => import('../Features'));
-const WhyChooseUs = lazy(() => import('../WhyChooseUs'));
-const Services = lazy(() => import('../Services'));
-const CallToAction = lazy(() => import('../CallToAction'));
-
-// Loading fallback component
-const LoadingFallback = React.memo(() => (
-  <div className="w-full h-40 flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-  </div>
-));
-
-LoadingFallback.displayName = 'LoadingFallback';
-
 const Home = React.memo(() => {
   const { theme } = useTheme();
   const styles = useMemo(() => themes[theme], [theme]);
-
-  const heroContent = useMemo(() => ({
-    title: "Revolutionizing Business Operations with Inspirovix",
-    description: "Streamline your business workflows and enhance customer experience through AI-powered automation."
-  }), []);
 
   return (
     <section id="home" className={`relative ${styles.background.gradient}`}>
@@ -45,7 +25,7 @@ const Home = React.memo(() => {
           transition={{ duration: 0.8 }}
         >
           <h1 className={`text-4xl sm:text-5xl md:text-7xl font-bold ${styles.text.primary} mb-4 md:mb-6 font-display leading-tight`}>
-            {heroContent.title.split(' ').slice(0, -2).join(' ')}{' '}
+            Revolutionizing Business Operations with{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               Inspirovix
             </span>
@@ -61,7 +41,7 @@ const Home = React.memo(() => {
           </div>
 
           <p className={`text-base sm:text-lg md:text-xl ${styles.text.secondary} mb-6 md:mb-8 max-w-3xl mx-auto px-4`}>
-            {heroContent.description}
+            Streamline your business workflows and enhance customer experience through AI-powered automation.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 px-4">
@@ -84,25 +64,8 @@ const Home = React.memo(() => {
         </motion.div>
       </div>
 
-      {/* Globe Section - UNTOUCHED */}
+      {/* Globe Section - COMPLETELY UNTOUCHED */}
       <Globe />
-
-      {/* Lazy loaded sections with suspense */}
-      <Suspense fallback={<LoadingFallback />}>
-        <Features />
-      </Suspense>
-      
-      <Suspense fallback={<LoadingFallback />}>
-        <WhyChooseUs />
-      </Suspense>
-      
-      <Suspense fallback={<LoadingFallback />}>
-        <Services />
-      </Suspense>
-      
-      <Suspense fallback={<LoadingFallback />}>
-        <CallToAction />
-      </Suspense>
 
       {/* Animated gradient orbs - Optimized with will-change */}
       <div 
