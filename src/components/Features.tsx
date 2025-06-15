@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, ShoppingCart, Headphones, Calendar } from 'lucide-react';
 import FeatureCard from './FeatureCard';
+import { useTheme } from '../theme/ThemeContext';
+import { themes } from '../theme/themes';
 
-const Features = () => {
-  const features = [
+const Features = React.memo(() => {
+  const { theme } = useTheme();
+  const styles = useMemo(() => themes[theme], [theme]);
+
+  const features = useMemo(() => [
     {
       icon: <MessageSquare className="w-6 h-6 text-white" />,
       title: "AI-Powered Customer Interaction",
@@ -25,10 +30,10 @@ const Features = () => {
       title: "Calendar Management",
       description: "Seamless integration with Google Calendar and communication tools."
     }
-  ];
+  ], []);
 
   return (
-    <div className="bg-navy-900 py-20">
+    <div className={`${styles.background.primary} py-20`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0 }}
@@ -37,10 +42,10 @@ const Features = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold text-white mb-4">
+          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
             How Inspirovex Automates Business Workflows
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <p className={`${styles.text.secondary} max-w-2xl mx-auto`}>
             Our AI-powered solutions streamline your business operations
           </p>
         </motion.div>
@@ -59,6 +64,8 @@ const Features = () => {
       </div>
     </div>
   );
-};
+});
+
+Features.displayName = 'Features';
 
 export default Features;

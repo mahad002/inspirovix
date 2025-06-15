@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TypewriterEffectProps {
@@ -8,7 +8,7 @@ interface TypewriterEffectProps {
   pauseDuration?: number;
 }
 
-const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
+const TypewriterEffect = React.memo<TypewriterEffectProps>(({
   phrases,
   typingSpeed = 150,
   deletingSpeed = 100,
@@ -18,26 +18,32 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
-    const currentPhrase = phrases[currentPhraseIndex];
-    
-    const timer = setTimeout(() => {
-      if (isDeleting) {
-        setCurrentText(prev => prev.slice(0, -1));
-        if (currentText === '') {
-          setIsDeleting(false);
-          setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-        }
-      } else {
-        setCurrentText(currentPhrase.slice(0, currentText.length + 1));
-        if (currentText === currentPhrase) {
-          setTimeout(() => setIsDeleting(true), pauseDuration);
-        }
-      }
-    }, isDeleting ? deletingSpeed : typingSpeed);
+  const currentPhrase = useMemo(() => phrases[currentPhraseIndex], [phrases, currentPhraseIndex]);
 
+  const updateText = useCallback(() => {
+    if (isDeleting) {
+      setCurrentText(prev => prev.slice(0, -1));
+      if (currentText === '') {
+        setIsDeleting(false);
+        setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+      }
+    } else {
+      setCurrentText(currentPhrase.slice(0, currentText.length + 1));
+      if (currentText === currentPhrase) {
+        setTimeout(() => setIsDeleting(true), pauseDuration);
+      }
+    }
+  }, [currentText, isDeleting, currentPhrase, phrases.length, pauseDuration]);
+
+  useEffect(() => {
+    const timer = setTimeout(updateText, isDeleting ? deletingSpeed : typingSpeed);
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, currentPhraseIndex, phrases, typingSpeed, deletingSpeed, pauseDuration]);
+  }, [updateText, isDeleting, deletingSpeed, typingSpeed]);
+
+  const cursorVariants = useMemo(() => ({
+    animate: { opacity: [1, 0] },
+    transition: { duration: 0.5, repeat: Infinity, repeatType: "reverse" as const }
+  }), []);
 
   return (
     <AnimatePresence mode="wait">
@@ -54,14 +60,15 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({
             {currentText}
           </span>
           <motion.span
-            animate={{ opacity: [1, 0] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+            {...cursorVariants}
             className="inline-block w-0.5 h-8 bg-purple-500"
           />
         </motion.div>
       </div>
     </AnimatePresence>
   );
-};
+});
+
+TypewriterEffect.displayName = 'TypewriterEffect';
 
 export default TypewriterEffect;

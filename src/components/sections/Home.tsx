@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Sparkles } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
@@ -9,9 +9,29 @@ import Globe from '../Globe';
 import TypewriterEffect from '../TypewriterEffect';
 import { heroTypingPhrases } from '../../data/phrases';
 
-const Home = () => {
+// Lazy load heavy components
+const Features = lazy(() => import('../Features'));
+const WhyChooseUs = lazy(() => import('../WhyChooseUs'));
+const Services = lazy(() => import('../Services'));
+const CallToAction = lazy(() => import('../CallToAction'));
+
+// Loading fallback component
+const LoadingFallback = React.memo(() => (
+  <div className="w-full h-40 flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+));
+
+LoadingFallback.displayName = 'LoadingFallback';
+
+const Home = React.memo(() => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
+
+  const heroContent = useMemo(() => ({
+    title: "Revolutionizing Business Operations with Inspirovix",
+    description: "Streamline your business workflows and enhance customer experience through AI-powered automation."
+  }), []);
 
   return (
     <section id="home" className={`relative ${styles.background.gradient}`}>
@@ -25,7 +45,7 @@ const Home = () => {
           transition={{ duration: 0.8 }}
         >
           <h1 className={`text-4xl sm:text-5xl md:text-7xl font-bold ${styles.text.primary} mb-4 md:mb-6 font-display leading-tight`}>
-            Revolutionizing Business Operations with{' '}
+            {heroContent.title.split(' ').slice(0, -2).join(' ')}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               Inspirovix
             </span>
@@ -41,7 +61,7 @@ const Home = () => {
           </div>
 
           <p className={`text-base sm:text-lg md:text-xl ${styles.text.secondary} mb-6 md:mb-8 max-w-3xl mx-auto px-4`}>
-            Streamline your business workflows and enhance customer experience through AI-powered automation.
+            {heroContent.description}
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 px-4">
@@ -64,15 +84,43 @@ const Home = () => {
         </motion.div>
       </div>
 
-      {/* Globe Section */}
+      {/* Globe Section - UNTOUCHED */}
       <Globe />
 
-      {/* Animated gradient orbs */}
-      <div className={`absolute top-0 -left-4 w-72 h-72 ${theme === 'dark' ? 'bg-purple-500' : 'bg-purple-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob`} />
-      <div className={`absolute top-0 -right-4 w-72 h-72 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-yellow-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000`} />
-      <div className={`absolute -bottom-8 left-20 w-72 h-72 ${theme === 'dark' ? 'bg-pink-500' : 'bg-pink-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000`} />
+      {/* Lazy loaded sections with suspense */}
+      <Suspense fallback={<LoadingFallback />}>
+        <Features />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <WhyChooseUs />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <Services />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingFallback />}>
+        <CallToAction />
+      </Suspense>
+
+      {/* Animated gradient orbs - Optimized with will-change */}
+      <div 
+        className={`absolute top-0 -left-4 w-72 h-72 ${theme === 'dark' ? 'bg-purple-500' : 'bg-purple-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob`}
+        style={{ willChange: 'transform' }}
+      />
+      <div 
+        className={`absolute top-0 -right-4 w-72 h-72 ${theme === 'dark' ? 'bg-yellow-500' : 'bg-yellow-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000`}
+        style={{ willChange: 'transform' }}
+      />
+      <div 
+        className={`absolute -bottom-8 left-20 w-72 h-72 ${theme === 'dark' ? 'bg-pink-500' : 'bg-pink-400'} rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000`}
+        style={{ willChange: 'transform' }}
+      />
     </section>
   );
-};
+});
+
+Home.displayName = 'Home';
 
 export default Home;

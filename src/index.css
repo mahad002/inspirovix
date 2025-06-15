@@ -40,6 +40,20 @@
   p {
     @apply text-sm md:text-base;
   }
+
+  /* Performance optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* GPU acceleration for animations */
+  .animate-blob,
+  .custom-cursor,
+  .custom-cursor-dot {
+    will-change: transform;
+    transform: translateZ(0);
+  }
 }
 
 @layer utilities {
@@ -86,12 +100,7 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
-  .animation-delay-6000 {
-    animation-delay: 6s;
-  }
-  .cursor-glow {
-    cursor: none;
-  }
+  
   .animate-float {
     animation: float 6s ease-in-out infinite;
   }
@@ -101,14 +110,20 @@
   .animate-spin-slow {
     animation: spin 8s linear infinite;
   }
+
+  /* Performance optimized animations */
+  .gpu-accelerated {
+    will-change: transform;
+    transform: translateZ(0);
+  }
 }
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-20px) translateZ(0);
   }
 }
 
@@ -125,33 +140,34 @@
 
 @keyframes spin {
   from {
-    transform: rotate(0deg);
+    transform: rotate(0deg) translateZ(0);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(360deg) translateZ(0);
   }
 }
 
 @keyframes blob {
   0% {
-    transform: translate(0px, 0px) scale(1);
+    transform: translate(0px, 0px) scale(1) translateZ(0);
   }
   33% {
-    transform: translate(30px, -50px) scale(1.1);
+    transform: translate(30px, -50px) scale(1.1) translateZ(0);
   }
   66% {
-    transform: translate(-20px, 20px) scale(0.9);
+    transform: translate(-20px, 20px) scale(0.9) translateZ(0);
   }
   100% {
-    transform: translate(0px, 0px) scale(1);
+    transform: translate(0px, 0px) scale(1) translateZ(0);
   }
 }
 
 .animate-blob {
   animation: blob 7s infinite;
+  will-change: transform;
 }
 
-/* Custom Cursor */
+/* Custom Cursor - Optimized */
 .custom-cursor {
   width: 20px;
   height: 20px;
@@ -162,11 +178,12 @@
   pointer-events: none;
   z-index: 9999;
   transition: transform 0.2s ease;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
+  will-change: transform;
 }
 
 .custom-cursor.hover {
-  transform: translate(-50%, -50%) scale(1.5);
+  transform: translate(-50%, -50%) scale(1.5) translateZ(0);
   background: rgba(147, 51, 234, 0.2);
   border-color: rgb(168, 85, 247);
 }
@@ -180,10 +197,11 @@
   pointer-events: none;
   z-index: 9999;
   transition: transform 0.1s ease;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateZ(0);
+  will-change: transform;
 }
 
-/* Pyramid Styles */
+/* Pyramid Styles - Optimized */
 .pyramid-container {
   position: relative;
   padding: 2rem 0;
@@ -193,6 +211,7 @@
   @apply bg-white/5 backdrop-blur-lg rounded-lg p-6 mb-8 transform transition-all duration-300 hover:translate-x-2;
   position: relative;
   width: 100%;
+  will-change: transform;
 }
 
 .level-1 {
@@ -209,18 +228,34 @@
   margin-left: 15%;
 }
 
-/* 3D Transform Effects */
+/* 3D Transform Effects - Optimized */
 .pyramid-level::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
-  transform: perspective(1000px) rotateY(-10deg);
+  transform: perspective(1000px) rotateY(-10deg) translateZ(0);
   pointer-events: none;
   border-radius: 0.5rem;
+  will-change: transform;
 }
 
 .pyramid-level:hover {
   transform: perspective(1000px) rotateY(-5deg) translateZ(20px);
   box-shadow: 10px 10px 20px rgba(0,0,0,0.2);
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-spin-slow {
+    animation: none;
+  }
+  
+  .custom-cursor,
+  .custom-cursor-dot {
+    transition: none;
+  }
 }

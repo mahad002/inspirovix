@@ -1,45 +1,45 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, ShoppingCart, Bot, Calendar, Zap, Shield } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 
-const Services = () => {
+const Services = React.memo(() => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
 
-  const services = [
+  const services = useMemo(() => [
     {
-      icon: <MessageSquare className="w-6 h-6 text-white" />,
+      icon: MessageSquare,
       title: "AI-Powered Customer Interaction",
       description: "Advanced text-to-speech and speech-to-text models for seamless customer communication."
     },
     {
-      icon: <ShoppingCart className="w-6 h-6 text-white" />,
+      icon: ShoppingCart,
       title: "Smart Order Management",
       description: "Efficient order processing with automated confirmations and fraud detection."
     },
     {
-      icon: <Bot className="w-6 h-6 text-white" />,
+      icon: Bot,
       title: "Automated Support System",
       description: "24/7 AI-powered customer support with intelligent escalation."
     },
     {
-      icon: <Calendar className="w-6 h-6 text-white" />,
+      icon: Calendar,
       title: "Calendar Integration",
       description: "Seamless scheduling and meeting management across platforms."
     },
     {
-      icon: <Zap className="w-6 h-6 text-white" />,
+      icon: Zap,
       title: "Process Automation",
       description: "End-to-end automation of repetitive business tasks."
     },
     {
-      icon: <Shield className="w-6 h-6 text-white" />,
+      icon: Shield,
       title: "Security & Compliance",
       description: "Enterprise-grade security with regulatory compliance."
     }
-  ];
+  ], []);
 
   return (
     <section id="services" className={`${styles.background.primary} py-20`}>
@@ -58,26 +58,32 @@ const Services = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`${styles.background.card} rounded-xl p-6 ${styles.background.cardHover} transition-all duration-300 ${styles.glow.primary}`}
-            >
-              <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center mb-4">
-                {service.icon}
-              </div>
-              <h3 className={`text-xl font-semibold ${styles.text.primary} mb-2`}>{service.title}</h3>
-              <p className={styles.text.secondary}>{service.description}</p>
-            </motion.div>
-          ))}
+          {services.map((service, index) => {
+            const IconComponent = service.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${styles.background.card} rounded-xl p-6 ${styles.background.cardHover} transition-all duration-300 ${styles.glow.primary}`}
+                style={{ willChange: 'transform' }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center mb-4">
+                  <IconComponent className="w-6 h-6 text-white" />
+                </div>
+                <h3 className={`text-xl font-semibold ${styles.text.primary} mb-2`}>{service.title}</h3>
+                <p className={styles.text.secondary}>{service.description}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-};
+});
+
+Services.displayName = 'Services';
 
 export default Services;

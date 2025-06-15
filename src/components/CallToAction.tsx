@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Rocket } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 
-const CallToAction = () => {
+const CallToAction = React.memo(() => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
+
+  const backgroundImageStyle = useMemo(() => ({
+    backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80')"
+  }), []);
 
   return (
     <div className={`relative ${styles.background.primary} py-20 overflow-hidden`}>
       {/* Background rocket image */}
       <div 
         className={`absolute inset-0 bg-cover bg-center ${theme === 'dark' ? 'opacity-20' : 'opacity-10'}`}
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80')"
-        }}
+        style={backgroundImageStyle}
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -47,6 +49,8 @@ const CallToAction = () => {
       </div>
     </div>
   );
-};
+});
+
+CallToAction.displayName = 'CallToAction';
 
 export default CallToAction;

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Zap, Brain, Link, Scale } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 
-const WhyChooseUs = () => {
+const WhyChooseUs = React.memo(() => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
 
-  const reasons = [
+  const reasons = useMemo(() => [
     {
       icon: <Zap className="w-6 h-6 text-white" />,
       title: "End-to-End Automation",
@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
       title: "Scalability & Customization",
       description: "Solutions tailored for startups, SMEs, and enterprises."
     }
-  ];
+  ], []);
 
   return (
     <div className={`${styles.background.primary} py-20`}>
@@ -55,6 +55,7 @@ const WhyChooseUs = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
               className={`${styles.background.card} rounded-xl p-6 border-l-4 border-violet-500 ${styles.glow.primary}`}
+              style={{ willChange: 'transform' }}
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center">
@@ -69,6 +70,8 @@ const WhyChooseUs = () => {
       </div>
     </div>
   );
-};
+});
+
+WhyChooseUs.displayName = 'WhyChooseUs';
 
 export default WhyChooseUs;
