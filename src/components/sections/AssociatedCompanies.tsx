@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 
-// Optimized company data with smaller, optimized images
+// Lazy load the company data
 const companies = [
   {
     name: "MajorWerks",
@@ -61,6 +61,23 @@ const companies = [
   }
 ];
 
+type ThemeStyles = {
+  background: {
+    primary: string;
+    secondary: string;
+    card: string;
+    cardHover: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+    accent: string;
+  };
+  glow: {
+    primary: string;
+  };
+};
+
 // Memoized Company Card Component
 const CompanyCard = React.memo(({ 
   company, 
@@ -72,7 +89,7 @@ const CompanyCard = React.memo(({
   company: typeof companies[0], 
   index: number, 
   onHover: (hovering: boolean) => void,
-  styles: any,
+  styles: ThemeStyles,
   theme: string
 }) => {
   const handleMouseEnter = useCallback(() => onHover(true), [onHover]);
@@ -85,22 +102,22 @@ const CompanyCard = React.memo(({
       rel="noopener noreferrer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`${styles.background.card} rounded-xl p-6 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
+      className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
     >
       <motion.div
-        className={`relative w-32 h-20 mb-4 flex items-center justify-center ${
-          company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-3" :
-          company.name === "Sazgar" ? "bg-white rounded-lg p-3" : ""
+        className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
+          company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
+          company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
         }`}
         animate={{
-          y: [0, -8, 0],
+          y: [0, -10, 0],
         }}
         transition={{
           y: {
             repeat: Infinity,
-            duration: 2.5,
+            duration: 3,
             ease: "easeInOut",
-            delay: index * 0.15,
+            delay: index * 0.2,
           },
         }}
       >
@@ -108,11 +125,7 @@ const CompanyCard = React.memo(({
           src={company.logo}
           alt={`${company.name} logo`}
           loading="lazy"
-          className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-          }}
+          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
         />
       </motion.div>
       <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
@@ -132,6 +145,13 @@ const CompanyCard = React.memo(({
 
 CompanyCard.displayName = 'CompanyCard';
 
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="w-full h-40 flex items-center justify-center">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+  </div>
+);
+
 const AssociatedCompanies = () => {
   const { theme } = useTheme();
   const styles = useMemo(() => themes[theme], [theme]);
@@ -141,7 +161,7 @@ const AssociatedCompanies = () => {
     setIsHovering(hovering);
   }, []);
 
-  const scrollDuration = useMemo(() => isHovering ? 40 : 20, [isHovering]);
+  const scrollDuration = useMemo(() => isHovering ? 60 : 30, [isHovering]);
 
   const renderCompanies = useCallback((startIndex: number) => (
     companies.map((company, index) => (
@@ -175,23 +195,25 @@ const AssociatedCompanies = () => {
         </motion.div>
 
         <div className="relative w-full overflow-hidden">
-          <motion.div
-            className="flex space-x-6"
-            animate={{
-              x: [0, -1600],
-            }}
-            transition={{
-              x: {
-                repeat: Infinity,
-                repeatType: "loop",
-                duration: scrollDuration,
-                ease: "linear",
-              },
-            }}
-          >
-            {renderCompanies(0)}
-            {renderCompanies(1)}
-          </motion.div>
+          <Suspense fallback={<LoadingFallback />}>
+            <motion.div
+              className="flex space-x-8"
+              animate={{
+                x: [0, -2000],
+              }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: scrollDuration,
+                  ease: "linear",
+                },
+              }}
+            >
+              {renderCompanies(0)}
+              {renderCompanies(1)}
+            </motion.div>
+          </Suspense>
         </div>
       </div>
     </section>
