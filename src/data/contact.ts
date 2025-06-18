@@ -6,7 +6,8 @@ export const businessHours = {
 export const contactInfo = {
   website: "inspirovix.com",
   phone: "+92 310 5589303",
-  email: "inspirovix@gmail.com"
+  email: "inspirovix@gmail.com",
+  address: "Office 805- 105, Owned by SHAIKH SUHAIL MAKTOUM JUMA ALMAKTOUM, Port Saeed"
 };
 
 export const socialLinks = {
