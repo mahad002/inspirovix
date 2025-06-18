@@ -1,11 +1,12 @@
-export const businessHours = {
-  weekdays: "Monday - Friday: 9:00 AM - 6:00 PM",
-  saturday: "Saturday: 10:00 AM - 2:00 PM"
+export const supportNumbers = {
+  pakistan: "+92 3105589303",
+  middleEast: "+974 7086 7033",
+  us: "+1 (571) 508-9086"
 };
 
 export const contactInfo = {
   website: "inspirovix.com",
-  phone: "+92 310 5589303",
+  phone: "+92 3105589303",
   email: "inspirovix@gmail.com",
   address: "Office 805- 105, Owned by SHAIKH SUHAIL MAKTOUM JUMA ALMAKTOUM, Port Saeed"
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock } from 'lucide-react';
 import { sendContactEmail } from '../../utils/emailService';
-import { contactInfo, socialLinks, businessHours } from '../../data/contact';
+import { contactInfo, socialLinks, supportNumbers } from '../../data/contact';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 
@@ -142,17 +142,51 @@ const Contact = () => {
               </div>
             </div>
 
-            {/* Business Hours */}
+            {/* Support Numbers */}
             <div className={`pt-8 border-t ${styles.border.primary}`}>
-              <div className={`flex items-center gap-4 ${styles.text.secondary}`}>
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Clock className="w-6 h-6" />
-                </div>
-                <div>
-                  <span className={`block font-semibold ${styles.text.primary}`}>Business Hours</span>
-                  <span>{businessHours.weekdays}</span>
-                  <span className="block">{businessHours.saturday}</span>
-                </div>
+              <h3 className={`text-xl font-semibold ${styles.text.primary} mb-6`}>Global Support</h3>
+              <div className="space-y-4">
+                <motion.a
+                  href={`tel:${supportNumbers.pakistan}`}
+                  whileHover={{ scale: 1.05 }}
+                  className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
+                >
+                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block font-semibold text-sm">Pakistan Support</span>
+                    <span className="text-sm">{supportNumbers.pakistan}</span>
+                  </div>
+                </motion.a>
+                
+                <motion.a
+                  href={`tel:${supportNumbers.middleEast}`}
+                  whileHover={{ scale: 1.05 }}
+                  className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
+                >
+                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block font-semibold text-sm">Middle East Office</span>
+                    <span className="text-sm">{supportNumbers.middleEast}</span>
+                  </div>
+                </motion.a>
+                
+                <motion.a
+                  href={`tel:${supportNumbers.us}`}
+                  whileHover={{ scale: 1.05 }}
+                  className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
+                >
+                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="block font-semibold text-sm">US Office</span>
+                    <span className="text-sm">{supportNumbers.us}</span>
+                  </div>
+                </motion.a>
               </div>
             </div>
           </motion.div>
