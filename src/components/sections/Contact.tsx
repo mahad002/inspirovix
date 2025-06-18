@@ -36,40 +36,40 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className={`${styles.background.primary} py-20`}>
+    <section id="contact" className={`${styles.background.primary} py-12`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-8"
         >
-          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>Get in Touch</h2>
-          <p className={`${styles.text.secondary} text-lg`}>Ready to revolutionize your business? Let's connect!</p>
+          <h2 className={`text-3xl font-bold ${styles.text.primary} mb-2`}>Get in Touch</h2>
+          <p className={`${styles.text.secondary}`}>Ready to revolutionize your business? Let's connect!</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Contact Information */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-8"
+            className="space-y-4"
           >
-            <div className="space-y-6">
+            <div className="space-y-3">
               <motion.a
                 href={`https://${contactInfo.website}`}
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
               >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Globe className="w-6 h-6" />
+                <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                  <Globe className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="block font-semibold">Website</span>
-                  <span>{contactInfo.website}</span>
+                  <span className="block font-semibold text-sm">Website</span>
+                  <span className="text-sm">{contactInfo.website}</span>
                 </div>
               </motion.a>
               
@@ -78,12 +78,12 @@ const Contact = () => {
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
               >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Phone className="w-6 h-6" />
+                <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                  <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="block font-semibold">Phone</span>
-                  <span>{contactInfo.phone}</span>
+                  <span className="block font-semibold text-sm">Phone</span>
+                  <span className="text-sm">{contactInfo.phone}</span>
                 </div>
               </motion.a>
 
@@ -91,14 +91,14 @@ const Contact = () => {
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
               >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
                 <div>
-                  <span className="block font-semibold">Office Address</span>
+                  <span className="block font-semibold text-sm">Office Address</span>
                   <span className="text-sm">{contactInfo.address}</span>
                 </div>
               </motion.div>
@@ -107,55 +107,30 @@ const Contact = () => {
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
               >
-                <div className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Mail className="w-6 h-6" />
+                <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                  <Mail className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="block font-semibold">Email</span>
-                  <span>{contactInfo.email}</span>
+                  <span className="block font-semibold text-sm">Email</span>
+                  <span className="text-sm">{contactInfo.email}</span>
                 </div>
               </motion.a>
             </div>
 
-            {/* Social Media Links */}
-            <div className={`pt-8 border-t ${styles.border.primary}`}>
-              <h3 className={`text-xl font-semibold ${styles.text.primary} mb-6`}>Connect With Us</h3>
-              <div className="flex gap-4">
-                <motion.a
-                  href={socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
-                >
-                  <Linkedin className="w-6 h-6" />
-                </motion.a>
-                <motion.a
-                  href={socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1 }}
-                  className={`w-12 h-12 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
-                >
-                  <Instagram className="w-6 h-6" />
-                </motion.a>
-              </div>
-            </div>
-
             {/* Support Numbers */}
-            <div className={`pt-8 border-t ${styles.border.primary}`}>
-              <h3 className={`text-xl font-semibold ${styles.text.primary} mb-6`}>Global Support</h3>
-              <div className="space-y-4">
+            <div className={`pt-4 border-t ${styles.border.primary}`}>
+              <h3 className={`text-lg font-semibold ${styles.text.primary} mb-3`}>Global Support</h3>
+              <div className="space-y-2">
                 <motion.a
                   href={`tel:${supportNumbers.pakistan}`}
                   whileHover={{ scale: 1.05 }}
                   className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
                 >
-                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                    <Phone className="w-5 h-5" />
+                  <div className={`w-8 h-8 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="block font-semibold text-sm">Pakistan Support</span>
+                    <span className="block font-semibold text-xs">Pakistan Support</span>
                     <span className="text-sm">{supportNumbers.pakistan}</span>
                   </div>
                 </motion.a>
@@ -165,11 +140,11 @@ const Contact = () => {
                   whileHover={{ scale: 1.05 }}
                   className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
                 >
-                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                    <Phone className="w-5 h-5" />
+                  <div className={`w-8 h-8 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="block font-semibold text-sm">Middle East Office</span>
+                    <span className="block font-semibold text-xs">Middle East Office</span>
                     <span className="text-sm">{supportNumbers.middleEast}</span>
                   </div>
                 </motion.a>
@@ -179,13 +154,38 @@ const Contact = () => {
                   whileHover={{ scale: 1.05 }}
                   className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
                 >
-                  <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                    <Phone className="w-5 h-5" />
+                  <div className={`w-8 h-8 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
+                    <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="block font-semibold text-sm">US Office</span>
+                    <span className="block font-semibold text-xs">US Office</span>
                     <span className="text-sm">{supportNumbers.us}</span>
                   </div>
+                </motion.a>
+              </div>
+            </div>
+
+            {/* Social Media Links - Compact */}
+            <div className={`pt-4 border-t ${styles.border.primary}`}>
+              <h3 className={`text-lg font-semibold ${styles.text.primary} mb-3`}>Connect With Us</h3>
+              <div className="flex gap-3">
+                <motion.a
+                  href={socialLinks.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1 }}
+                  className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
+                >
+                  <Linkedin className="w-5 h-5" />
+                </motion.a>
+                <motion.a
+                  href={socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1 }}
+                  className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
+                >
+                  <Instagram className="w-5 h-5" />
                 </motion.a>
               </div>
             </div>
@@ -198,9 +198,9 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             onSubmit={handleSubmit}
-            className={`space-y-6 ${styles.background.card} p-8 rounded-xl ${styles.glow.primary}`}
+            className={`space-y-4 ${styles.background.card} p-6 rounded-xl ${styles.glow.primary}`}
           >
-            <h3 className={`text-2xl font-bold ${styles.text.primary} mb-6`}>Send Us a Message</h3>
+            <h3 className={`text-xl font-bold ${styles.text.primary} mb-4`}>Send Us a Message</h3>
             
             <div>
               <label htmlFor="name" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
@@ -211,7 +211,7 @@ const Contact = () => {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                className={`w-full px-3 py-2 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
                 required
                 disabled={status === 'sending'}
               />
@@ -226,7 +226,7 @@ const Contact = () => {
                 id="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                className={`w-full px-3 py-2 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
                 required
                 disabled={status === 'sending'}
               />
@@ -240,8 +240,8 @@ const Contact = () => {
                 id="message"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                rows={4}
-                className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                rows={3}
+                className={`w-full px-3 py-2 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
                 required
                 disabled={status === 'sending'}
               />
@@ -260,7 +260,7 @@ const Contact = () => {
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={status === 'sending'}
-              className={`w-full px-8 py-4 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${
+              className={`w-full px-6 py-3 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${
                 status === 'sending' ? 'opacity-75 cursor-not-allowed' : ''
               } ${styles.glow.primary}`}
             >
