@@ -89,7 +89,7 @@ const CustomDevelopment = () => {
   ];
 
   return (
-    <section id="custom-development" className={`${styles.background.primary} py-20`}>
+    <section id="services" className={`${styles.background.primary} py-20`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,11 +99,11 @@ const CustomDevelopment = () => {
           className="text-center mb-16"
         >
           <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
-            Custom Software Development
+            Our Services
           </h2>
           <p className={`text-xl ${styles.text.secondary} max-w-3xl mx-auto`}>
-            From concept to deployment, we build tailored software solutions 
-            that drive business growth and operational excellence.
+            Comprehensive technology solutions from concept to deployment, 
+            driving business growth and operational excellence.
           </p>
         </motion.div>
 
