@@ -12,9 +12,10 @@ const Solutions = lazy(() => import('./components/sections/Solutions'));
 const CaseStudies = lazy(() => import('./components/sections/CaseStudies'));
 const About = lazy(() => import('./components/sections/About'));
 const Blog = lazy(() => import('./components/sections/Blog'));
-const Contact = lazy(() => import('./components/sections/Contact'));
+// const Contact = lazy(() => import('./components/sections/Contact'));
 const Pricing = lazy(() => import('./components/sections/Pricing'));
 const AssociatedCompanies = lazy(() => import('./components/sections/AssociatedCompanies'));
+const Footer = lazy(() => import('./components/sections/Footer'));
 
 // Loading fallback component
 const LoadingFallback = React.memo(() => (
@@ -72,13 +73,18 @@ function App() {
         </Suspense>
 
         {/* 7. Call To Action */}
-        <Suspense fallback={<LoadingFallback />}>
+        {/* <Suspense fallback={<LoadingFallback />}>
           <Contact />
-        </Suspense>
+        </Suspense> */}
         
         {/* 8. Additional Value & Educational Content */}
         <Suspense fallback={<LoadingFallback />}>
           <Blog />
+        </Suspense>
+        
+        {/* Footer */}
+        <Suspense fallback={<LoadingFallback />}>
+          <Footer />
         </Suspense>
       </div>
     </ThemeProvider>
