@@ -105,6 +105,55 @@
     flex-shrink: 0;
   }
   
+  /* Global performance optimizations */
+  .section-container {
+    contain: layout style;
+    will-change: auto;
+  }
+  
+  .card-container {
+    contain: layout style paint;
+    will-change: transform;
+  }
+  
+  .image-container {
+    contain: layout;
+    will-change: transform;
+  }
+  
+  /* Reduce motion for better performance */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-blob,
+    .animate-float,
+    .animate-pulse-glow,
+    .animate-spin-slow {
+      animation: none;
+    }
+    
+    .custom-cursor,
+    .custom-cursor-dot {
+      transition: none;
+    }
+    
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* Optimize scroll performance */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Optimize image loading */
+  img {
+    content-visibility: auto;
+    contain-intrinsic-size: 200px 200px;
+  }
+  
   /* Custom Scrollbar */
   .scrollbar-thin {
     scrollbar-width: thin;

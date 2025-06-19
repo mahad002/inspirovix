@@ -1,9 +1,9 @@
-import React, { useState, useMemo, useCallback, Suspense } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 
-// Lazy load the company data
+// Optimized company data
 const companies = [
   {
     name: "MajorWerks",
@@ -61,23 +61,6 @@ const companies = [
   }
 ];
 
-type ThemeStyles = {
-  background: {
-    primary: string;
-    secondary: string;
-    card: string;
-    cardHover: string;
-  };
-  text: {
-    primary: string;
-    secondary: string;
-    accent: string;
-  };
-  glow: {
-    primary: string;
-  };
-};
-
 // Memoized Company Card Component
 const CompanyCard = React.memo(({ 
   company, 
@@ -89,11 +72,18 @@ const CompanyCard = React.memo(({
   company: typeof companies[0], 
   index: number, 
   onHover: (hovering: boolean) => void,
-  styles: ThemeStyles,
+  styles: any,
   theme: string
 }) => {
   const handleMouseEnter = useCallback(() => onHover(true), [onHover]);
   const handleMouseLeave = useCallback(() => onHover(false), [onHover]);
+
+  // Memoized special styling for specific companies
+  const cardStyle = useMemo(() => {
+    if (company.name === "Exec Chauffeur Group") return "bg-black rounded-lg p-4";
+    if (company.name === "Sazgar") return "bg-white rounded-lg p-4";
+    return "";
+  }, [company.name]);
 
   return (
     <a
@@ -103,15 +93,11 @@ const CompanyCard = React.memo(({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={`${styles.background.card} rounded-xl p-8 flex flex-col items-center justify-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 relative overflow-hidden min-w-[200px] cursor-pointer`}
+      style={{ willChange: 'transform' }}
     >
       <motion.div
-        className={`relative w-40 h-24 mb-6 flex items-center justify-center ${
-          company.name === "Exec Chauffeur Group" ? "bg-black rounded-lg p-4" :
-          company.name === "Sazgar" ? "bg-white rounded-lg p-4" : ""
-        }`}
-        animate={{
-          y: [0, -10, 0],
-        }}
+        className={`relative w-40 h-24 mb-6 flex items-center justify-center ${cardStyle}`}
+        animate={{ y: [0, -10, 0] }}
         transition={{
           y: {
             repeat: Infinity,
@@ -120,12 +106,14 @@ const CompanyCard = React.memo(({
             delay: index * 0.2,
           },
         }}
+        style={{ willChange: 'transform' }}
       >
         <img
           src={company.logo}
           alt={`${company.name} logo`}
           loading="lazy"
-          className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110`}
+          className="w-full h-full object-contain transition-all duration-300 group-hover:scale-110"
+          style={{ willChange: 'transform' }}
         />
       </motion.div>
       <h3 className={`text-lg font-bold ${styles.text.primary} mb-2 text-center`}>
@@ -145,14 +133,7 @@ const CompanyCard = React.memo(({
 
 CompanyCard.displayName = 'CompanyCard';
 
-// Loading fallback component
-const LoadingFallback = () => (
-  <div className="w-full h-40 flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-  </div>
-);
-
-const AssociatedCompanies = () => {
+const AssociatedCompanies = React.memo(() => {
   const { theme } = useTheme();
   const styles = useMemo(() => themes[theme], [theme]);
   const [isHovering, setIsHovering] = useState(false);
@@ -163,18 +144,26 @@ const AssociatedCompanies = () => {
 
   const scrollDuration = useMemo(() => isHovering ? 60 : 30, [isHovering]);
 
-  const renderCompanies = useCallback((startIndex: number) => (
+  // Memoized company cards
+  const companyCards = useMemo(() => 
     companies.map((company, index) => (
       <CompanyCard
-        key={`${startIndex}-${index}`}
+        key={`company-${index}`}
         company={company}
         index={index}
         onHover={handleHover}
         styles={styles}
         theme={theme}
       />
-    ))
-  ), [handleHover, styles, theme]);
+    )), [handleHover, styles, theme]);
+
+  // Memoized duplicated cards for infinite scroll
+  const infiniteCards = useMemo(() => (
+    <>
+      {companyCards}
+      {companyCards}
+    </>
+  ), [companyCards]);
 
   return (
     <section id="associated-companies" className={`${styles.background.primary} py-20 overflow-hidden w-full`}>
@@ -195,29 +184,27 @@ const AssociatedCompanies = () => {
         </motion.div>
 
         <div className="relative w-full overflow-hidden">
-          <Suspense fallback={<LoadingFallback />}>
-            <motion.div
-              className="flex space-x-8"
-              animate={{
-                x: [0, -2000],
-              }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: scrollDuration,
-                  ease: "linear",
-                },
-              }}
-            >
-              {renderCompanies(0)}
-              {renderCompanies(1)}
-            </motion.div>
-          </Suspense>
+          <motion.div
+            className="flex space-x-8"
+            animate={{ x: [0, -2000] }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: scrollDuration,
+                ease: "linear",
+              },
+            }}
+            style={{ willChange: 'transform' }}
+          >
+            {infiniteCards}
+          </motion.div>
         </div>
       </div>
     </section>
   );
-};
+});
 
-export default React.memo(AssociatedCompanies);
+AssociatedCompanies.displayName = 'AssociatedCompanies';
+
+export default AssociatedCompanies;

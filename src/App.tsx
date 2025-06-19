@@ -11,25 +11,27 @@ const Services = lazy(() => import('./components/sections/CustomDevelopment'));
 const Solutions = lazy(() => import('./components/sections/Solutions'));
 const CaseStudies = lazy(() => import('./components/sections/CaseStudies'));
 const About = lazy(() => import('./components/sections/About'));
-// const Blog = lazy(() => import('./components/sections/Blog'));
+const Blog = lazy(() => import('./components/sections/Blog'));
 const Contact = lazy(() => import('./components/sections/Contact'));
 const Pricing = lazy(() => import('./components/sections/Pricing'));
 const AssociatedCompanies = lazy(() => import('./components/sections/AssociatedCompanies'));
 const Footer = lazy(() => import('./components/sections/Footer'));
 
 // Loading fallback component
-const LoadingFallback = React.memo(() => (
+const LoadingFallback = React.memo(() => {
+  return (
   <div className="w-full h-screen flex items-center justify-center">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
   </div>
-));
+  );
+});
 
 LoadingFallback.displayName = 'LoadingFallback';
 
 function App() {
   return (
     <ThemeProvider>
-      <div className="transition-colors duration-200 md:cursor-glow">
+      <div className="transition-colors duration-200 md:cursor-glow overflow-x-hidden">
         <CustomCursor />
         <Navbar />
         <div className="hidden lg:block">
@@ -78,9 +80,9 @@ function App() {
         </Suspense>
         
         {/* 8. Additional Value & Educational Content */}
-        {/* <Suspense fallback={<LoadingFallback />}>
+        <Suspense fallback={<LoadingFallback />}>
           <Blog />
-        </Suspense> */}
+        </Suspense>
         
         {/* Footer */}
         <Suspense fallback={<LoadingFallback />}>
