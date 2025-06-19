@@ -8,6 +8,7 @@ import { ActionButton } from '../components/ui/ActionButton';
 import { contactInfo } from '../data/contact';
 
 import Footer from '../components/sections/Footer';
+import Contact from '../components/sections/Contact';
 
 const ServicesPage = () => {
   const { theme } = useTheme();
@@ -342,6 +343,9 @@ const ServicesPage = () => {
           </div>
         </motion.div>
       </div>
+      
+      {/* Contact Section */}
+      <Contact />
       
       {/* Footer */}
       <Footer />
