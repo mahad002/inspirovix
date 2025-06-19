@@ -59,6 +59,8 @@ const Navbar = React.memo(() => {
             <nav className="hidden lg:flex items-center space-x-1">
               {menuItems.map((item) => {
                 const isActive = isActivePage(item.href);
+                const isContactButton = item.label === 'Contact';
+                
                 return (
                   <motion.div
                     key={item.href}
@@ -66,22 +68,39 @@ const Navbar = React.memo(() => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <Link
-                      to={item.href}
-                      className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        isActive ? styles.text.primary : styles.text.secondary
-                      } hover:${styles.text.primary}`}
-                    >
-                      <span className="relative z-10">{item.label}</span>
-                      {isActive && (
-                        <motion.div
-                          layoutId="navbar-active"
-                          className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-lg"
-                          initial={false}
-                          transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                        />
-                      )}
-                    </Link>
+                    {isContactButton ? (
+                      <Link
+                        to={item.href}
+                        className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                          isActive 
+                            ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-500/30' 
+                            : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:from-violet-600 hover:to-fuchsia-600 shadow-md hover:shadow-lg hover:shadow-violet-500/30'
+                        } transform hover:scale-105`}
+                      >
+                        <span className="relative z-10 flex items-center gap-2">
+                          <item.icon className="w-4 h-4" />
+                          {item.label}
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-violet-400/20 to-fuchsia-400/20 rounded-lg opacity-0 hover:opacity-100 transition-opacity" />
+                      </Link>
+                    ) : (
+                      <Link
+                        to={item.href}
+                        className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                          isActive ? styles.text.primary : styles.text.secondary
+                        } hover:${styles.text.primary}`}
+                      >
+                        <span className="relative z-10">{item.label}</span>
+                        {isActive && (
+                          <motion.div
+                            layoutId="navbar-active"
+                            className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-lg"
+                            initial={false}
+                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                          />
+                        )}
+                      </Link>
+                    )}
                   </motion.div>
                 );
               })}
@@ -151,6 +170,8 @@ const Navbar = React.memo(() => {
                 <nav className="space-y-4">
                   {menuItems.map((item, index) => {
                     const isActive = isActivePage(item.href);
+                    const isContactButton = item.label === 'Contact';
+                    
                     return (
                       <motion.div
                         key={item.href}
@@ -158,24 +179,43 @@ const Navbar = React.memo(() => {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 }}
                       >
-                        <Link
-                          to={item.href}
-                          onClick={() => setIsOpen(false)}
-                          className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden ${
-                            isActive ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` : styles.text.secondary
-                          }`}
-                        >
-                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${
-                            isActive ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' : 'bg-violet-500/20'
-                          } group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500 transition-all duration-300`}>
-                            <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
-                          </div>
-                          <span className="font-medium text-sm sm:text-base">{item.label}</span>
-                          <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                            isActive ? 'text-violet-400' : 'text-violet-500'
-                          }`} />
-                          <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                        </Link>
+                        {isContactButton ? (
+                          <Link
+                            to={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden ${
+                              isActive 
+                                ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg' 
+                                : 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white hover:from-violet-600 hover:to-fuchsia-600 shadow-md'
+                            } transform transition-all duration-300`}
+                          >
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center bg-white/20 backdrop-blur-sm">
+                              <item.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                            </div>
+                            <span className="font-semibold text-sm sm:text-base">{item.label}</span>
+                            <ChevronRight className="w-5 h-5 ml-auto text-white/80" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                          </Link>
+                        ) : (
+                          <Link
+                            to={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden ${
+                              isActive ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` : styles.text.secondary
+                            }`}
+                          >
+                            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${
+                              isActive ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' : 'bg-violet-500/20'
+                            } group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500 transition-all duration-300`}>
+                              <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
+                            </div>
+                            <span className="font-medium text-sm sm:text-base">{item.label}</span>
+                            <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
+                              isActive ? 'text-violet-400' : 'text-violet-500'
+                            }`} />
+                            <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                          </Link>
+                        )}
                       </motion.div>
                     );
                   })}
