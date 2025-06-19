@@ -1,5 +1,5 @@
 import { MessageSquare, ShoppingCart, Bot, Calendar, Zap, Shield, Smartphone, Blocks, Share2, Cloud } from 'lucide-react';
-import { TestTube, Palette, Gamepad2 } from 'lucide-react';
+import { TestTube, Palette, Gamepad2, Globe, Brain, Code } from 'lucide-react';
 
 export const services = [
   {
@@ -34,31 +34,112 @@ export const services = [
   }
 ];
 
-export const additionalServices = [
+export const allServices = [
+  {
+    name: "Web Development",
+    icon: Globe,
+    description: "Modern, responsive web applications with cutting-edge technologies",
+    divisions: [
+      {
+        name: "Frontend Development",
+        specializations: ["React.js", "Vue.js", "Angular", "Next.js", "TypeScript"]
+      },
+      {
+        name: "Backend Development", 
+        specializations: ["Node.js", "Python", "PHP", "Java", "C#"]
+      },
+      {
+        name: "Full-Stack Development",
+        specializations: ["MERN Stack", "MEAN Stack", "Django", "Laravel", "ASP.NET"]
+      },
+      {
+        name: "E-commerce Solutions",
+        specializations: ["Shopify", "WooCommerce", "Magento", "Custom E-commerce"]
+      },
+      {
+        name: "CMS Development",
+        specializations: ["WordPress", "Drupal", "Strapi", "Custom CMS"]
+      }
+    ]
+  },
   {
     name: "Mobile Development",
     icon: Smartphone,
     description: "Native and cross-platform mobile solutions with AI integration",
-    sub_services: [
-      { 
-        name: "Native iOS/Android Apps", 
-        solutions: ["Performance-optimized native mobile applications"] 
+    divisions: [
+      {
+        name: "Native iOS Development",
+        specializations: ["Swift", "Objective-C", "SwiftUI", "UIKit", "Core Data"]
       },
-      { 
-        name: "Cross‑platform Apps", 
-        solutions: ["Flutter or React Native apps with unified UI/UX"] 
+      {
+        name: "Native Android Development",
+        specializations: ["Kotlin", "Java", "Jetpack Compose", "Android SDK", "Room"]
       },
-      { 
-        name: "Progressive Web Apps", 
-        solutions: ["Offline-capable, installable web experiences"] 
+      {
+        name: "Cross-Platform Development",
+        specializations: ["React Native", "Flutter", "Xamarin", "Ionic", "Cordova"]
       },
-      { 
-        name: "Mobile‑centric AI Features", 
-        solutions: ["On-device ML: image recognition, chatbots, voice assistants"] 
+      {
+        name: "Progressive Web Apps",
+        specializations: ["PWA", "Service Workers", "Web App Manifest", "Offline Support"]
       },
-      { 
-        name: "Enterprise Mobile Solutions", 
-        solutions: ["Field service tools", "Mobile extensions for CRM/ERP"] 
+      {
+        name: "Mobile Backend Services",
+        specializations: ["Firebase", "AWS Amplify", "Custom APIs", "Push Notifications"]
+      }
+    ]
+  },
+  {
+    name: "AI & Machine Learning",
+    icon: Brain,
+    description: "Intelligent solutions powered by artificial intelligence and machine learning",
+    divisions: [
+      {
+        name: "Natural Language Processing",
+        specializations: ["Text Analysis", "Sentiment Analysis", "Chatbots", "Language Translation"]
+      },
+      {
+        name: "Computer Vision",
+        specializations: ["Image Recognition", "Object Detection", "Facial Recognition", "OCR"]
+      },
+      {
+        name: "Predictive Analytics",
+        specializations: ["Data Mining", "Forecasting", "Recommendation Systems", "Risk Assessment"]
+      },
+      {
+        name: "Deep Learning",
+        specializations: ["Neural Networks", "TensorFlow", "PyTorch", "Keras", "Custom Models"]
+      },
+      {
+        name: "AI Integration",
+        specializations: ["API Development", "Model Deployment", "Cloud AI Services", "Edge Computing"]
+      }
+    ]
+  },
+  {
+    name: "Cloud & DevOps",
+    icon: Cloud,
+    description: "Infrastructure automation and cloud optimization solutions",
+    divisions: [
+      {
+        name: "Cloud Infrastructure",
+        specializations: ["AWS", "Azure", "Google Cloud", "Multi-cloud", "Hybrid Cloud"]
+      },
+      {
+        name: "DevOps & CI/CD",
+        specializations: ["Jenkins", "GitLab CI", "GitHub Actions", "Docker", "Kubernetes"]
+      },
+      {
+        name: "Infrastructure as Code",
+        specializations: ["Terraform", "CloudFormation", "Ansible", "Pulumi", "ARM Templates"]
+      },
+      {
+        name: "Monitoring & Logging",
+        specializations: ["Prometheus", "Grafana", "ELK Stack", "CloudWatch", "New Relic"]
+      },
+      {
+        name: "Security & Compliance",
+        specializations: ["IAM", "Security Audits", "Compliance Automation", "Vulnerability Scanning"]
       }
     ]
   },
@@ -66,26 +147,26 @@ export const additionalServices = [
     name: "Blockchain Web 3.0",
     icon: Blocks,
     description: "Decentralized applications and blockchain solutions",
-    sub_services: [
-      { 
-        name: "Smart Contracts & DApps", 
-        solutions: ["Token systems", "Voting platforms", "Staking mechanisms"] 
+    divisions: [
+      {
+        name: "Smart Contract Development",
+        specializations: ["Solidity", "Ethereum", "Polygon", "Binance Smart Chain", "Avalanche"]
       },
-      { 
-        name: "Decentralized Finance (DeFi)", 
-        solutions: ["Flash loans (arbitrage, collateral swaps)", "Liquidity pool interfaces"] 
+      {
+        name: "DeFi Solutions",
+        specializations: ["DEX", "Lending Protocols", "Yield Farming", "Liquidity Pools", "Staking"]
       },
-      { 
-        name: "Stablecoin / USDT Integration", 
-        solutions: ["USDT payments on Ethereum, Tron, TON for fast transfers"] 
+      {
+        name: "NFT Development",
+        specializations: ["NFT Marketplaces", "Minting Platforms", "Gaming NFTs", "Art Collections"]
       },
-      { 
-        name: "Wallet Development & Web3 UX", 
-        solutions: ["On-chain wallet", "NFT minting", "Secure authentication"] 
+      {
+        name: "Web3 Integration",
+        specializations: ["Wallet Integration", "dApp Development", "IPFS", "MetaMask", "WalletConnect"]
       },
-      { 
-        name: "Blockchain Consulting & Audits", 
-        solutions: ["Security analysis", "DeFi vulnerability assessments"] 
+      {
+        name: "Blockchain Consulting",
+        specializations: ["Tokenomics", "Security Audits", "Architecture Design", "Compliance"]
       }
     ]
   },
@@ -93,83 +174,53 @@ export const additionalServices = [
     name: "Social Media Marketing",
     icon: Share2,
     description: "Comprehensive social media management and marketing solutions",
-    sub_services: [
-      { 
-        name: "Social Media Management", 
-        solutions: ["Content scheduling", "Community engagement", "Multi-channel posting"] 
+    divisions: [
+      {
+        name: "Social Media Strategy",
+        specializations: ["Content Planning", "Brand Strategy", "Audience Analysis", "Competitor Research"]
       },
-      { 
-        name: "Paid Ad Campaigns", 
-        solutions: ["Facebook, Instagram, PPC campaigns with ROI tracking"] 
+      {
+        name: "Content Creation",
+        specializations: ["Graphic Design", "Video Production", "Copywriting", "Photography", "Animation"]
       },
-      { 
-        name: "Content Creation & Branding", 
-        solutions: ["Graphic posts", "Visuals", "Story videos", "Brand messaging"] 
+      {
+        name: "Paid Advertising",
+        specializations: ["Facebook Ads", "Instagram Ads", "LinkedIn Ads", "Twitter Ads", "TikTok Ads"]
       },
-      { 
-        name: "Analytics & Reporting", 
-        solutions: ["Social insights", "A/B testing", "Performance dashboards"] 
+      {
+        name: "Community Management",
+        specializations: ["Engagement", "Customer Support", "Reputation Management", "Crisis Management"]
       },
-      { 
-        name: "Influencer Outreach & Strategy", 
-        solutions: ["Campaign strategy", "Influencer vetting", "Partnership management"] 
+      {
+        name: "Analytics & Reporting",
+        specializations: ["Performance Tracking", "ROI Analysis", "A/B Testing", "Social Listening"]
       }
     ]
   },
   {
-    name: "Cloud & DevOps",
-    icon: Cloud,
-    description: "Infrastructure automation and cloud optimization",
-    sub_services: [
-      { 
-        name: "CI/CD & Pipeline Automation", 
-        solutions: ["Cloud-based CI/CD setup with AWS, Azure, GCP", "Managed pipelines (CircleCI, Azure Pipelines)"] 
-      },
-      { 
-        name: "Infrastructure as Code (IaC)", 
-        solutions: ["Terraform/CloudFormation", "Kubernetes deployment automation"] 
-      },
-      { 
-        name: "Monitoring, Logging & APM", 
-        solutions: ["Centralized logging", "Metrics dashboards", "Alerting and incident management"] 
-      },
-      { 
-        name: "Cloud Migration & Management", 
-        solutions: ["Lift-and-shift to AWS/Azure/GCP", "Multi-cloud optimization"] 
-      },
-      { 
-        name: "Security & Compliance (DevSecOps)", 
-        solutions: ["IAM hardening", "Compliance automation (PCI‑DSS, HIPAA, GDPR)"] 
-      }
-    ]
-  }
-];
-
-export const newServices = [
-  {
     name: "Software Testing & QA",
     icon: TestTube,
     description: "Comprehensive quality assurance and testing solutions",
-    sub_services: [
-      { 
-        name: "Automated Testing", 
-        solutions: ["Unit testing", "Integration testing", "End-to-end testing", "Performance testing"] 
+    divisions: [
+      {
+        name: "Automated Testing",
+        specializations: ["Selenium", "Cypress", "Jest", "Playwright", "TestComplete"]
       },
-      { 
-        name: "Manual Testing", 
-        solutions: ["Functional testing", "Usability testing", "Exploratory testing", "Regression testing"] 
+      {
+        name: "Manual Testing",
+        specializations: ["Functional Testing", "Usability Testing", "Exploratory Testing", "Regression Testing"]
       },
-      { 
-        name: "Security Testing", 
-        solutions: ["Vulnerability assessment", "Penetration testing", "Security audits"] 
+      {
+        name: "Performance Testing",
+        specializations: ["Load Testing", "Stress Testing", "Volume Testing", "JMeter", "LoadRunner"]
       },
-      { 
-        name: "Performance Testing", 
-        solutions: ["Load testing", "Stress testing", "Volume testing", "Scalability testing"] 
+      {
+        name: "Security Testing",
+        specializations: ["Penetration Testing", "Vulnerability Assessment", "OWASP", "Security Audits"]
       },
-      { 
-        name: "Mobile App Testing", 
-        solutions: ["Device compatibility", "OS testing", "App store compliance"] 
+      {
+        name: "Mobile Testing",
+        specializations: ["Device Testing", "OS Compatibility", "App Store Guidelines", "Responsive Testing"]
       }
     ]
   },
@@ -177,26 +228,26 @@ export const newServices = [
     name: "UI & UX Design",
     icon: Palette,
     description: "User-centered design solutions for exceptional experiences",
-    sub_services: [
-      { 
-        name: "User Experience (UX) Design", 
-        solutions: ["User research", "Information architecture", "User journey mapping", "Wireframing"] 
+    divisions: [
+      {
+        name: "User Experience Design",
+        specializations: ["User Research", "Information Architecture", "User Journey Mapping", "Wireframing"]
       },
-      { 
-        name: "User Interface (UI) Design", 
-        solutions: ["Visual design", "Interactive prototypes", "Design systems", "Component libraries"] 
+      {
+        name: "User Interface Design",
+        specializations: ["Visual Design", "Prototyping", "Design Systems", "Component Libraries"]
       },
-      { 
-        name: "Mobile App Design", 
-        solutions: ["iOS design guidelines", "Android material design", "Cross-platform consistency"] 
+      {
+        name: "Mobile App Design",
+        specializations: ["iOS Design Guidelines", "Material Design", "Cross-platform Design", "Responsive Design"]
       },
-      { 
-        name: "Web Design", 
-        solutions: ["Responsive design", "Landing pages", "E-commerce interfaces", "Dashboard design"] 
+      {
+        name: "Web Design",
+        specializations: ["Landing Pages", "E-commerce Design", "Dashboard Design", "Accessibility Design"]
       },
-      { 
-        name: "Design Research & Testing", 
-        solutions: ["Usability testing", "A/B testing", "User feedback analysis", "Design validation"] 
+      {
+        name: "Design Research",
+        specializations: ["Usability Testing", "A/B Testing", "User Feedback", "Design Validation"]
       }
     ]
   },
@@ -204,26 +255,26 @@ export const newServices = [
     name: "Game Development",
     icon: Gamepad2,
     description: "End-to-end game development for multiple platforms",
-    sub_services: [
-      { 
-        name: "Mobile Game Development", 
-        solutions: ["iOS games", "Android games", "Cross-platform mobile games", "Casual & hyper-casual games"] 
+    divisions: [
+      {
+        name: "Mobile Game Development",
+        specializations: ["Unity", "Unreal Engine", "Cocos2d", "Casual Games", "Hyper-casual Games"]
       },
-      { 
-        name: "Web Game Development", 
-        solutions: ["HTML5 games", "WebGL games", "Browser-based multiplayer", "Progressive web games"] 
+      {
+        name: "Web Game Development",
+        specializations: ["HTML5 Games", "WebGL", "Three.js", "Phaser", "Browser Games"]
       },
-      { 
-        name: "PC & Console Games", 
-        solutions: ["Unity development", "Unreal Engine", "Steam integration", "Console porting"] 
+      {
+        name: "PC & Console Games",
+        specializations: ["Steam Integration", "PlayStation", "Xbox", "Nintendo Switch", "Cross-platform"]
       },
-      { 
-        name: "Game Design & Art", 
-        solutions: ["Game mechanics design", "2D/3D art assets", "Character design", "Environment design"] 
+      {
+        name: "Game Art & Design",
+        specializations: ["2D Art", "3D Modeling", "Character Design", "Environment Design", "Animation"]
       },
-      { 
-        name: "Game Backend & Multiplayer", 
-        solutions: ["Real-time multiplayer", "Leaderboards", "In-app purchases", "Analytics integration"] 
+      {
+        name: "Game Backend",
+        specializations: ["Multiplayer Systems", "Leaderboards", "In-app Purchases", "Analytics", "Cloud Save"]
       }
     ]
   }
