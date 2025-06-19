@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface TypewriterEffectProps {
   phrases: string[];
@@ -17,10 +17,13 @@ const TypewriterEffect = React.memo<TypewriterEffectProps>(({
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isWaiting, setIsWaiting] = useState(false);
 
   const currentPhrase = useMemo(() => phrases[currentPhraseIndex], [phrases, currentPhraseIndex]);
 
   const updateText = useCallback(() => {
+    if (isWaiting) return;
+
     if (isDeleting) {
       setCurrentText(prev => prev.slice(0, -1));
       if (currentText === '') {
@@ -30,15 +33,21 @@ const TypewriterEffect = React.memo<TypewriterEffectProps>(({
     } else {
       setCurrentText(currentPhrase.slice(0, currentText.length + 1));
       if (currentText === currentPhrase) {
-        setTimeout(() => setIsDeleting(true), pauseDuration);
+        setIsWaiting(true);
+        setTimeout(() => {
+          setIsWaiting(false);
+          setIsDeleting(true);
+        }, pauseDuration);
       }
     }
-  }, [currentText, isDeleting, currentPhrase, phrases.length, pauseDuration]);
+  }, [currentText, isDeleting, isWaiting, currentPhrase, phrases.length, pauseDuration]);
 
   useEffect(() => {
+    if (isWaiting) return;
+    
     const timer = setTimeout(updateText, isDeleting ? deletingSpeed : typingSpeed);
     return () => clearTimeout(timer);
-  }, [updateText, isDeleting, deletingSpeed, typingSpeed]);
+  }, [updateText, isDeleting, isWaiting, deletingSpeed, typingSpeed]);
 
   const cursorVariants = useMemo(() => ({
     animate: { opacity: [1, 0] },
@@ -46,26 +55,27 @@ const TypewriterEffect = React.memo<TypewriterEffectProps>(({
   }), []);
 
   return (
-    <AnimatePresence mode="wait">
-      <div className="relative h-20 flex items-center justify-center overflow-hidden">
-        <motion.div
-          key={currentText}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="flex items-center gap-2"
+    <div className="relative h-16 flex items-center justify-center overflow-hidden">
+      <div className="flex items-center gap-2">
+        <motion.span
+          key={`${currentPhraseIndex}-${currentText.length}`}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          className="text-xl sm:text-2xl bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text font-bold min-h-[2rem] flex items-center"
+          style={{ 
+            minWidth: '20ch',
+            textAlign: 'center',
+            whiteSpace: 'nowrap'
+          }}
         >
-          <span className="text-2xl bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text font-bold">
-            {currentText}
-          </span>
-          <motion.span
-            {...cursorVariants}
-            className="inline-block w-0.5 h-8 bg-purple-500"
-          />
-        </motion.div>
+          {currentText}
+        </motion.span>
+        <motion.span
+          {...cursorVariants}
+          className="inline-block w-0.5 h-6 sm:h-8 bg-purple-500"
+        />
       </div>
-    </AnimatePresence>
+    </div>
   );
 });
 
