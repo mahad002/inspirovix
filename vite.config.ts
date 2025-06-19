@@ -10,6 +10,12 @@ export default defineConfig({
     assetsDir: 'assets',
     sourcemap: false,
     minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
@@ -22,19 +28,25 @@ export default defineConfig({
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js'
       }
-    }
+    },
+    chunkSizeWarningLimit: 1000
   },
   optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
     exclude: ['lucide-react'],
   },
   server: {
+    port: 5173,
+    host: true,
     historyApiFallback: true
   },
   preview: {
     port: 4173,
+    host: true,
     strictPort: true
   },
   define: {
-    'process.env': {}
+    'process.env': {},
+    global: 'globalThis',
   }
 });

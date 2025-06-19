@@ -6,27 +6,71 @@ import Navbar from './components/Navbar';
 import ThemeToggle from './components/ThemeToggle';
 import { Home } from './components/sections';
 
-// Lazy load pages
-const ServicesPage = lazy(() => import('./pages/ServicesPage'));
+// Lazy load pages with error handling
+const ServicesPage = lazy(() => 
+  import('./pages/ServicesPage').catch(() => ({
+    default: () => <div>Error loading services page</div>
+  }))
+);
 
-// Lazy load heavy components
-const AIAutomation = lazy(() => import('./components/sections/AIAutomation'));
-const Services = lazy(() => import('./components/sections/CustomDevelopment'));
-const Solutions = lazy(() => import('./components/sections/Solutions'));
-const CaseStudies = lazy(() => import('./components/sections/CaseStudies'));
-const About = lazy(() => import('./components/sections/About'));
-const Blog = lazy(() => import('./components/sections/Blog'));
-const Contact = lazy(() => import('./components/sections/Contact'));
-const Pricing = lazy(() => import('./components/sections/Pricing'));
-const AssociatedCompanies = lazy(() => import('./components/sections/AssociatedCompanies'));
-const Footer = lazy(() => import('./components/sections/Footer'));
+// Lazy load heavy components with error handling
+const AIAutomation = lazy(() => 
+  import('./components/sections/AIAutomation').catch(() => ({
+    default: () => <div>Error loading AI Automation</div>
+  }))
+);
+const Services = lazy(() => 
+  import('./components/sections/CustomDevelopment').catch(() => ({
+    default: () => <div>Error loading Services</div>
+  }))
+);
+const Solutions = lazy(() => 
+  import('./components/sections/Solutions').catch(() => ({
+    default: () => <div>Error loading Solutions</div>
+  }))
+);
+const CaseStudies = lazy(() => 
+  import('./components/sections/CaseStudies').catch(() => ({
+    default: () => <div>Error loading Case Studies</div>
+  }))
+);
+const About = lazy(() => 
+  import('./components/sections/About').catch(() => ({
+    default: () => <div>Error loading About</div>
+  }))
+);
+const Blog = lazy(() => 
+  import('./components/sections/Blog').catch(() => ({
+    default: () => <div>Error loading Blog</div>
+  }))
+);
+const Contact = lazy(() => 
+  import('./components/sections/Contact').catch(() => ({
+    default: () => <div>Error loading Contact</div>
+  }))
+);
+const Pricing = lazy(() => 
+  import('./components/sections/Pricing').catch(() => ({
+    default: () => <div>Error loading Pricing</div>
+  }))
+);
+const AssociatedCompanies = lazy(() => 
+  import('./components/sections/AssociatedCompanies').catch(() => ({
+    default: () => <div>Error loading Associated Companies</div>
+  }))
+);
+const Footer = lazy(() => 
+  import('./components/sections/Footer').catch(() => ({
+    default: () => <div>Error loading Footer</div>
+  }))
+);
 
 // Loading fallback component
 const LoadingFallback = React.memo(() => {
   return (
-  <div className="w-full h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-  </div>
+    <div className="w-full h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+    </div>
   );
 });
 
@@ -53,12 +97,13 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-screen flex items-center justify-center">
+        <div className="w-full h-screen flex items-center justify-center bg-gray-900 text-white">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+            <p className="mb-4">Please try refreshing the page or go back to home.</p>
             <button 
               onClick={() => window.location.href = '/'}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg"
+              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               Go Home
             </button>
@@ -147,8 +192,9 @@ function App() {
                 </Suspense>
               } />
               
-              {/* Redirect /services to /services-details */}
+              {/* Alternative services routes */}
               <Route path="/services" element={<Navigate to="/services-details" replace />} />
+              <Route path="/services/*" element={<Navigate to="/services-details" replace />} />
               
               {/* Catch all route - redirect to home */}
               <Route path="*" element={<Navigate to="/" replace />} />
