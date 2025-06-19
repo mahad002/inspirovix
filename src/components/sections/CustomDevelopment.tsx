@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, ExternalLink, CheckCircle, Star, ArrowRight } from 'lucide-react';
+import { Code, ExternalLink, CheckCircle, Star, ArrowRight, ChevronDown } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
@@ -11,7 +11,8 @@ const CustomDevelopment = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
   const [activeTab, setActiveTab] = useState(0);
-  const [activeDivision, setActiveDivision] = useState<number | null>(null);
+  const [hoveredDivision, setHoveredDivision] = useState<number | null>(null);
+  const [clickedDivisions, setClickedDivisions] = useState<Set<number>>(new Set());
 
   const getServiceColor = (index: number) => {
     const colors = [
@@ -29,6 +30,20 @@ const CustomDevelopment = () => {
   };
 
   const currentService = allServices[activeTab];
+
+  const handleDivisionClick = (divisionIndex: number) => {
+    const newClickedDivisions = new Set(clickedDivisions);
+    if (newClickedDivisions.has(divisionIndex)) {
+      newClickedDivisions.delete(divisionIndex);
+    } else {
+      newClickedDivisions.add(divisionIndex);
+    }
+    setClickedDivisions(newClickedDivisions);
+  };
+
+  const isDivisionExpanded = (divisionIndex: number) => {
+    return hoveredDivision === divisionIndex || clickedDivisions.has(divisionIndex);
+  };
 
   return (
     <section id="services" className={`${styles.background.primary} py-20`}>
@@ -48,34 +63,7 @@ const CustomDevelopment = () => {
           </p>
         </motion.div>
 
-        {/* Service Categories Overview Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-4 mb-16">
-          {allServices.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.05 }}
-              className={`${styles.background.card} rounded-xl p-4 text-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300 cursor-pointer ${
-                activeTab === index ? 'ring-2 ring-violet-500' : ''
-              }`}
-              onClick={() => {
-                setActiveTab(index);
-                setActiveDivision(null);
-              }}
-            >
-              <div className={`w-12 h-12 bg-gradient-to-br ${getServiceColor(index)} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
-                <service.icon className="w-6 h-6 text-white" />
-              </div>
-              <h3 className={`text-sm font-semibold ${styles.text.primary} group-hover:text-violet-400 transition-colors leading-tight`}>
-                {service.name}
-              </h3>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Service Navigation Tabs */}
+        {/* Service Navigation Tabs - Single Row */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -83,7 +71,7 @@ const CustomDevelopment = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
             {allServices.map((service, index) => (
               <motion.button
                 key={index}
@@ -91,18 +79,19 @@ const CustomDevelopment = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => {
                   setActiveTab(index);
-                  setActiveDivision(null);
+                  setClickedDivisions(new Set()); // Reset clicked divisions when switching tabs
+                  setHoveredDivision(null);
                 }}
-                className={`flex items-center gap-3 px-6 py-4 rounded-xl transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 ${
                   activeTab === index
                     ? `${styles.button.primary} ${styles.text.primary} ${styles.glow.primary}`
                     : `${styles.background.card} ${styles.text.secondary} hover:${styles.text.primary} ${styles.glow.primary}`
                 }`}
               >
-                <div className={`w-8 h-8 bg-gradient-to-br ${getServiceColor(index)} rounded-lg flex items-center justify-center`}>
-                  <service.icon className="w-5 h-5 text-white" />
+                <div className={`w-6 h-6 bg-gradient-to-br ${getServiceColor(index)} rounded-lg flex items-center justify-center`}>
+                  <service.icon className="w-4 h-4 text-white" />
                 </div>
-                <span className="font-semibold">{service.name}</span>
+                <span className="font-semibold text-sm">{service.name}</span>
               </motion.button>
             ))}
           </div>
@@ -145,7 +134,7 @@ const CustomDevelopment = () => {
                     each designed to meet specific business requirements and technical challenges.
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {currentService.divisions.slice(0, 4).map((division, index) => (
+                    {currentService.divisions.map((division, index) => (
                       <div key={index} className="flex items-center gap-2">
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                         <span className={`${styles.text.secondary} text-sm`}>{division.name}</span>
@@ -180,7 +169,7 @@ const CustomDevelopment = () => {
               </div>
             </div>
 
-            {/* Service Divisions */}
+            {/* Service Divisions - All Expanded by Default with Hover/Click Interactions */}
             <div>
               <h3 className={`text-3xl font-bold ${styles.text.primary} mb-8 text-center`}>
                 Service Divisions & Specializations
@@ -194,68 +183,110 @@ const CustomDevelopment = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: divisionIndex * 0.1 }}
                     className={`${styles.background.secondary} rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                      activeDivision === divisionIndex ? `ring-2 ring-violet-500 ${styles.glow.accent}` : styles.glow.primary
+                      isDivisionExpanded(divisionIndex) ? `ring-2 ring-violet-500 ${styles.glow.accent}` : styles.glow.primary
                     }`}
-                    onClick={() => setActiveDivision(activeDivision === divisionIndex ? null : divisionIndex)}
+                    onMouseEnter={() => setHoveredDivision(divisionIndex)}
+                    onMouseLeave={() => setHoveredDivision(null)}
+                    onClick={() => handleDivisionClick(divisionIndex)}
                   >
                     <div className="flex items-center justify-between mb-4">
                       <h4 className={`text-xl font-bold ${styles.text.primary}`}>
                         {division.name}
                       </h4>
                       <motion.div
-                        animate={{ rotate: activeDivision === divisionIndex ? 90 : 0 }}
+                        animate={{ 
+                          rotate: isDivisionExpanded(divisionIndex) ? 180 : 0,
+                          scale: isDivisionExpanded(divisionIndex) ? 1.1 : 1
+                        }}
                         transition={{ duration: 0.3 }}
                       >
-                        <ArrowRight className={`w-5 h-5 ${styles.text.secondary}`} />
+                        <ChevronDown className={`w-5 h-5 ${
+                          isDivisionExpanded(divisionIndex) ? 'text-violet-400' : styles.text.secondary
+                        }`} />
                       </motion.div>
                     </div>
                     
+                    {/* Always show all specializations */}
                     <div className="space-y-3">
                       <h5 className={`text-sm font-semibold ${styles.text.secondary} mb-3`}>
                         Specializations:
                       </h5>
                       <div className="flex flex-wrap gap-2">
-                        {division.specializations.slice(0, activeDivision === divisionIndex ? undefined : 3).map((specialization, specIndex) => (
-                          <span
+                        {division.specializations.map((specialization, specIndex) => (
+                          <motion.span
                             key={specIndex}
-                            className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                              theme === 'dark' 
-                                ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' 
-                                : 'bg-violet-100 text-violet-700 border border-violet-200'
-                            } transition-all duration-300 hover:scale-105`}
+                            initial={{ opacity: 0.7, scale: 0.95 }}
+                            animate={{ 
+                              opacity: isDivisionExpanded(divisionIndex) ? 1 : 0.8,
+                              scale: isDivisionExpanded(divisionIndex) ? 1 : 0.95
+                            }}
+                            transition={{ duration: 0.2, delay: specIndex * 0.05 }}
+                            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all duration-300 ${
+                              isDivisionExpanded(divisionIndex)
+                                ? theme === 'dark' 
+                                  ? 'bg-violet-500/30 text-violet-200 border border-violet-400/50 shadow-lg' 
+                                  : 'bg-violet-200 text-violet-800 border border-violet-300 shadow-lg'
+                                : theme === 'dark' 
+                                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' 
+                                  : 'bg-violet-100 text-violet-700 border border-violet-200'
+                            }`}
                           >
                             {specialization}
-                          </span>
+                          </motion.span>
                         ))}
-                        {activeDivision !== divisionIndex && division.specializations.length > 3 && (
-                          <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${styles.text.secondary} border ${styles.border.primary}`}>
-                            +{division.specializations.length - 3} more
-                          </span>
-                        )}
                       </div>
                     </div>
 
+                    {/* Enhanced Details on Hover/Click */}
                     <AnimatePresence>
-                      {activeDivision === divisionIndex && (
+                      {isDivisionExpanded(divisionIndex) && (
                         <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
+                          initial={{ opacity: 0, height: 0, y: -10 }}
+                          animate={{ opacity: 1, height: 'auto', y: 0 }}
+                          exit={{ opacity: 0, height: 0, y: -10 }}
                           transition={{ duration: 0.3 }}
-                          className="mt-4 pt-4 border-t border-violet-500/30"
+                          className="mt-6 pt-4 border-t border-violet-500/30"
                         >
-                          <p className={`${styles.text.secondary} text-sm mb-4`}>
-                            Our {division.name.toLowerCase()} team specializes in delivering high-quality solutions 
-                            using the latest technologies and industry best practices.
-                          </p>
-                          <div className="flex gap-2">
-                            <ActionButton
-                              href={`mailto:${contactInfo.email}?subject=${currentService.name} - ${division.name} Inquiry`}
-                              icon={<ExternalLink className="w-4 h-4" />}
-                              variant="primary"
-                            >
-                              Get Quote
-                            </ActionButton>
+                          <div className="space-y-4">
+                            <p className={`${styles.text.secondary} text-sm`}>
+                              Our {division.name.toLowerCase()} team specializes in delivering high-quality solutions 
+                              using the latest technologies and industry best practices.
+                            </p>
+                            
+                            {/* Additional Info on Expansion */}
+                            <div className={`${styles.background.primary} rounded-lg p-4`}>
+                              <h6 className={`text-sm font-semibold ${styles.text.primary} mb-2`}>
+                                What We Deliver:
+                              </h6>
+                              <ul className="space-y-1">
+                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                                  Custom solutions tailored to your needs
+                                </li>
+                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                                  Scalable architecture and clean code
+                                </li>
+                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                                  Comprehensive testing and documentation
+                                </li>
+                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                                  Ongoing support and maintenance
+                                </li>
+                              </ul>
+                            </div>
+                            
+                            <div className="flex gap-2">
+                              <ActionButton
+                                href={`mailto:${contactInfo.email}?subject=${currentService.name} - ${division.name} Inquiry`}
+                                icon={<ExternalLink className="w-4 h-4" />}
+                                variant="primary"
+                              >
+                                Get Quote
+                              </ActionButton>
+                            </div>
                           </div>
                         </motion.div>
                       )}
