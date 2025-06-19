@@ -83,13 +83,144 @@ const Contact = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Information */}
+          {/* Contact Form - Shows first on mobile */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className={`space-y-4 ${styles.background.card} p-6 rounded-xl ${styles.glow.primary} overflow-hidden order-1 lg:order-2`}
+          >
+            <h3 className={`text-xl font-bold ${styles.text.primary} mb-4`}>Send Us a Message</h3>
+            
+            {/* Security Notice */}
+            <div className={`text-xs ${styles.text.secondary} mb-4 p-3 ${styles.background.secondary} rounded-lg`}>
+              🔒 Your data is protected with advanced security measures including input validation, rate limiting, and bot detection.
+            </div>
+
+            {/* Honeypot field for bot detection */}
+            <HoneypotField />
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="name" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Name *
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className={`w-full px-3 py-2 ${styles.background.secondary} border ${
+                    validationErrors.name ? 'border-red-500' : styles.border.primary
+                  } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                  maxLength={100}
+                  disabled={status === 'sending'}
+                  autoComplete="name"
+                />
+                {validationErrors.name && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {validationErrors.name.join(', ')}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="email" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Email *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className={`w-full px-3 py-2 ${styles.background.secondary} border ${
+                    validationErrors.email ? 'border-red-500' : styles.border.primary
+                  } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                  maxLength={254}
+                  disabled={status === 'sending'}
+                  autoComplete="email"
+                />
+                {validationErrors.email && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {validationErrors.email.join(', ')}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label htmlFor="message" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  rows={3}
+                  className={`w-full px-3 py-2 ${styles.background.secondary} border ${
+                    validationErrors.message ? 'border-red-500' : styles.border.primary
+                  } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
+                  required
+                  maxLength={5000}
+                  disabled={status === 'sending'}
+                  placeholder="Please describe your inquiry..."
+                />
+                {validationErrors.message && (
+                  <div className="text-red-500 text-xs mt-1">
+                    {validationErrors.message.join(', ')}
+                  </div>
+                )}
+              </div>
+
+              {/* Error Messages */}
+              {(status === 'error' || status === 'security-error' || status === 'rate-limited') && (
+                <div className="text-red-500 text-sm">{errorMessage}</div>
+              )}
+
+              {/* Success Message */}
+              {status === 'success' && (
+                <div className="text-green-500 text-sm">
+                  ✅ Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
+
+              {/* Hidden form token */}
+              <input type="hidden" name="formToken" value={formToken} />
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                type="submit"
+                disabled={status === 'sending' || status === 'rate-limited'}
+                className={`w-full px-6 py-3 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${
+                  (status === 'sending' || status === 'rate-limited') ? 'opacity-75 cursor-not-allowed' : ''
+                } ${styles.glow.primary}`}
+              >
+                <Send className="w-5 h-5" />
+                {status === 'sending' ? 'Sending...' : 
+                 status === 'rate-limited' ? 'Rate Limited' : 
+                 'Send Secure Message'}
+              </motion.button>
+
+              {/* Security Footer */}
+              <div className={`text-xs ${styles.text.secondary} text-center mt-2`}>
+                Protected by advanced security measures • Rate limited • Bot detection enabled
+              </div>
+            </form>
+          </motion.div>
+
+          {/* Contact Information - Shows second on mobile */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="space-y-4"
+            className="space-y-4 order-2 lg:order-1"
           >
             <div className="space-y-3">
               <motion.a
@@ -218,136 +349,6 @@ const Contact = () => {
               </div>
             </div>
           </motion.div>
-
-          {/* Contact Form */}
-          <motion.form
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            onSubmit={handleSubmit}
-            className={`space-y-4 ${styles.background.card} p-6 rounded-xl ${styles.glow.primary} overflow-hidden`}
-          >
-            <h3 className={`text-xl font-bold ${styles.text.primary} mb-4`}>Send Us a Message</h3>
-            
-            {/* Security Notice */}
-            <div className={`text-xs ${styles.text.secondary} mb-4 p-3 ${styles.background.secondary} rounded-lg`}>
-              🔒 Your data is protected with advanced security measures including input validation, rate limiting, and bot detection.
-            </div>
-
-            {/* Honeypot field for bot detection */}
-            <HoneypotField />
-            
-            <div>
-              <label htmlFor="name" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Name *
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className={`w-full px-3 py-2 ${styles.background.secondary} border ${
-                  validationErrors.name ? 'border-red-500' : styles.border.primary
-                } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                maxLength={100}
-                disabled={status === 'sending'}
-                autoComplete="name"
-              />
-              {validationErrors.name && (
-                <div className="text-red-500 text-xs mt-1">
-                  {validationErrors.name.join(', ')}
-                </div>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="email" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Email *
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className={`w-full px-3 py-2 ${styles.background.secondary} border ${
-                  validationErrors.email ? 'border-red-500' : styles.border.primary
-                } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                maxLength={254}
-                disabled={status === 'sending'}
-                autoComplete="email"
-              />
-              {validationErrors.email && (
-                <div className="text-red-500 text-xs mt-1">
-                  {validationErrors.email.join(', ')}
-                </div>
-              )}
-            </div>
-
-            <div>
-              <label htmlFor="message" className={`block text-sm font-medium ${styles.text.secondary} mb-2`}>
-                Message *
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                rows={3}
-                className={`w-full px-3 py-2 ${styles.background.secondary} border ${
-                  validationErrors.message ? 'border-red-500' : styles.border.primary
-                } rounded-lg focus:ring-2 focus:ring-violet-500 ${styles.text.primary}`}
-                required
-                maxLength={5000}
-                disabled={status === 'sending'}
-                placeholder="Please describe your inquiry..."
-              />
-              {validationErrors.message && (
-                <div className="text-red-500 text-xs mt-1">
-                  {validationErrors.message.join(', ')}
-                </div>
-              )}
-            </div>
-
-            {/* Error Messages */}
-            {(status === 'error' || status === 'security-error' || status === 'rate-limited') && (
-              <div className="text-red-500 text-sm">{errorMessage}</div>
-            )}
-
-            {/* Success Message */}
-            {status === 'success' && (
-              <div className="text-green-500 text-sm">
-                ✅ Message sent successfully! We'll get back to you soon.
-              </div>
-            )}
-
-            {/* Hidden form token */}
-            <input type="hidden" name="formToken" value={formToken} />
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="submit"
-              disabled={status === 'sending' || status === 'rate-limited'}
-              className={`w-full px-6 py-3 ${styles.button.primary} rounded-lg ${styles.text.primary} font-semibold flex items-center justify-center gap-2 ${
-                (status === 'sending' || status === 'rate-limited') ? 'opacity-75 cursor-not-allowed' : ''
-              } ${styles.glow.primary}`}
-            >
-              <Send className="w-5 h-5" />
-              {status === 'sending' ? 'Sending...' : 
-               status === 'rate-limited' ? 'Rate Limited' : 
-               'Send Secure Message'}
-            </motion.button>
-
-            {/* Security Footer */}
-            <div className={`text-xs ${styles.text.secondary} text-center mt-2`}>
-              Protected by advanced security measures • Rate limited • Bot detection enabled
-            </div>
-          </motion.form>
         </div>
       </div>
     </section>
