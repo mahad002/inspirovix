@@ -4,8 +4,9 @@ export const menuItems = [
   { icon: Home, label: 'Home', href: '/' },
   { icon: Code, label: 'Services', href: '/services' },
   { icon: BookOpen, label: 'Case Studies', href: '/case-studies' },
+  { icon: Lightbulb, label: 'Solutions', href: '/solutions' },
   { icon: Users, label: 'About', href: '/about' },
   { icon: DollarSign, label: 'Pricing', href: '/pricing' },
   { icon: Phone, label: 'Contact', href: '/contact' },
-  { icon: FileText, label: 'Blog', href: '/blog' }
+  // { icon: FileText, label: 'Blog', href: '/blog' }
 ];

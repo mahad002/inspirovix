@@ -17,7 +17,7 @@ const Footer = () => {
 
   const currentYear = new Date().getFullYear();
 
-  const quickLinks = menuItems.filter(item => item.label !== 'Home');
+  const quickLinks = menuItems.filter(item => item.label !== 'Home' && !item.href.includes('blog'));
 
   const services = [
     'AI Automation',

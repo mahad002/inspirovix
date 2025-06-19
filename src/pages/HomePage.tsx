@@ -91,6 +91,13 @@ const HomePage = () => {
                 View Case Studies <ArrowRight className="w-4 h-4" />
               </motion.a>
               <motion.a
+                href="/solutions"
+                whileHover={{ scale: 1.05 }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg ${styles.background.card} ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
+              >
+                Industry Solutions <ArrowRight className="w-4 h-4" />
+              </motion.a>
+              <motion.a
                 href="/pricing"
                 whileHover={{ scale: 1.05 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg ${styles.background.card} ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
