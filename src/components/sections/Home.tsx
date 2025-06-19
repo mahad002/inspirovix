@@ -45,8 +45,8 @@ const Home = React.memo(() => {
 
   // Optimized background grid style
   const backgroundGridStyle = useMemo(() => ({
-    backgroundImage: `linear-gradient(to right, ${theme === 'dark' ? '#4f4f4f2e' : '#4f4f4f1a'} 1px, transparent 1px), linear-gradient(to bottom, ${theme === 'dark' ? '#4f4f4f2e' : '#4f4f4f1a'} 1px, transparent 1px)`,
-    backgroundSize: '14px 24px'
+    backgroundImage: `linear-gradient(to right, ${theme === 'dark' ? '#ffffff08' : '#00000008'} 1px, transparent 1px), linear-gradient(to bottom, ${theme === 'dark' ? '#ffffff08' : '#00000008'} 1px, transparent 1px)`,
+    backgroundSize: '32px 32px'
   }), [theme]);
 
   return (
