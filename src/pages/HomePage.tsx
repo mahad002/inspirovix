@@ -52,9 +52,6 @@ const HomePage = () => {
       {/* 7. Call To Action */}
       <Contact />
       
-      {/* 8. Additional Value & Educational Content */}
-      <Blog />
-      
       {/* Footer */}
       <Footer />
     </motion.div>

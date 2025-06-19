@@ -9,5 +9,4 @@ export const menuItems = [
   { icon: Users, label: 'About', href: '#about' },
   { icon: DollarSign, label: 'Pricing', href: '#pricing' },
   { icon: Phone, label: 'Contact', href: '#contact' },
-  // { icon: FileText, label: 'Blog', href: '#blog' }
 ];

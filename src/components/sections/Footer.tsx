@@ -32,7 +32,6 @@ const Footer = () => {
     {
       title: "Resources",
       links: [
-        { name: "Blogs", href: "#blog" },
         { name: "Case Studies", href: "#case-studies" },
         { name: "Pricing", href: "#pricing" },
         { name: "Careers", href: "#about" }
