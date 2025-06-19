@@ -70,86 +70,91 @@ class ErrorBoundary extends React.Component<
     return this.props.children;
   }
 }
+
 function App() {
   return (
     <ThemeProvider>
       <ErrorBoundary>
-      <Router>
-        <div className="transition-colors duration-200 md:cursor-glow overflow-x-hidden">
-          <CustomCursor />
-          <Navbar />
-          <div className="hidden lg:block">
+        <Router>
+          <div className="transition-colors duration-200 md:cursor-glow overflow-x-hidden">
+            <CustomCursor />
+            <Navbar />
+            <div className="hidden lg:block">
+              <ThemeToggle />
+            </div>
+            
+            <Routes>
+              {/* Main Home Page */}
+              <Route path="/" element={
+                <>
+                  {/* 1. Value Proposition & Problem Statement */}
+                  <Home />
+
+                  {/* 2. Solution Presentation */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <AIAutomation />
+                  </Suspense>
+
+                  {/* 3. Associated Companies */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <AssociatedCompanies />
+                  </Suspense>
+
+                  {/* 4. Additional Solutions */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <CaseStudies />
+                  </Suspense>
+                  
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Solutions />
+                  </Suspense>
+                  
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Services />
+                  </Suspense>
+
+                  {/* 5. Authority & Trust Building */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <About />
+                  </Suspense>
+                  
+                  {/* 6. Price Placement - After Value Is Established */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Pricing />
+                  </Suspense>
+
+                  {/* 7. Call To Action */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Contact />
+                  </Suspense>
+                  
+                  {/* 8. Additional Value & Educational Content */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Blog />
+                  </Suspense>
+                  
+                  {/* Footer */}
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Footer />
+                  </Suspense>
+                </>
+              } />
+              
+              {/* Services Page */}
+              <Route path="/services-details" element={
+                <Suspense fallback={<LoadingFallback />}>
+                  <ServicesPage />
+                </Suspense>
+              } />
+              
+              {/* Redirect /services to /services-details */}
+              <Route path="/services" element={<Navigate to="/services-details" replace />} />
+              
               {/* Catch all route - redirect to home */}
               <Route path="*" element={<Navigate to="/" replace />} />
-            <ThemeToggle />
+            </Routes>
           </div>
-          
-          <Routes>
-            {/* Main Home Page */}
-            <Route path="/" element={
-              <>
-                {/* 1. Value Proposition & Problem Statement */}
-                <Home />
-
-                {/* 2. Solution Presentation */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <AIAutomation />
-                </Suspense>
-
-                {/* 3. Associated Companies */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <AssociatedCompanies />
-                </Suspense>
-
-                {/* 4. Additional Solutions */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <CaseStudies />
-                </Suspense>
-                
-                <Suspense fallback={<LoadingFallback />}>
-                  <Solutions />
-                </Suspense>
-                
-                <Suspense fallback={<LoadingFallback />}>
-                  <Services />
-                </Suspense>
-
-                {/* 5. Authority & Trust Building */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <About />
-                </Suspense>
-                
-                {/* 6. Price Placement - After Value Is Established */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <Pricing />
-                </Suspense>
-
-                {/* 7. Call To Action */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <Contact />
-                </Suspense>
-                
-                {/* 8. Additional Value & Educational Content */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <Blog />
-                </Suspense>
-                
-                {/* Footer */}
-                <Suspense fallback={<LoadingFallback />}>
-                  <Footer />
-                </Suspense>
-              </>
-            } />
-            
-            {/* Services Page */}
-            <Route path="/services-details" element={
-              <Suspense fallback={<LoadingFallback />}>
-                <ServicesPage />
-              </Suspense>
-            } />
-          </Routes>
-        </div>
-      </Router>
+        </Router>
       </ErrorBoundary>
     </ThemeProvider>
   );
