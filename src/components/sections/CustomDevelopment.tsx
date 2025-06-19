@@ -95,6 +95,18 @@ const CustomDevelopment = () => {
               </motion.button>
             ))}
           </div>
+          
+          {/* Instruction Note */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center"
+          >
+            <p className={`${styles.text.secondary} text-sm italic`}>
+              Kindly press the services to see its details
+            </p>
+          </div>
         </motion.div>
 
         {/* Service Content */}
