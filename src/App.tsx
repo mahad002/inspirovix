@@ -7,7 +7,8 @@ import { Home } from './components/sections';
 
 // Lazy load heavy components
 const AIAutomation = lazy(() => import('./components/sections/AIAutomation'));
-const CustomDevelopment = lazy(() => import('./components/sections/CustomDevelopment'));
+const Services = lazy(() => import('./components/sections/Services'));
+const DetailedServices = lazy(() => import('./components/sections/DetailedServices'));
 const Solutions = lazy(() => import('./components/sections/Solutions'));
 const CaseStudies = lazy(() => import('./components/sections/CaseStudies'));
 const About = lazy(() => import('./components/sections/About'));
@@ -54,11 +55,15 @@ function App() {
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <Solutions />
+          <Services />
         </Suspense>
         
         <Suspense fallback={<LoadingFallback />}>
-          <CustomDevelopment />
+          <DetailedServices />
+        </Suspense>
+        
+        <Suspense fallback={<LoadingFallback />}>
+          <Solutions />
         </Suspense>
 
         {/* 5. Authority & Trust Building */}
