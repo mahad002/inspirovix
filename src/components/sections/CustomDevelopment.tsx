@@ -117,7 +117,7 @@ const CustomDevelopment = () => {
                   Key Areas:
                 </h4>
                 <div className="flex flex-wrap gap-2">
-                  {service.divisions.slice(0, 3).map((division, divIndex) => (
+                  {service.divisions.map((division, divIndex) => (
                     <span
                       key={divIndex}
                       className={`text-xs px-3 py-1 rounded-full font-medium ${
@@ -129,11 +129,6 @@ const CustomDevelopment = () => {
                       {division.name}
                     </span>
                   ))}
-                  {service.divisions.length > 3 && (
-                    <span className={`text-xs px-3 py-1 rounded-full font-medium ${styles.text.secondary} border ${styles.border.primary}`}>
-                      +{service.divisions.length - 3} more
-                    </span>
-                  )}
                 </div>
               </div>
             </motion.div>
