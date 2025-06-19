@@ -72,7 +72,7 @@ const Navbar = React.memo(() => {
                     href={item.href}
                     className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                       isContact 
-                        ? `${styles.button.primary} ${styles.text.primary} font-bold shadow-lg ${styles.glow.primary} hover:scale-105 border-2 border-transparent hover:border-violet-300`
+                        ? `${styles.button.primary} ${styles.text.primary} font-bold shadow-lg ${styles.glow.primary} hover:scale-105`
                         : isActive 
                           ? styles.text.primary 
                           : styles.text.secondary
@@ -173,7 +173,7 @@ const Navbar = React.memo(() => {
                         onClick={() => setIsOpen(false)}
                         className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden transition-all duration-300 ${
                           isContact
-                            ? `${styles.button.primary} ${styles.text.primary} font-bold ${styles.glow.primary} border-2 border-violet-400 scale-105`
+                            ? `${styles.button.primary} ${styles.text.primary} font-bold ${styles.glow.primary} scale-105`
                             : isActive 
                               ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` 
                               : styles.text.secondary
