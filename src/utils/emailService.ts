@@ -1,4 +1,5 @@
 import emailjs from '@emailjs/browser';
+import { SecurityValidator } from './security';
 
 interface ContactFormData {
   name: string;
@@ -17,7 +18,30 @@ interface PricingInquiryData {
 emailjs.init("7TpUFIasS5eHoxLh_");
 
 export const sendContactEmail = async (data: ContactFormData) => {
-  const { name, email, message } = data;
+  // Security validation
+  const validation = SecurityValidator.validateFormData(data);
+  
+  if (!validation.isValid) {
+    console.error('Security validation failed:', validation.errors, validation.globalErrors);
+    return { 
+      success: false, 
+      error: 'Invalid input detected. Please check your data and try again.',
+      securityErrors: validation.errors
+    };
+  }
+
+  // Rate limiting check
+  const rateLimit = SecurityValidator.checkRateLimit(validation.sanitizedData.email);
+  if (!rateLimit.allowed) {
+    const resetTime = new Date(rateLimit.resetTime).toLocaleTimeString();
+    return { 
+      success: false, 
+      error: `Too many attempts. Please try again after ${resetTime}.`,
+      rateLimited: true
+    };
+  }
+
+  const { name, email, message } = validation.sanitizedData;
   
   // Get current date in a readable format
   const today = new Date().toLocaleDateString('en-US', {
@@ -50,7 +74,30 @@ export const sendContactEmail = async (data: ContactFormData) => {
 };
 
 export const sendPricingInquiryEmail = async (data: PricingInquiryData) => {
-  const { planName, price, features, email } = data;
+  // Security validation
+  const validation = SecurityValidator.validateFormData(data);
+  
+  if (!validation.isValid) {
+    console.error('Security validation failed:', validation.errors, validation.globalErrors);
+    return { 
+      success: false, 
+      error: 'Invalid input detected. Please check your data and try again.',
+      securityErrors: validation.errors
+    };
+  }
+
+  // Rate limiting check
+  const rateLimit = SecurityValidator.checkRateLimit(validation.sanitizedData.email);
+  if (!rateLimit.allowed) {
+    const resetTime = new Date(rateLimit.resetTime).toLocaleTimeString();
+    return { 
+      success: false, 
+      error: `Too many attempts. Please try again after ${resetTime}.`,
+      rateLimited: true
+    };
+  }
+
+  const { planName, price, features, email } = validation.sanitizedData;
   
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',

@@ -5,6 +5,7 @@ import { sendPricingInquiryEmail } from '../../utils/emailService';
 import type { PricingPlan } from '../../data/pricing';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
+import { SecurityValidator, HoneypotField } from '../../utils/security';
 
 type PopularPricingCardProps = PricingPlan & { delay?: number };
 
@@ -19,11 +20,30 @@ const PopularPricingCard: React.FC<PopularPricingCardProps> = ({
   const { theme } = useTheme();
   const styles = themes[theme];
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error' | 'rate-limited' | 'security-error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [formToken] = useState(() => SecurityValidator.generateFormToken());
+  const [honeypot, setHoneypot] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Honeypot check
+    if (honeypot) {
+      setStatus('security-error');
+      setErrorMessage('Automated submission detected.');
+      return;
+    }
+
+    // Validate form token
+    if (!SecurityValidator.validateFormToken(formToken)) {
+      setStatus('security-error');
+      setErrorMessage('Form session expired. Please refresh and try again.');
+      return;
+    }
+
     setStatus('sending');
+    setErrorMessage('');
     
     try {
       const result = await sendPricingInquiryEmail({
@@ -37,10 +57,18 @@ const PopularPricingCard: React.FC<PopularPricingCardProps> = ({
         setStatus('success');
         setEmail('');
       } else {
-        throw new Error('Failed to send inquiry');
+        if (result.rateLimited) {
+          setStatus('rate-limited');
+        } else if (result.securityErrors) {
+          setStatus('security-error');
+        } else {
+          setStatus('error');
+        }
+        setErrorMessage(result.error || 'Failed to send inquiry');
       }
-    } catch {
+    } catch (error) {
       setStatus('error');
+      setErrorMessage('Network error. Please try again.');
     }
   };
 
@@ -93,35 +121,64 @@ const PopularPricingCard: React.FC<PopularPricingCardProps> = ({
       {/* Hover Form */}
       <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-navy-900/95 to-purple-900/95' : 'bg-gradient-to-b from-white/95 to-purple-50/95'} backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6`}>
         <form onSubmit={handleSubmit} className="w-full space-y-4">
+          {/* Security Notice */}
+          <div className={`text-xs ${styles.text.secondary} text-center mb-2`}>
+            🔒 Secure inquiry form
+          </div>
+          
           <h4 className={`text-xl font-bold ${styles.text.primary} text-center mb-4`}>Get Started with {title}</h4>
+          
+          {/* Honeypot field */}
+          <input
+            type="text"
+            name="website"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{
+              position: 'absolute',
+              left: '-9999px',
+              width: '1px',
+              height: '1px',
+              opacity: 0
+            }}
+            tabIndex={-1}
+            autoComplete="off"
+          />
+          
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Enter your secure email"
             required
+            maxLength={254}
             className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-purple-500 ${styles.text.primary} placeholder-gray-400`}
             disabled={status === 'sending'}
+            autoComplete="email"
           />
+          
+          <input type="hidden" name="formToken" value={formToken} />
           
           <button
             type="submit"
-            disabled={status === 'sending'}
+            disabled={status === 'sending' || status === 'rate-limited'}
             className={`w-full px-4 py-3 rounded-lg ${styles.text.primary} font-semibold transition-all duration-200 ${
-              status === 'sending' 
+              (status === 'sending' || status === 'rate-limited')
                 ? 'bg-gradient-to-r from-purple-600/50 to-pink-600/50 cursor-not-allowed' 
                 : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700'
             }`}
           >
-            {status === 'sending' ? 'Sending...' : 'Get Started'}
+            {status === 'sending' ? 'Sending...' : 
+             status === 'rate-limited' ? 'Rate Limited' : 
+             'Secure Inquiry'}
           </button>
 
           {status === 'success' && (
-            <p className="text-green-500 text-sm text-center">We'll contact you soon!</p>
+            <p className="text-green-500 text-sm text-center">✅ Secure inquiry sent! We'll contact you soon.</p>
           )}
           
-          {status === 'error' && (
-            <p className="text-red-500 text-sm text-center">Failed to send. Please try again.</p>
+          {(status === 'error' || status === 'security-error' || status === 'rate-limited') && (
+            <p className="text-red-500 text-sm text-center">{errorMessage}</p>
           )}
         </form>
       </div>
