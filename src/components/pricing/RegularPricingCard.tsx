@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { sendPricingInquiryEmail } from '../../utils/emailService';
 import type { PricingPlan } from '../../data/pricing';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
-import { SecurityValidator, HoneypotField } from '../../utils/security';
+import { SecurityValidator } from '../../utils/security';
 
 type RegularPricingCardProps = PricingPlan & { delay?: number };
 
-const RegularPricingCard: React.FC<RegularPricingCardProps> = ({ 
+const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({ 
   title, 
   price, 
   description, 
@@ -18,14 +18,14 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
   delay = 0 
 }) => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error' | 'rate-limited' | 'security-error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [formToken] = useState(() => SecurityValidator.generateFormToken());
   const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Honeypot check
@@ -70,7 +70,24 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
       setStatus('error');
       setErrorMessage('Network error. Please try again.');
     }
-  };
+  }, [honeypot, formToken, title, price, features, email]);
+
+  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const handleHoneypotChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setHoneypot(e.target.value);
+  }, []);
+
+  // Memoized feature list
+  const featureList = useMemo(() => 
+    features.map((feature, index) => (
+      <li key={index} className={`flex items-center gap-2 ${styles.text.secondary} text-sm`}>
+        <Check className="w-4 h-4 text-purple-500 flex-shrink-0" />
+        <span>{feature}</span>
+      </li>
+    )), [features, styles.text.secondary]);
 
   return (
     <motion.div
@@ -79,6 +96,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
       className={`group relative ${styles.background.card} rounded-2xl p-6 min-w-[300px] min-h-[580px] flex flex-col border ${styles.border.primary} overflow-hidden ${styles.glow.primary}`}
+      style={{ willChange: 'transform' }}
     >
       {/* Card Content */}
       <div className="transition-opacity duration-300 group-hover:opacity-10 mt-12">
@@ -92,22 +110,17 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
         <div className="mb-4">
           <div className="flex items-baseline gap-2 mb-2">
             <span className={`text-4xl font-bold ${styles.text.primary}`}>{price}</span>
-            <span className={styles.text.secondary}>/month</span>
+            <span className={styles.text.secondary}>/project</span>
           </div>
           <p className={`${styles.text.secondary} text-sm`}>{description}</p>
         </div>
 
         <ul className="space-y-3 mb-6">
-          {features.map((feature, index) => (
-            <li key={index} className={`flex items-center gap-2 ${styles.text.secondary} text-sm`}>
-              <Check className="w-4 h-4 text-purple-500 flex-shrink-0" />
-              <span>{feature}</span>
-            </li>
-          ))}
+          {featureList}
         </ul>
       </div>
 
-      {/* Hover Form */}
+      {/* Hover Form - Optimized */}
       <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-navy-900/95 to-purple-900/95' : 'bg-gradient-to-b from-white/95 to-purple-50/95'} backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6`}>
         <form onSubmit={handleSubmit} className="w-full space-y-4">
           {/* Security Notice */}
@@ -122,7 +135,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
             type="text"
             name="website"
             value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
+            onChange={handleHoneypotChange}
             style={{
               position: 'absolute',
               left: '-9999px',
@@ -137,7 +150,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleEmailChange}
             placeholder="Enter your secure email"
             required
             maxLength={254}
@@ -173,6 +186,8 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = ({
       </div>
     </motion.div>
   );
-};
+});
+
+RegularPricingCard.displayName = 'RegularPricingCard';
 
 export default RegularPricingCard;

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ActionButton } from '../ui/ActionButton';
@@ -13,14 +13,14 @@ const ScrollButton: React.FC<{
   direction: 'left' | 'right';
   onClick: () => void;
   disabled: boolean;
-}> = ({ direction, onClick, disabled }) => {
+}> = React.memo(({ direction, onClick, disabled }) => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
 
   return (
     <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
+      whileHover={{ scale: disabled ? 1 : 1.1 }}
+      whileTap={{ scale: disabled ? 1 : 0.9 }}
       onClick={onClick}
       disabled={disabled}
       className={`absolute top-1/2 transform -translate-y-1/2 z-10 
@@ -28,6 +28,7 @@ const ScrollButton: React.FC<{
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'}
         ${styles.button.primary} ${styles.text.primary}
         shadow-lg hover:shadow-xl transition-all duration-200 p-3 rounded-full`}
+      style={{ willChange: 'transform' }}
     >
       {direction === 'left' ? (
         <ChevronLeft className="w-6 h-6" />
@@ -36,21 +37,83 @@ const ScrollButton: React.FC<{
       )}
     </motion.button>
   );
-};
+});
+
+ScrollButton.displayName = 'ScrollButton';
 
 const Pricing = () => {
   const { theme } = useTheme();
-  const styles = themes[theme];
+  const styles = useMemo(() => themes[theme], [theme]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { scrollXProgress } = useScroll({ container: scrollContainerRef });
-  const opacity = useTransform(scrollXProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
-  const handleScroll = (direction: 'left' | 'right') => {
+  // Optimized scroll handler with throttling
+  const handleScroll = useCallback((direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
       const scrollAmount = direction === 'left' ? -340 : 340;
       scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
-  };
+  }, []);
+
+  // Throttled scroll progress update
+  const handleScrollProgress = useCallback(() => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      const progress = scrollLeft / (scrollWidth - clientWidth);
+      setScrollProgress(Math.max(0, Math.min(1, progress)));
+    }
+  }, []);
+
+  // Memoized pricing cards to prevent unnecessary re-renders
+  const pricingCards = useMemo(() => 
+    pricingPlans.map((plan, index) => (
+      <div key={`${plan.title}-${index}`} className="snap-center">
+        {plan.isPopular ? (
+          <PopularPricingCard {...plan} delay={0} />
+        ) : (
+          <RegularPricingCard {...plan} delay={0} />
+        )}
+      </div>
+    )), []);
+
+  // Memoized info cards
+  const infoCards = useMemo(() => [
+    {
+      title: "Transparent Pricing",
+      description: "No hidden fees. Clear, upfront pricing based on project scope and requirements.",
+      color: "from-green-500 to-emerald-500"
+    },
+    {
+      title: "Flexible Payment",
+      description: "Milestone-based payments, flexible terms, and payment plans available for larger projects.",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
+      title: "Value-Driven",
+      description: "Competitive pricing focused on delivering maximum ROI and long-term business value.",
+      color: "from-purple-500 to-pink-500"
+    }
+  ], []);
+
+  // Memoized FAQ data
+  const faqData = useMemo(() => [
+    {
+      question: "Why is all pricing custom?",
+      answer: "Every project has unique requirements, complexity, and scope. Custom pricing ensures you pay exactly for what you need and get maximum value."
+    },
+    {
+      question: "How quickly can I get a quote?",
+      answer: "We provide detailed quotes within 24 hours of receiving your project requirements. Complex projects may take up to 48 hours for accurate estimation."
+    },
+    {
+      question: "Do you offer payment plans?",
+      answer: "Yes! We offer milestone-based payments and flexible payment plans for larger projects to help manage your cash flow effectively."
+    },
+    {
+      question: "What's included in the pricing?",
+      answer: "Our quotes include development, testing, deployment, documentation, and specified support period. No hidden fees or surprise charges."
+    }
+  ], []);
 
   return (
     <section id="pricing" className={`${styles.background.primary} py-24`}>
@@ -75,42 +138,39 @@ const Pricing = () => {
           <ScrollButton
             direction="left"
             onClick={() => handleScroll('left')}
-            disabled={scrollXProgress.get() === 0}
+            disabled={scrollProgress === 0}
           />
           
           <div
             ref={scrollContainerRef}
+            onScroll={handleScrollProgress}
             className="flex overflow-x-auto gap-6 pb-8 px-4 snap-x snap-mandatory hide-scrollbar"
             style={{
               scrollbarWidth: 'none',
               msOverflowStyle: 'none',
-              minHeight: '650px'
+              minHeight: '650px',
+              willChange: 'scroll-position'
             }}
           >
-            {pricingPlans.map((plan, index) => (
-              <div key={index} className="snap-center">
-                {plan.isPopular ? (
-                  <PopularPricingCard {...plan} delay={index * 0.1} />
-                ) : (
-                  <RegularPricingCard {...plan} delay={index * 0.1} />
-                )}
-              </div>
-            ))}
+            {pricingCards}
           </div>
 
           <ScrollButton
             direction="right"
             onClick={() => handleScroll('right')}
-            disabled={scrollXProgress.get() === 1}
+            disabled={scrollProgress >= 0.99}
           />
 
-          <motion.div
-            style={{ opacity }}
-            className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full`}
-          />
+          {/* Simplified progress indicator */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-full transition-all duration-300"
+              style={{ width: `${scrollProgress * 100}%` }}
+            />
+          </div>
         </div>
 
-        {/* Pricing Information */}
+        {/* Pricing Information - Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -118,44 +178,22 @@ const Pricing = () => {
           transition={{ duration: 0.6 }}
           className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Star className="w-6 h-6 text-white" />
+          {infoCards.map((card, index) => (
+            <div key={index} className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
+              <div className={`w-12 h-12 bg-gradient-to-br ${card.color} rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                <Star className="w-6 h-6 text-white" />
+              </div>
+              <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
+                {card.title}
+              </h3>
+              <p className={`${styles.text.secondary} text-sm`}>
+                {card.description}
+              </p>
             </div>
-            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
-              Transparent Pricing
-            </h3>
-            <p className={`${styles.text.secondary} text-sm`}>
-              No hidden fees. Clear, upfront pricing based on project scope and requirements.
-            </p>
-          </div>
-
-          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Star className="w-6 h-6 text-white" />
-            </div>
-            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
-              Flexible Payment
-            </h3>
-            <p className={`${styles.text.secondary} text-sm`}>
-              Milestone-based payments, flexible terms, and payment plans available for larger projects.
-            </p>
-          </div>
-
-          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
-            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Star className="w-6 h-6 text-white" />
-            </div>
-            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
-              Value-Driven
-            </h3>
-            <p className={`${styles.text.secondary} text-sm`}>
-              Competitive pricing focused on delivering maximum ROI and long-term business value.
-            </p>
-          </div>
+          ))}
         </motion.div>
 
-        {/* Custom Solution CTA */}
+        {/* Custom Solution CTA - Simplified */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +226,7 @@ const Pricing = () => {
           </div>
         </motion.div>
 
-        {/* Pricing FAQ */}
+        {/* Pricing FAQ - Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -200,24 +238,7 @@ const Pricing = () => {
             Pricing FAQ
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              {
-                question: "Why is all pricing custom?",
-                answer: "Every project has unique requirements, complexity, and scope. Custom pricing ensures you pay exactly for what you need and get maximum value."
-              },
-              {
-                question: "How quickly can I get a quote?",
-                answer: "We provide detailed quotes within 24 hours of receiving your project requirements. Complex projects may take up to 48 hours for accurate estimation."
-              },
-              {
-                question: "Do you offer payment plans?",
-                answer: "Yes! We offer milestone-based payments and flexible payment plans for larger projects to help manage your cash flow effectively."
-              },
-              {
-                question: "What's included in the pricing?",
-                answer: "Our quotes include development, testing, deployment, documentation, and specified support period. No hidden fees or surprise charges."
-              }
-            ].map((faq, index) => (
+            {faqData.map((faq, index) => (
               <div key={index} className={`${styles.background.card} rounded-lg p-6 ${styles.glow.primary}`}>
                 <h4 className={`font-semibold ${styles.text.primary} mb-2`}>
                   {faq.question}
