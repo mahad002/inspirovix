@@ -1,20 +1,18 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './theme/ThemeContext';
 import CustomCursor from './components/ui/CustomCursor';
 import Navbar from './components/Navbar';
 import ThemeToggle from './components/ThemeToggle';
-import { Home } from './components/sections';
 
-// Lazy load heavy components
-const AIAutomation = lazy(() => import('./components/sections/AIAutomation'));
-const Services = lazy(() => import('./components/sections/CustomDevelopment'));
-const Solutions = lazy(() => import('./components/sections/Solutions'));
-const CaseStudies = lazy(() => import('./components/sections/CaseStudies'));
-const About = lazy(() => import('./components/sections/About'));
-const Blog = lazy(() => import('./components/sections/Blog'));
-const Contact = lazy(() => import('./components/sections/Contact'));
-const Pricing = lazy(() => import('./components/sections/Pricing'));
-const AssociatedCompanies = lazy(() => import('./components/sections/AssociatedCompanies'));
+// Lazy load pages
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const ServicesPage = React.lazy(() => import('./pages/ServicesPage'));
+const CaseStudiesPage = React.lazy(() => import('./pages/CaseStudiesPage'));
+const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+const PricingPage = React.lazy(() => import('./pages/PricingPage'));
+const ContactPage = React.lazy(() => import('./pages/ContactPage'));
+const BlogPage = React.lazy(() => import('./pages/BlogPage'));
 
 // Loading fallback component
 const LoadingFallback = React.memo(() => (
@@ -28,59 +26,27 @@ LoadingFallback.displayName = 'LoadingFallback';
 function App() {
   return (
     <ThemeProvider>
-      <div className="transition-colors duration-200 md:cursor-glow">
-        <CustomCursor />
-        <Navbar />
-        <div className="hidden lg:block">
-          <ThemeToggle />
+      <Router>
+        <div className="transition-colors duration-200 md:cursor-glow">
+          <CustomCursor />
+          <Navbar />
+          <div className="hidden lg:block">
+            <ThemeToggle />
+          </div>
+          
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/case-studies" element={<CaseStudiesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/pricing" element={<PricingPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/blog" element={<BlogPage />} />
+            </Routes>
+          </Suspense>
         </div>
-        
-        {/* 1. Value Proposition & Problem Statement */}
-        <Home />
-
-        {/* 2. Solution Presentation */}
-        <Suspense fallback={<LoadingFallback />}>
-          <AIAutomation />
-        </Suspense>
-
-        {/* 3. Associated Companies */}
-        <Suspense fallback={<LoadingFallback />}>
-          <AssociatedCompanies />
-        </Suspense>
-
-        {/* 4. Additional Solutions */}
-        <Suspense fallback={<LoadingFallback />}>
-          <CaseStudies />
-        </Suspense>
-        
-        <Suspense fallback={<LoadingFallback />}>
-          <Solutions />
-        </Suspense>
-        
-        <Suspense fallback={<LoadingFallback />}>
-          <Services />
-        </Suspense>
-
-        {/* 5. Authority & Trust Building */}
-        <Suspense fallback={<LoadingFallback />}>
-          <About />
-        </Suspense>
-        
-        {/* 6. Price Placement - After Value Is Established */}
-        <Suspense fallback={<LoadingFallback />}>
-          <Pricing />
-        </Suspense>
-
-        {/* 7. Call To Action */}
-        <Suspense fallback={<LoadingFallback />}>
-          <Contact />
-        </Suspense>
-        
-        {/* 8. Additional Value & Educational Content */}
-        <Suspense fallback={<LoadingFallback />}>
-          <Blog />
-        </Suspense>
-      </div>
+      </Router>
     </ThemeProvider>
   );
 }
