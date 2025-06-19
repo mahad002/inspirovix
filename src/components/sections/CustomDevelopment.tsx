@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, ExternalLink, CheckCircle, Star, ArrowRight, ChevronDown } from 'lucide-react';
+import { Code, ExternalLink, CheckCircle, Star, ArrowRight } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
@@ -11,8 +11,6 @@ const CustomDevelopment = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
   const [activeTab, setActiveTab] = useState(0);
-  const [hoveredDivision, setHoveredDivision] = useState<number | null>(null);
-  const [clickedDivisions, setClickedDivisions] = useState<Set<number>>(new Set());
 
   const getServiceColor = (index: number) => {
     const colors = [
@@ -30,20 +28,6 @@ const CustomDevelopment = () => {
   };
 
   const currentService = allServices[activeTab];
-
-  const handleDivisionClick = (divisionIndex: number) => {
-    const newClickedDivisions = new Set(clickedDivisions);
-    if (newClickedDivisions.has(divisionIndex)) {
-      newClickedDivisions.delete(divisionIndex);
-    } else {
-      newClickedDivisions.add(divisionIndex);
-    }
-    setClickedDivisions(newClickedDivisions);
-  };
-
-  const isDivisionExpanded = (divisionIndex: number) => {
-    return hoveredDivision === divisionIndex || clickedDivisions.has(divisionIndex);
-  };
 
   return (
     <section id="services" className={`${styles.background.primary} py-20`}>
@@ -77,11 +61,7 @@ const CustomDevelopment = () => {
                 key={index}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setActiveTab(index);
-                  setClickedDivisions(new Set()); // Reset clicked divisions when switching tabs
-                  setHoveredDivision(null);
-                }}
+                onClick={() => setActiveTab(index)}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-300 ${
                   activeTab === index
                     ? `${styles.button.primary} ${styles.text.primary} ${styles.glow.primary}`
@@ -181,7 +161,7 @@ const CustomDevelopment = () => {
               </div>
             </div>
 
-            {/* Service Divisions - All Expanded by Default with Hover/Click Interactions */}
+            {/* Service Divisions - Always Expanded */}
             <div>
               <h3 className={`text-3xl font-bold ${styles.text.primary} mb-8 text-center`}>
                 Service Divisions & Specializations
@@ -194,115 +174,77 @@ const CustomDevelopment = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: divisionIndex * 0.1 }}
-                    className={`${styles.background.secondary} rounded-xl p-6 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                      isDivisionExpanded(divisionIndex) ? `ring-2 ring-violet-500 ${styles.glow.accent}` : styles.glow.primary
-                    }`}
-                    onMouseEnter={() => setHoveredDivision(divisionIndex)}
-                    onMouseLeave={() => setHoveredDivision(null)}
-                    onClick={() => handleDivisionClick(divisionIndex)}
+                    className={`${styles.background.secondary} rounded-xl p-6 ${styles.glow.primary}`}
                   >
-                    <div className="flex items-center justify-between mb-4">
-                      <h4 className={`text-xl font-bold ${styles.text.primary}`}>
+                    <div className="mb-6">
+                      <h4 className={`text-xl font-bold ${styles.text.primary} mb-4`}>
                         {division.name}
                       </h4>
-                      <motion.div
-                        animate={{ 
-                          rotate: isDivisionExpanded(divisionIndex) ? 180 : 0,
-                          scale: isDivisionExpanded(divisionIndex) ? 1.1 : 1
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronDown className={`w-5 h-5 ${
-                          isDivisionExpanded(divisionIndex) ? 'text-violet-400' : styles.text.secondary
-                        }`} />
-                      </motion.div>
-                    </div>
-                    
-                    {/* Always show all specializations */}
-                    <div className="space-y-3">
-                      <h5 className={`text-sm font-semibold ${styles.text.secondary} mb-3`}>
-                        Specializations:
-                      </h5>
-                      <div className="flex flex-wrap gap-2">
-                        {division.specializations.map((specialization, specIndex) => (
-                          <motion.span
-                            key={specIndex}
-                            initial={{ opacity: 0.7, scale: 0.95 }}
-                            animate={{ 
-                              opacity: isDivisionExpanded(divisionIndex) ? 1 : 0.8,
-                              scale: isDivisionExpanded(divisionIndex) ? 1 : 0.95
-                            }}
-                            transition={{ duration: 0.2, delay: specIndex * 0.05 }}
-                            className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all duration-300 ${
-                              isDivisionExpanded(divisionIndex)
-                                ? theme === 'dark' 
-                                  ? 'bg-violet-500/30 text-violet-200 border border-violet-400/50 shadow-lg' 
-                                  : 'bg-violet-200 text-violet-800 border border-violet-300 shadow-lg'
-                                : theme === 'dark' 
-                                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' 
-                                  : 'bg-violet-100 text-violet-700 border border-violet-200'
-                            }`}
+                      
+                      {/* Always show all specializations */}
+                      <div className="space-y-4">
+                        <h5 className={`text-sm font-semibold ${styles.text.secondary} mb-3`}>
+                          Specializations:
+                        </h5>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {division.specializations.map((specialization, specIndex) => (
+                            <span
+                              key={specIndex}
+                              className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+                                theme === 'dark' 
+                                  ? 'bg-violet-500/30 text-violet-200 border border-violet-400/50' 
+                                  : 'bg-violet-200 text-violet-800 border border-violet-300'
+                              }`}
+                            >
+                              {specialization}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Always show detailed information */}
+                      <div className="space-y-4">
+                        <p className={`${styles.text.secondary} text-sm`}>
+                          Our {division.name.toLowerCase()} team specializes in delivering high-quality solutions 
+                          using the latest technologies and industry best practices.
+                        </p>
+                        
+                        {/* Additional Info */}
+                        <div className={`${styles.background.primary} rounded-lg p-4`}>
+                          <h6 className={`text-sm font-semibold ${styles.text.primary} mb-2`}>
+                            What We Deliver:
+                          </h6>
+                          <ul className="space-y-1">
+                            <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                              <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                              Custom solutions tailored to your needs
+                            </li>
+                            <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                              <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                              Scalable architecture and clean code
+                            </li>
+                            <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                              <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                              Comprehensive testing and documentation
+                            </li>
+                            <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
+                              <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
+                              Ongoing support and maintenance
+                            </li>
+                          </ul>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <ActionButton
+                            href={`mailto:${contactInfo.email}?subject=${currentService.name} - ${division.name} Inquiry`}
+                            icon={<ExternalLink className="w-4 h-4" />}
+                            variant="primary"
                           >
-                            {specialization}
-                          </motion.span>
-                        ))}
+                            Get Quote
+                          </ActionButton>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Enhanced Details on Hover/Click */}
-                    <AnimatePresence>
-                      {isDivisionExpanded(divisionIndex) && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0, y: -10 }}
-                          animate={{ opacity: 1, height: 'auto', y: 0 }}
-                          exit={{ opacity: 0, height: 0, y: -10 }}
-                          transition={{ duration: 0.3 }}
-                          className="mt-6 pt-4 border-t border-violet-500/30"
-                        >
-                          <div className="space-y-4">
-                            <p className={`${styles.text.secondary} text-sm`}>
-                              Our {division.name.toLowerCase()} team specializes in delivering high-quality solutions 
-                              using the latest technologies and industry best practices.
-                            </p>
-                            
-                            {/* Additional Info on Expansion */}
-                            <div className={`${styles.background.primary} rounded-lg p-4`}>
-                              <h6 className={`text-sm font-semibold ${styles.text.primary} mb-2`}>
-                                What We Deliver:
-                              </h6>
-                              <ul className="space-y-1">
-                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
-                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
-                                  Custom solutions tailored to your needs
-                                </li>
-                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
-                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
-                                  Scalable architecture and clean code
-                                </li>
-                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
-                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
-                                  Comprehensive testing and documentation
-                                </li>
-                                <li className={`text-xs ${styles.text.secondary} flex items-center gap-2`}>
-                                  <div className="w-1.5 h-1.5 bg-violet-500 rounded-full"></div>
-                                  Ongoing support and maintenance
-                                </li>
-                              </ul>
-                            </div>
-                            
-                            <div className="flex gap-2">
-                              <ActionButton
-                                href={`mailto:${contactInfo.email}?subject=${currentService.name} - ${division.name} Inquiry`}
-                                icon={<ExternalLink className="w-4 h-4" />}
-                                variant="primary"
-                              >
-                                Get Quote
-                              </ActionButton>
-                            </div>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
                   </motion.div>
                 ))}
               </div>
