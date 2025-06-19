@@ -207,7 +207,7 @@ const Navbar = React.memo(() => {
                         </div>
                         <span className={`font-medium text-sm sm:text-base ${isContact ? 'font-bold' : ''}`}>
                           {item.label}
-                          {(isContact || isServices) && <ArrowRight className={`w-4 h-4 ml-2 ${isContact ? 'animate-bounce' : ''}`} />}
+                          {isServices && <ArrowRight className="w-4 h-4 ml-2" />}
                         </span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                           (isContact || isServices)
