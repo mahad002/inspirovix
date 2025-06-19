@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Security utilities for form validation and protection
 export class SecurityValidator {
   // SQL Injection patterns to detect and block
