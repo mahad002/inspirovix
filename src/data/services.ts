@@ -1,4 +1,5 @@
 import { MessageSquare, ShoppingCart, Bot, Calendar, Zap, Shield, Smartphone, Blocks, Share2, Cloud } from 'lucide-react';
+import { TestTube, Palette, Gamepad2 } from 'lucide-react';
 
 export const services = [
   {
@@ -139,6 +140,90 @@ export const additionalServices = [
       { 
         name: "Security & Compliance (DevSecOps)", 
         solutions: ["IAM hardening", "Compliance automation (PCI‑DSS, HIPAA, GDPR)"] 
+      }
+    ]
+  }
+];
+
+export const newServices = [
+  {
+    name: "Software Testing & QA",
+    icon: TestTube,
+    description: "Comprehensive quality assurance and testing solutions",
+    sub_services: [
+      { 
+        name: "Automated Testing", 
+        solutions: ["Unit testing", "Integration testing", "End-to-end testing", "Performance testing"] 
+      },
+      { 
+        name: "Manual Testing", 
+        solutions: ["Functional testing", "Usability testing", "Exploratory testing", "Regression testing"] 
+      },
+      { 
+        name: "Security Testing", 
+        solutions: ["Vulnerability assessment", "Penetration testing", "Security audits"] 
+      },
+      { 
+        name: "Performance Testing", 
+        solutions: ["Load testing", "Stress testing", "Volume testing", "Scalability testing"] 
+      },
+      { 
+        name: "Mobile App Testing", 
+        solutions: ["Device compatibility", "OS testing", "App store compliance"] 
+      }
+    ]
+  },
+  {
+    name: "UI & UX Design",
+    icon: Palette,
+    description: "User-centered design solutions for exceptional experiences",
+    sub_services: [
+      { 
+        name: "User Experience (UX) Design", 
+        solutions: ["User research", "Information architecture", "User journey mapping", "Wireframing"] 
+      },
+      { 
+        name: "User Interface (UI) Design", 
+        solutions: ["Visual design", "Interactive prototypes", "Design systems", "Component libraries"] 
+      },
+      { 
+        name: "Mobile App Design", 
+        solutions: ["iOS design guidelines", "Android material design", "Cross-platform consistency"] 
+      },
+      { 
+        name: "Web Design", 
+        solutions: ["Responsive design", "Landing pages", "E-commerce interfaces", "Dashboard design"] 
+      },
+      { 
+        name: "Design Research & Testing", 
+        solutions: ["Usability testing", "A/B testing", "User feedback analysis", "Design validation"] 
+      }
+    ]
+  },
+  {
+    name: "Game Development",
+    icon: Gamepad2,
+    description: "End-to-end game development for multiple platforms",
+    sub_services: [
+      { 
+        name: "Mobile Game Development", 
+        solutions: ["iOS games", "Android games", "Cross-platform mobile games", "Casual & hyper-casual games"] 
+      },
+      { 
+        name: "Web Game Development", 
+        solutions: ["HTML5 games", "WebGL games", "Browser-based multiplayer", "Progressive web games"] 
+      },
+      { 
+        name: "PC & Console Games", 
+        solutions: ["Unity development", "Unreal Engine", "Steam integration", "Console porting"] 
+      },
+      { 
+        name: "Game Design & Art", 
+        solutions: ["Game mechanics design", "2D/3D art assets", "Character design", "Environment design"] 
+      },
+      { 
+        name: "Game Backend & Multiplayer", 
+        solutions: ["Real-time multiplayer", "Leaderboards", "In-app purchases", "Analytics integration"] 
       }
     ]
   }

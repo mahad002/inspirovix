@@ -1,11 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Code, Smartphone, LampDesk as Desktop, Globe, Database, Shield, Brain, MessageSquare, Bot, Mic, Cpu, Network, Cloud, Share2, Blocks } from 'lucide-react';
+import { TestTube, Palette, Gamepad2 } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
 import { contactInfo } from '../../data/contact';
-import { additionalServices } from '../../data/services';
+import { additionalServices, newServices } from '../../data/services';
 
 const CustomDevelopment = () => {
   const { theme } = useTheme();
@@ -109,14 +110,17 @@ const CustomDevelopment = () => {
         </motion.div>
 
         {/* Main Service Categories */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-4 mb-16">
           {[
             { name: "Web Development", icon: Globe, color: "from-blue-500 to-cyan-500" },
             { name: "Mobile Development", icon: Smartphone, color: "from-green-500 to-emerald-500" },
             { name: "Cloud & DevOps", icon: Cloud, color: "from-purple-500 to-violet-500" },
             { name: "Social Media Marketing", icon: Share2, color: "from-pink-500 to-rose-500" },
             { name: "Blockchain", icon: Blocks, color: "from-orange-500 to-amber-500" },
-            { name: "AI & ML", icon: Brain, color: "from-indigo-500 to-purple-500" }
+            { name: "AI & ML", icon: Brain, color: "from-indigo-500 to-purple-500" },
+            { name: "Software Testing & QA", icon: TestTube, color: "from-red-500 to-pink-500" },
+            { name: "UI & UX Design", icon: Palette, color: "from-teal-500 to-cyan-500" },
+            { name: "Game Development", icon: Gamepad2, color: "from-yellow-500 to-orange-500" }
           ].map((category, index) => (
             <motion.div
               key={index}
@@ -124,12 +128,12 @@ const CustomDevelopment = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300`}
+              className={`${styles.background.card} rounded-xl p-4 text-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300`}
             >
-              <div className={`w-16 h-16 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                <category.icon className="w-8 h-8 text-white" />
+              <div className={`w-12 h-12 bg-gradient-to-br ${category.color} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+                <category.icon className="w-6 h-6 text-white" />
               </div>
-              <h3 className={`text-lg font-semibold ${styles.text.primary} group-hover:text-violet-400 transition-colors`}>
+              <h3 className={`text-sm font-semibold ${styles.text.primary} group-hover:text-violet-400 transition-colors leading-tight`}>
                 {category.name}
               </h3>
             </motion.div>
