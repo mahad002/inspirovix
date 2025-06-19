@@ -106,7 +106,7 @@ const CustomDevelopment = () => {
             <p className={`${styles.text.secondary} text-sm italic`}>
               Kindly press the services to see its details
             </p>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Service Content */}
