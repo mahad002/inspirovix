@@ -64,8 +64,9 @@ const Navbar = React.memo(() => {
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
               {menuItems.map((item) => {
-                const isActive = activeSection === item.href.substring(1);
+                const isActive = item.href.startsWith('#') ? activeSection === item.href.substring(1) : window.location.pathname === item.href;
                 const isContact = item.href === '#contact';
+                const isServices = item.href === '/services';
                 return (
                   <motion.a
                     key={item.href}
@@ -73,19 +74,22 @@ const Navbar = React.memo(() => {
                     className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
                       isContact 
                         ? `${styles.button.primary} ${styles.text.primary} font-bold shadow-lg ${styles.glow.primary} hover:scale-105`
+                        : isServices
+                          ? `${styles.button.secondary} ${styles.text.primary} font-semibold ${styles.glow.primary} hover:scale-105`
                         : isActive 
                           ? styles.text.primary 
                           : styles.text.secondary
-                    } ${!isContact ? `hover:${styles.text.primary}` : ''}`}
+                    } ${!isContact && !isServices ? `hover:${styles.text.primary}` : ''}`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className={`relative z-10 ${isContact ? 'flex items-center gap-2' : ''}`}>
-                      {isContact && <item.icon className="w-4 h-4" />}
+                    <span className={`relative z-10 ${(isContact || isServices) ? 'flex items-center gap-2' : ''}`}>
+                      {(isContact || isServices) && <item.icon className="w-4 h-4" />}
                       {item.label}
                       {isContact && <ArrowRight className="w-4 h-4 animate-pulse" />}
+                      {isServices && <ArrowRight className="w-4 h-4" />}
                     </span>
-                    {isActive && !isContact && (
+                    {isActive && !isContact && !isServices && (
                       <motion.div
                         layoutId="navbar-active"
                         className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-lg"
@@ -163,6 +167,7 @@ const Navbar = React.memo(() => {
                   {menuItems.map((item, index) => {
                     const isActive = activeSection === item.href.substring(1);
                     const isContact = item.href === '#contact';
+                    const isServices = item.href === '/services';
                     return (
                       <motion.a
                         key={item.href}
@@ -174,6 +179,8 @@ const Navbar = React.memo(() => {
                         className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden transition-all duration-300 ${
                           isContact
                             ? `${styles.button.primary} ${styles.text.primary} font-bold ${styles.glow.primary} scale-105`
+                            : isServices
+                              ? `${styles.button.secondary} ${styles.text.primary} font-semibold ${styles.glow.primary} scale-105`
                             : isActive 
                               ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` 
                               : styles.text.secondary
@@ -182,6 +189,8 @@ const Navbar = React.memo(() => {
                         <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
                           isContact
                             ? 'bg-gradient-to-br from-white/20 to-white/10 animate-pulse'
+                            : isServices
+                              ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500'
                             : isActive 
                               ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' 
                               : 'bg-violet-500/20 group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500'
@@ -189,6 +198,8 @@ const Navbar = React.memo(() => {
                           <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${
                             isContact 
                               ? 'text-white' 
+                              : isServices
+                                ? 'text-white'
                               : isActive 
                                 ? 'text-white' 
                                 : 'group-hover:text-white'
@@ -196,16 +207,16 @@ const Navbar = React.memo(() => {
                         </div>
                         <span className={`font-medium text-sm sm:text-base ${isContact ? 'font-bold' : ''}`}>
                           {item.label}
-                          {isContact && <ArrowRight className="w-4 h-4 ml-2 animate-bounce" />}
+                          {(isContact || isServices) && <ArrowRight className={`w-4 h-4 ml-2 ${isContact ? 'animate-bounce' : ''}`} />}
                         </span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                          isContact 
+                          (isContact || isServices)
                             ? 'text-white opacity-100' 
                             : isActive 
                               ? 'text-violet-400' 
                               : 'text-violet-500'
                         }`} />
-                        {!isContact && (
+                        {!isContact && !isServices && (
                           <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                         )}
                       </motion.a>

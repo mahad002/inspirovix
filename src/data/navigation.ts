@@ -5,7 +5,7 @@ export const menuItems = [
   { icon: Bot, label: 'AI Automation', href: '#ai-automation' },
   { icon: BookOpen, label: 'Case Studies', href: '#case-studies' },
   { icon: Lightbulb, label: 'Solutions', href: '#solutions' },
-  { icon: Code, label: 'Services', href: '#services' },
+  { icon: Code, label: 'Services', href: '/services' },
   { icon: Users, label: 'About', href: '#about' },
   { icon: DollarSign, label: 'Pricing', href: '#pricing' },
   { icon: Phone, label: 'Contact', href: '#contact' },

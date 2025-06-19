@@ -211,18 +211,27 @@ const CustomDevelopment = () => {
         >
           <div className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}>
             <h3 className={`text-2xl font-bold ${styles.text.primary} mb-4`}>
-              Ready to Transform Your Business?
+              Want to Explore Our Services in Detail?
             </h3>
             <p className={`${styles.text.secondary} text-lg mb-6 max-w-2xl mx-auto`}>
-              Let's discuss your requirements and create solutions that perfectly fit your business needs across all our specialized service areas.
+              Visit our comprehensive services page to explore detailed information about each service division, specializations, and how we can help transform your business.
             </p>
-            <ActionButton
-              href={`mailto:${contactInfo.email}?subject=Services Inquiry`}
-              icon={<Code className="w-5 h-5" />}
-              variant="primary"
-            >
-              Get Started Today
-            </ActionButton>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <ActionButton
+                href="/services"
+                icon={<Code className="w-5 h-5" />}
+                variant="primary"
+              >
+                Explore All Services
+              </ActionButton>
+              <ActionButton
+                href={`mailto:${contactInfo.email}?subject=Services Inquiry`}
+                icon={<Code className="w-5 h-5" />}
+                variant="secondary"
+              >
+                Get Started Today
+              </ActionButton>
+            </div>
           </div>
         </motion.div>
       </div>
