@@ -7,6 +7,7 @@ import { allServices } from '../data/services';
 import { ActionButton } from '../components/ui/ActionButton';
 import { contactInfo } from '../data/contact';
 
+// Import components directly
 import Footer from '../components/sections/Footer';
 import Contact from '../components/sections/Contact';
 

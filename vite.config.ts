@@ -9,13 +9,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-      },
-    },
+    minify: 'esbuild', // Changed from terser to esbuild for better compatibility
     rollupOptions: {
       output: {
         manualChunks: {
@@ -33,7 +27,6 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    exclude: ['lucide-react'],
   },
   server: {
     port: 5173,

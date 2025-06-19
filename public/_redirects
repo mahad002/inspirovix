@@ -1,7 +1,7 @@
 # Netlify SPA routing configuration
 # Handle all routes by serving index.html
 
-# Static assets - serve directly with cache headers
+# Static assets - serve directly
 /assets/*  /assets/:splat  200
 /images/*  /images/:splat  200
 /favicon.ico  /favicon.ico  200
@@ -13,10 +13,7 @@
 /*.css  /:splat.css  200
 /*.js  /:splat.js  200
 
-# API routes (if any) - handle first
-/api/*  /api/:splat  200
-
-# Services page routing
+# Services page routing - specific routes first
 /services-details  /index.html  200
 /services  /index.html  200
 
