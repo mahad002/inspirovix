@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code } from 'lucide-react';
+import { Code, ExternalLink } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
@@ -34,17 +34,34 @@ const CustomDevelopment = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
             Our Services
           </h2>
-          <p className={`text-xl ${styles.text.secondary} max-w-3xl mx-auto`}>
-            Comprehensive technology solutions with specialized divisions and expertise areas
+          <p className={`text-xl ${styles.text.secondary} max-w-3xl mx-auto mb-8`}>
+            Comprehensive technology solutions across multiple domains and specializations
           </p>
+          
+          {/* View Detailed Services Button at Top */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-12"
+          >
+            <ActionButton
+              href="/services-details"
+              icon={<ExternalLink className="w-5 h-5" />}
+              variant="primary"
+            >
+              View Detailed Services & Specializations
+            </ActionButton>
+          </motion.div>
         </motion.div>
 
-        {/* Service Categories Overview */}
+        {/* Service Categories Overview Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-9 gap-4 mb-16">
           {allServices.map((service, index) => (
             <motion.div
@@ -52,7 +69,7 @@ const CustomDevelopment = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
               className={`${styles.background.card} rounded-xl p-4 text-center ${styles.glow.primary} group hover:scale-105 transition-all duration-300`}
             >
               <div className={`w-12 h-12 bg-gradient-to-br ${getServiceColor(index)} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
@@ -65,139 +82,113 @@ const CustomDevelopment = () => {
           ))}
         </div>
 
-        {/* Detailed Services with Divisions & Specializations */}
+        {/* Service Highlights - Simplified */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
         >
-          <h3 className={`text-3xl font-bold ${styles.text.primary} text-center mb-12`}>
-            Service Divisions & Specializations
+          {allServices.slice(0, 6).map((service, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary} hover:scale-105 transition-transform duration-300`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className={`w-12 h-12 bg-gradient-to-br ${getServiceColor(index)} rounded-lg flex items-center justify-center`}>
+                  <service.icon className="w-6 h-6 text-white" />
+                </div>
+                <h3 className={`text-xl font-semibold ${styles.text.primary}`}>
+                  {service.name}
+                </h3>
+              </div>
+              <p className={`${styles.text.secondary} mb-4`}>
+                {service.description}
+              </p>
+              
+              {/* Show only first 3 divisions as preview */}
+              <div className="space-y-2">
+                <h4 className={`text-sm font-semibold ${styles.text.secondary} mb-2`}>
+                  Key Areas:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {service.divisions.slice(0, 3).map((division, divIndex) => (
+                    <span
+                      key={divIndex}
+                      className={`text-xs px-3 py-1 rounded-full font-medium ${
+                        theme === 'dark' 
+                          ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' 
+                          : 'bg-violet-100 text-violet-700 border border-violet-200'
+                      }`}
+                    >
+                      {division.name}
+                    </span>
+                  ))}
+                  {service.divisions.length > 3 && (
+                    <span className={`text-xs px-3 py-1 rounded-full font-medium ${styles.text.secondary} border ${styles.border.primary}`}>
+                      +{service.divisions.length - 3} more
+                    </span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Why Choose Our Services */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h3 className={`text-3xl font-bold ${styles.text.primary} mb-8`}>
+            Why Choose Our Services?
           </h3>
-          
-          <div className="space-y-12">
-            {allServices.map((service, serviceIndex) => (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              {
+                title: "Expert Teams",
+                description: "Specialized professionals in each technology domain"
+              },
+              {
+                title: "Latest Technologies",
+                description: "Cutting-edge tools and frameworks for modern solutions"
+              },
+              {
+                title: "Scalable Solutions",
+                description: "Built to grow with your business requirements"
+              },
+              {
+                title: "Full Support",
+                description: "Comprehensive support from development to deployment"
+              }
+            ].map((benefit, index) => (
               <motion.div
-                key={serviceIndex}
+                key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: serviceIndex * 0.1 }}
-                className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary} border-l-4 border-violet-500`}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary}`}
               >
-                {/* Service Header */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${getServiceColor(serviceIndex)} rounded-xl flex items-center justify-center`}>
-                    <service.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h4 className={`text-3xl font-bold ${styles.text.primary}`}>
-                      {service.name}
-                    </h4>
-                    <p className={`${styles.text.secondary} text-lg mt-1`}>
-                      {service.description}
-                    </p>
-                  </div>
+                <div className={`w-12 h-12 bg-gradient-to-br ${getServiceColor(index)} rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                  <span className="text-white font-bold text-lg">{index + 1}</span>
                 </div>
-                
-                {/* Divisions Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {service.divisions.map((division, divisionIndex) => (
-                    <div 
-                      key={divisionIndex} 
-                      className={`${styles.background.secondary} rounded-lg p-6 hover:bg-violet-500/10 transition-colors border ${styles.border.primary}`}
-                    >
-                      <h5 className={`font-bold ${styles.text.primary} mb-4 text-lg`}>
-                        {division.name}
-                      </h5>
-                      
-                      {/* Specializations */}
-                      <div className="space-y-2">
-                        <h6 className={`text-sm font-semibold ${styles.text.secondary} mb-3`}>
-                          Specializations:
-                        </h6>
-                        <div className="flex flex-wrap gap-2">
-                          {division.specializations.map((specialization, specIndex) => (
-                            <span
-                              key={specIndex}
-                              className={`text-xs px-3 py-1.5 rounded-full font-medium ${
-                                theme === 'dark' 
-                                  ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30' 
-                                  : 'bg-violet-100 text-violet-700 border border-violet-200'
-                              } hover:scale-105 transition-transform cursor-default`}
-                            >
-                              {specialization}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <h4 className={`text-lg font-semibold ${styles.text.primary} mb-2`}>
+                  {benefit.title}
+                </h4>
+                <p className={`${styles.text.secondary} text-sm`}>
+                  {benefit.description}
+                </p>
               </motion.div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Development Process */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-20"
-        >
-          <h3 className={`text-3xl font-bold ${styles.text.primary} text-center mb-12`}>
-            Our Development Process
-          </h3>
-          <div className="relative">
-            <div className={`absolute top-1/2 left-0 right-0 h-1 ${styles.background.card}`} />
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              {[
-                {
-                  step: "1",
-                  title: "Discovery & Analysis",
-                  description: "Understanding requirements, analyzing needs, and defining project scope"
-                },
-                {
-                  step: "2",
-                  title: "Planning & Design",
-                  description: "Architecture design, technology selection, and detailed project roadmap"
-                },
-                {
-                  step: "3",
-                  title: "Development & Testing",
-                  description: "Agile development with continuous testing and quality assurance"
-                },
-                {
-                  step: "4",
-                  title: "Deployment & Support",
-                  description: "Production deployment, monitoring, and ongoing maintenance support"
-                }
-              ].map((phase, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`${styles.background.card} rounded-xl p-6 relative ${styles.glow.primary} hover:scale-105 transition-transform`}
-                >
-                  <div className="absolute -top-3 left-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                    Phase {phase.step}
-                  </div>
-                  <div className="mt-4">
-                    <h4 className={`text-xl font-semibold ${styles.text.primary} mb-3`}>
-                      {phase.title}
-                    </h4>
-                    <p className={`${styles.text.secondary} text-sm`}>
-                      {phase.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
           </div>
         </motion.div>
 
@@ -207,22 +198,23 @@ const CustomDevelopment = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-20 text-center"
+          className="text-center"
         >
           <div className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}>
             <h3 className={`text-2xl font-bold ${styles.text.primary} mb-4`}>
-              Want to Explore Our Services in Detail?
+              Ready to Start Your Project?
             </h3>
             <p className={`${styles.text.secondary} text-lg mb-6 max-w-2xl mx-auto`}>
-              Visit our comprehensive services page to explore detailed information about each service division, specializations, and how we can help transform your business.
+              Explore our detailed services page to learn about our comprehensive offerings, 
+              or get in touch to discuss your specific requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <ActionButton
                 href="/services-details"
-                icon={<Code className="w-5 h-5" />}
+                icon={<ExternalLink className="w-5 h-5" />}
                 variant="primary"
               >
-                View Detailed Services
+                Explore All Services
               </ActionButton>
               <ActionButton
                 href={`mailto:${contactInfo.email}?subject=Services Inquiry`}
