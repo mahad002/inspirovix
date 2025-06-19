@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronRight, Sun, Moon } from 'lucide-react';
+import { Menu, X, ChevronRight, Sun, Moon, ArrowRight } from 'lucide-react';
 import { useTheme } from '../theme/ThemeContext';
 import { themes } from '../theme/themes';
 import { menuItems } from '../data/navigation';
@@ -83,7 +83,7 @@ const Navbar = React.memo(() => {
                     <span className={`relative z-10 ${isContact ? 'flex items-center gap-2' : ''}`}>
                       {isContact && <item.icon className="w-4 h-4" />}
                       {item.label}
-                      {isContact && <span className="animate-pulse">✨</span>}
+                      {isContact && <ArrowRight className="w-4 h-4 animate-pulse" />}
                     </span>
                     {isActive && !isContact && (
                       <motion.div
@@ -196,7 +196,7 @@ const Navbar = React.memo(() => {
                         </div>
                         <span className={`font-medium text-sm sm:text-base ${isContact ? 'font-bold' : ''}`}>
                           {item.label}
-                          {isContact && <span className="ml-2 animate-bounce">🚀</span>}
+                          {isContact && <ArrowRight className="w-4 h-4 ml-2 animate-bounce" />}
                         </span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
                           isContact 
