@@ -65,18 +65,27 @@ const Navbar = React.memo(() => {
             <nav className="hidden lg:flex items-center space-x-1">
               {menuItems.map((item) => {
                 const isActive = activeSection === item.href.substring(1);
+                const isContact = item.href === '#contact';
                 return (
                   <motion.a
                     key={item.href}
                     href={item.href}
-                    className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      isActive ? styles.text.primary : styles.text.secondary
-                    } hover:${styles.text.primary}`}
+                    className={`relative px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                      isContact 
+                        ? `${styles.button.primary} ${styles.text.primary} font-bold shadow-lg ${styles.glow.primary} hover:scale-105 border-2 border-transparent hover:border-violet-300`
+                        : isActive 
+                          ? styles.text.primary 
+                          : styles.text.secondary
+                    } ${!isContact ? `hover:${styles.text.primary}` : ''}`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <span className="relative z-10">{item.label}</span>
-                    {isActive && (
+                    <span className={`relative z-10 ${isContact ? 'flex items-center gap-2' : ''}`}>
+                      {isContact && <item.icon className="w-4 h-4" />}
+                      {item.label}
+                      {isContact && <span className="animate-pulse">✨</span>}
+                    </span>
+                    {isActive && !isContact && (
                       <motion.div
                         layoutId="navbar-active"
                         className="absolute inset-0 bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 rounded-lg"
@@ -153,6 +162,7 @@ const Navbar = React.memo(() => {
                 <nav className="space-y-4">
                   {menuItems.map((item, index) => {
                     const isActive = activeSection === item.href.substring(1);
+                    const isContact = item.href === '#contact';
                     return (
                       <motion.a
                         key={item.href}
@@ -161,20 +171,43 @@ const Navbar = React.memo(() => {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ delay: index * 0.1 }}
                         onClick={() => setIsOpen(false)}
-                        className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden ${
-                          isActive ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` : styles.text.secondary
+                        className={`flex items-center gap-3 p-3 rounded-lg group relative overflow-hidden transition-all duration-300 ${
+                          isContact
+                            ? `${styles.button.primary} ${styles.text.primary} font-bold ${styles.glow.primary} border-2 border-violet-400 scale-105`
+                            : isActive 
+                              ? `${styles.text.primary} bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20` 
+                              : styles.text.secondary
                         }`}
                       >
-                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${
-                          isActive ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' : 'bg-violet-500/20'
-                        } group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500 transition-all duration-300`}>
-                          <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${isActive ? 'text-white' : 'group-hover:text-white'}`} />
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                          isContact
+                            ? 'bg-gradient-to-br from-white/20 to-white/10 animate-pulse'
+                            : isActive 
+                              ? 'bg-gradient-to-br from-violet-500 to-fuchsia-500' 
+                              : 'bg-violet-500/20 group-hover:bg-gradient-to-br group-hover:from-violet-500 group-hover:to-fuchsia-500'
+                        }`}>
+                          <item.icon className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                            isContact 
+                              ? 'text-white' 
+                              : isActive 
+                                ? 'text-white' 
+                                : 'group-hover:text-white'
+                          }`} />
                         </div>
-                        <span className="font-medium text-sm sm:text-base">{item.label}</span>
+                        <span className={`font-medium text-sm sm:text-base ${isContact ? 'font-bold' : ''}`}>
+                          {item.label}
+                          {isContact && <span className="ml-2 animate-bounce">🚀</span>}
+                        </span>
                         <ChevronRight className={`w-5 h-5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${
-                          isActive ? 'text-violet-400' : 'text-violet-500'
+                          isContact 
+                            ? 'text-white opacity-100' 
+                            : isActive 
+                              ? 'text-violet-400' 
+                              : 'text-violet-500'
                         }`} />
-                        <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        {!isContact && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-fuchsia-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                        )}
                       </motion.a>
                     );
                   })}
