@@ -13,5 +13,6 @@ export const contactInfo = {
 
 export const socialLinks = {
   linkedin: "https://www.linkedin.com/company/inspirovix/",
-  instagram: "https://www.instagram.com/inspirovix"
+  instagram: "https://www.instagram.com/inspirovix",
+  facebook: "https://www.facebook.com/people/Inspirovix/61575955223627/"
 };

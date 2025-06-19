@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock } from 'lucide-react';
+import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock, Facebook } from 'lucide-react';
 import { sendContactEmail } from '../../utils/emailService';
 import { contactInfo, socialLinks, supportNumbers } from '../../data/contact';
 import { useTheme } from '../../theme/ThemeContext';
@@ -92,20 +92,6 @@ const Contact = () => {
             className="space-y-4"
           >
             <div className="space-y-3">
-              <motion.a
-                href={`https://${contactInfo.website}`}
-                whileHover={{ scale: 1.05 }}
-                className={`flex items-center gap-4 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
-              >
-                <div className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.glow.primary}`}>
-                  <Globe className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="block font-semibold text-sm">Website</span>
-                  <span className="text-sm">{contactInfo.website}</span>
-                </div>
-              </motion.a>
-              
               <motion.a
                 href={`tel:${contactInfo.phone}`}
                 whileHover={{ scale: 1.05 }}
@@ -219,6 +205,15 @@ const Contact = () => {
                   className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
                 >
                   <Instagram className="w-5 h-5" />
+                </motion.a>
+                <motion.a
+                  href={socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.1 }}
+                  className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
+                >
+                  <Facebook className="w-5 h-5" />
                 </motion.a>
               </div>
             </div>

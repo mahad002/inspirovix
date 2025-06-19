@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Mail, Phone, MapPin, Linkedin, Instagram, Globe } from 'lucide-react';
+import { ArrowRight, Mail, Phone, MapPin, Linkedin, Instagram, Globe, Facebook } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { contactInfo, socialLinks, supportNumbers } from '../../data/contact';
@@ -187,6 +187,15 @@ const Footer = () => {
                 className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
               >
                 <Instagram className="w-5 h-5" />
+              </motion.a>
+              <motion.a
+                href={socialLinks.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                className={`w-10 h-10 ${styles.background.card} rounded-lg flex items-center justify-center ${styles.text.secondary} hover:${styles.text.primary} transition-colors ${styles.glow.primary}`}
+              >
+                <Facebook className="w-5 h-5" />
               </motion.a>
               <motion.a
                 href={`https://${contactInfo.website}`}
