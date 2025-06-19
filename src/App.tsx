@@ -101,7 +101,7 @@ function App() {
             } />
             
             {/* Services Page */}
-            <Route path="/services" element={
+            <Route path="/services-details" element={
               <Suspense fallback={<LoadingFallback />}>
                 <ServicesPage />
               </Suspense>

@@ -7,6 +7,8 @@ import { allServices } from '../data/services';
 import { ActionButton } from '../components/ui/ActionButton';
 import { contactInfo } from '../data/contact';
 
+import Footer from '../components/sections/Footer';
+
 const ServicesPage = () => {
   const { theme } = useTheme();
   const styles = useMemo(() => themes[theme], [theme]);
@@ -42,12 +44,12 @@ const ServicesPage = () => {
         >
           <div className="flex items-center justify-center gap-4 mb-6">
             <motion.a
-              href="/#services"
+              href="/"
               whileHover={{ scale: 1.05 }}
               className={`flex items-center gap-2 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
             >
               <ArrowLeft className="w-5 h-5" />
-              Back to Home
+              ← Back to Home
             </motion.a>
           </div>
           
@@ -340,6 +342,9 @@ const ServicesPage = () => {
           </div>
         </motion.div>
       </div>
+      
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

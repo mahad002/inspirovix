@@ -218,11 +218,11 @@ const CustomDevelopment = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <ActionButton
-                href="/services"
+                href="/services-details"
                 icon={<Code className="w-5 h-5" />}
                 variant="primary"
               >
-                Explore All Services
+                View Detailed Services
               </ActionButton>
               <ActionButton
                 href={`mailto:${contactInfo.email}?subject=Services Inquiry`}

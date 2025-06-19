@@ -66,7 +66,7 @@ const Navbar = React.memo(() => {
               {menuItems.map((item) => {
                 const isActive = item.href.startsWith('#') ? activeSection === item.href.substring(1) : window.location.pathname === item.href;
                 const isContact = item.href === '#contact';
-                const isServices = item.href === '/services';
+                const isServices = item.href === '/services-details';
                 return (
                   <motion.a
                     key={item.href}
@@ -167,7 +167,7 @@ const Navbar = React.memo(() => {
                   {menuItems.map((item, index) => {
                     const isActive = activeSection === item.href.substring(1);
                     const isContact = item.href === '#contact';
-                    const isServices = item.href === '/services';
+                    const isServices = item.href === '/services-details';
                     return (
                       <motion.a
                         key={item.href}
