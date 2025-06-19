@@ -5,7 +5,7 @@ export class SecurityValidator {
   // SQL Injection patterns to detect and block
   private static readonly SQL_INJECTION_PATTERNS = [
     /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/gi,
-    /('|(\\')|(;)|(\\;)|(\|)|(\*)|(%)|(<)|(>)|(\{)|(\})|(\[)|(\])|(\()|(\))/gi,
+    /'|\\';|\\;|\||\\*|%|<|>|\{|\}|\[|\]|\(|\)/gi,
     /((\%3D)|(=))[^\n]*((\%27)|(\')|(\-\-)|(\%3B)|(;))/gi,
     /((\%27)|(\'))((\%6F)|o|(\%4F))((\%72)|r|(\%52))/gi,
     /exec(\s|\+)+(s|x)p\w+/gi,
