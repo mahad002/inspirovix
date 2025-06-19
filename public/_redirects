@@ -1,0 +1,6 @@
+# Netlify redirects for SPA
+/*    /index.html   200
+
+# Specific routes for better SEO
+/services-details    /index.html   200
+/services           /index.html   200
