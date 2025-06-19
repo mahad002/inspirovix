@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Code, ExternalLink, CheckCircle, Star, ArrowRight } from 'lucide-react';
+import { Code, ExternalLink, CheckCircle, Star, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
@@ -11,6 +11,7 @@ const CustomDevelopment = () => {
   const { theme } = useTheme();
   const styles = themes[theme];
   const [activeTab, setActiveTab] = useState(0);
+  const [expandedDivisions, setExpandedDivisions] = useState<number[]>([]);
 
   const getServiceColor = (index: number) => {
     const colors = [
@@ -27,35 +28,80 @@ const CustomDevelopment = () => {
     return colors[index % colors.length];
   };
 
+  const toggleDivision = (index: number) => {
+    setExpandedDivisions(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
+
   const currentService = allServices[activeTab];
 
   return (
-    <section id="services" className={`${styles.background.primary} py-20`}>
+    <section id="services" className={`${styles.background.primary} py-12 md:py-20`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
+          <h2 className={`text-2xl md:text-4xl font-bold ${styles.text.primary} mb-2 md:mb-4`}>
             Our Services
           </h2>
-          <p className={`text-xl ${styles.text.secondary} max-w-3xl mx-auto mb-8`}>
+          <p className={`text-base md:text-xl ${styles.text.secondary} max-w-3xl mx-auto mb-4 md:mb-8`}>
             Comprehensive technology solutions with specialized divisions and expertise areas
           </p>
         </motion.div>
 
-        {/* Service Navigation Tabs - Single Row */}
+        {/* Service Navigation Tabs - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {/* Mobile: Dropdown Style */}
+          <div className="block md:hidden mb-4">
+            <div className={`${styles.background.card} rounded-xl p-4 ${styles.glow.primary}`}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-8 h-8 bg-gradient-to-br ${getServiceColor(activeTab)} rounded-lg flex items-center justify-center`}>
+                    <currentService.icon className="w-4 h-4 text-white" />
+                  </div>
+                  <span className={`font-semibold ${styles.text.primary}`}>{currentService.name}</span>
+                </div>
+                <ChevronDown className={`w-5 h-5 ${styles.text.secondary}`} />
+              </div>
+            </div>
+            
+            {/* Mobile Service Grid */}
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              {allServices.map((service, index) => (
+                <motion.button
+                  key={index}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveTab(index)}
+                  className={`flex flex-col items-center gap-2 p-3 rounded-lg transition-all duration-300 ${
+                    activeTab === index
+                      ? `${styles.button.primary} ${styles.text.primary}`
+                      : `${styles.background.card} ${styles.text.secondary} hover:${styles.text.primary}`
+                  }`}
+                >
+                  <div className={`w-6 h-6 bg-gradient-to-br ${getServiceColor(index)} rounded-md flex items-center justify-center`}>
+                    <service.icon className="w-3 h-3 text-white" />
+                  </div>
+                  <span className="font-medium text-xs text-center leading-tight">{service.name}</span>
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: Horizontal Tabs */}
+          <div className="hidden md:flex flex-wrap justify-center gap-3 mb-8">
             {allServices.map((service, index) => (
               <motion.button
                 key={index}
@@ -97,25 +143,50 @@ const CustomDevelopment = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className={`${styles.background.card} rounded-2xl p-8 ${styles.glow.primary} mb-12`}
+            className={`${styles.background.card} rounded-2xl p-4 md:p-8 ${styles.glow.primary} mb-8 md:mb-12`}
           >
-            {/* Service Header */}
-            <div className="flex items-center gap-6 mb-8">
-              <div className={`w-20 h-20 bg-gradient-to-br ${getServiceColor(activeTab)} rounded-2xl flex items-center justify-center`}>
-                <currentService.icon className="w-10 h-10 text-white" />
+            {/* Service Header - Mobile Optimized */}
+            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-6 md:mb-8">
+              <div className={`w-12 h-12 md:w-20 md:h-20 bg-gradient-to-br ${getServiceColor(activeTab)} rounded-xl md:rounded-2xl flex items-center justify-center mx-auto md:mx-0`}>
+                <currentService.icon className="w-6 h-6 md:w-10 md:h-10 text-white" />
               </div>
-              <div>
-                <h2 className={`text-4xl font-bold ${styles.text.primary} mb-2`}>
+              <div className="text-center md:text-left">
+                <h2 className={`text-2xl md:text-4xl font-bold ${styles.text.primary} mb-2`}>
                   {currentService.name}
                 </h2>
-                <p className={`text-xl ${styles.text.secondary}`}>
+                <p className={`text-sm md:text-xl ${styles.text.secondary}`}>
                   {currentService.description}
                 </p>
               </div>
             </div>
 
-            {/* Service Overview */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            {/* Mobile: Simplified Overview */}
+            <div className="block md:hidden mb-6">
+              <div className={`${styles.background.secondary} rounded-xl p-4`}>
+                <h3 className={`text-lg font-bold ${styles.text.primary} mb-3`}>
+                  What We Offer
+                </h3>
+                <div className="grid grid-cols-1 gap-2">
+                  {currentService.divisions.slice(0, 3).map((division, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                      <span className={`${styles.text.secondary} text-sm`}>{division.name}</span>
+                    </div>
+                  ))}
+                  {currentService.divisions.length > 3 && (
+                    <div className="flex items-center gap-2">
+                      <Star className="w-4 h-4 text-yellow-500 flex-shrink-0" />
+                      <span className={`${styles.text.secondary} text-sm`}>
+                        +{currentService.divisions.length - 3} more specializations
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop: Full Overview */}
+            <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
               <div className={`lg:col-span-2 ${styles.background.secondary} rounded-xl p-6`}>
                 <h3 className={`text-2xl font-bold ${styles.text.primary} mb-4`}>
                   What We Offer
@@ -161,13 +232,83 @@ const CustomDevelopment = () => {
               </div>
             </div>
 
-            {/* Service Divisions - Always Expanded */}
+            {/* Service Divisions */}
             <div>
-              <h3 className={`text-3xl font-bold ${styles.text.primary} mb-8 text-center`}>
+              <h3 className={`text-xl md:text-3xl font-bold ${styles.text.primary} mb-4 md:mb-8 text-center`}>
                 Service Divisions & Specializations
               </h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Mobile: Accordion Style */}
+              <div className="block md:hidden space-y-3">
+                {currentService.divisions.map((division, divisionIndex) => (
+                  <motion.div
+                    key={divisionIndex}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: divisionIndex * 0.05 }}
+                    className={`${styles.background.secondary} rounded-lg ${styles.glow.primary}`}
+                  >
+                    <button
+                      onClick={() => toggleDivision(divisionIndex)}
+                      className="w-full p-4 flex items-center justify-between"
+                    >
+                      <h4 className={`text-base font-bold ${styles.text.primary} text-left`}>
+                        {division.name}
+                      </h4>
+                      {expandedDivisions.includes(divisionIndex) ? (
+                        <ChevronUp className={`w-5 h-5 ${styles.text.secondary}`} />
+                      ) : (
+                        <ChevronDown className={`w-5 h-5 ${styles.text.secondary}`} />
+                      )}
+                    </button>
+                    
+                    <AnimatePresence>
+                      {expandedDivisions.includes(divisionIndex) && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="px-4 pb-4">
+                            <div className="flex flex-wrap gap-1 mb-3">
+                              {division.specializations.slice(0, 4).map((specialization, specIndex) => (
+                                <span
+                                  key={specIndex}
+                                  className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                    theme === 'dark' 
+                                      ? 'bg-violet-500/30 text-violet-200 border border-violet-400/50' 
+                                      : 'bg-violet-200 text-violet-800 border border-violet-300'
+                                  }`}
+                                >
+                                  {specialization}
+                                </span>
+                              ))}
+                              {division.specializations.length > 4 && (
+                                <span className={`text-xs px-2 py-1 rounded-full font-medium ${styles.text.secondary}`}>
+                                  +{division.specializations.length - 4} more
+                                </span>
+                              )}
+                            </div>
+                            
+                            <ActionButton
+                              href={`mailto:${contactInfo.email}?subject=${currentService.name} - ${division.name} Inquiry`}
+                              icon={<ExternalLink className="w-3 h-3" />}
+                              variant="primary"
+                            >
+                              Get Quote
+                            </ActionButton>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Desktop: Grid Layout */}
+              <div className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentService.divisions.map((division, divisionIndex) => (
                   <motion.div
                     key={divisionIndex}
@@ -181,7 +322,6 @@ const CustomDevelopment = () => {
                         {division.name}
                       </h4>
                       
-                      {/* Always show all specializations */}
                       <div className="space-y-4">
                         <h5 className={`text-sm font-semibold ${styles.text.secondary} mb-3`}>
                           Specializations:
@@ -202,14 +342,12 @@ const CustomDevelopment = () => {
                         </div>
                       </div>
 
-                      {/* Always show detailed information */}
                       <div className="space-y-4">
                         <p className={`${styles.text.secondary} text-sm`}>
                           Our {division.name.toLowerCase()} team specializes in delivering high-quality solutions 
                           using the latest technologies and industry best practices.
                         </p>
                         
-                        {/* Additional Info */}
                         <div className={`${styles.background.primary} rounded-lg p-4`}>
                           <h6 className={`text-sm font-semibold ${styles.text.primary} mb-2`}>
                             What We Deliver:
@@ -252,90 +390,33 @@ const CustomDevelopment = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Process Overview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className={`${styles.background.card} rounded-2xl p-8 ${styles.glow.primary} mb-12`}
-        >
-          <h3 className={`text-3xl font-bold ${styles.text.primary} text-center mb-12`}>
-            Our Development Process
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Discovery & Analysis",
-                description: "Understanding your requirements, analyzing needs, and defining project scope with detailed documentation."
-              },
-              {
-                step: "02",
-                title: "Planning & Design",
-                description: "Architecture design, technology selection, timeline planning, and creating detailed project roadmap."
-              },
-              {
-                step: "03",
-                title: "Development & Testing",
-                description: "Agile development with continuous integration, regular testing, and quality assurance throughout."
-              },
-              {
-                step: "04",
-                title: "Deployment & Support",
-                description: "Production deployment, performance monitoring, documentation, and ongoing maintenance support."
-              }
-            ].map((phase, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className={`text-center group`}
-              >
-                <div className={`w-16 h-16 bg-gradient-to-br ${getServiceColor(index)} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
-                  <span className="text-white font-bold text-lg">{phase.step}</span>
-                </div>
-                <h4 className={`text-xl font-semibold ${styles.text.primary} mb-3`}>
-                  {phase.title}
-                </h4>
-                <p className={`${styles.text.secondary} text-sm`}>
-                  {phase.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* CTA Section */}
+        {/* CTA Section - Mobile Optimized */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className={`${styles.background.card} rounded-2xl p-8 text-center ${styles.glow.primary}`}
+          className={`${styles.background.card} rounded-2xl p-6 md:p-8 text-center ${styles.glow.primary}`}
         >
-          <h3 className={`text-3xl font-bold ${styles.text.primary} mb-4`}>
+          <h3 className={`text-xl md:text-3xl font-bold ${styles.text.primary} mb-3 md:mb-4`}>
             Ready to Get Started?
           </h3>
-          <p className={`${styles.text.secondary} text-lg mb-8 max-w-2xl mx-auto`}>
+          <p className={`${styles.text.secondary} text-sm md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto`}>
             Let's discuss your {currentService.name.toLowerCase()} requirements and create a solution 
-            that perfectly fits your business needs and technical specifications.
+            that perfectly fits your business needs.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
             <ActionButton
               href={`mailto:${contactInfo.email}?subject=${currentService.name} Service Inquiry`}
-              icon={<ExternalLink className="w-5 h-5" />}
+              icon={<ExternalLink className="w-4 h-4 md:w-5 md:h-5" />}
               variant="primary"
             >
               Get Custom Quote
             </ActionButton>
             <ActionButton
               href="#contact"
-              icon={<ArrowRight className="w-5 h-5" />}
+              icon={<ArrowRight className="w-4 h-4 md:w-5 md:h-5" />}
               variant="secondary"
             >
               Schedule Consultation
