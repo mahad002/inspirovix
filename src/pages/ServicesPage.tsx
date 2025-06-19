@@ -49,7 +49,7 @@ const ServicesPage = () => {
               className={`flex items-center gap-2 ${styles.text.secondary} hover:${styles.text.primary} transition-colors`}
             >
               <ArrowLeft className="w-5 h-5" />
-              ← Back to Home
+              Back to Home
             </motion.a>
           </div>
           
