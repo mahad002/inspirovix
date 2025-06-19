@@ -27,7 +27,7 @@ const ScrollButton: React.FC<{
         ${direction === 'left' ? 'left-4' : 'right-4'}
         ${disabled ? 'opacity-50 cursor-not-allowed' : 'opacity-100 cursor-pointer'}
         ${styles.button.primary} ${styles.text.primary}
-        shadow-lg hover:shadow-xl transition-all duration-200`}
+        shadow-lg hover:shadow-xl transition-all duration-200 p-3 rounded-full`}
     >
       {direction === 'left' ? (
         <ChevronLeft className="w-6 h-6" />
@@ -63,10 +63,11 @@ const Pricing = () => {
           className="text-center mb-16"
         >
           <h2 className={`text-4xl font-bold ${styles.text.primary} mb-4`}>
-            Simple, Transparent Pricing
+            Service-Based Custom Pricing
           </h2>
-          <p className={`text-lg ${styles.text.secondary} max-w-2xl mx-auto`}>
-            Choose the perfect plan for your business needs with our straightforward pricing options
+          <p className={`text-lg ${styles.text.secondary} max-w-3xl mx-auto`}>
+            Every project is unique. We provide custom quotes based on your specific requirements, 
+            project scope, and business objectives. All our pricing is transparent and tailored to deliver maximum value.
           </p>
         </motion.div>
 
@@ -89,9 +90,9 @@ const Pricing = () => {
             {pricingPlans.map((plan, index) => (
               <div key={index} className="snap-center">
                 {plan.isPopular ? (
-                  <PopularPricingCard {...plan} delay={index * 0.2} />
+                  <PopularPricingCard {...plan} delay={index * 0.1} />
                 ) : (
-                  <RegularPricingCard {...plan} delay={index * 0.2} />
+                  <RegularPricingCard {...plan} delay={index * 0.1} />
                 )}
               </div>
             ))}
@@ -109,6 +110,52 @@ const Pricing = () => {
           />
         </div>
 
+        {/* Pricing Information */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
+        >
+          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
+              Transparent Pricing
+            </h3>
+            <p className={`${styles.text.secondary} text-sm`}>
+              No hidden fees. Clear, upfront pricing based on project scope and requirements.
+            </p>
+          </div>
+
+          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
+              Flexible Payment
+            </h3>
+            <p className={`${styles.text.secondary} text-sm`}>
+              Milestone-based payments, flexible terms, and payment plans available for larger projects.
+            </p>
+          </div>
+
+          <div className={`${styles.background.card} rounded-xl p-6 text-center ${styles.glow.primary}`}>
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4">
+              <Star className="w-6 h-6 text-white" />
+            </div>
+            <h3 className={`text-xl font-bold ${styles.text.primary} mb-2`}>
+              Value-Driven
+            </h3>
+            <p className={`${styles.text.secondary} text-sm`}>
+              Competitive pricing focused on delivering maximum ROI and long-term business value.
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Custom Solution CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -117,18 +164,70 @@ const Pricing = () => {
           className={`mt-16 text-center ${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}
         >
           <h3 className={`text-2xl font-bold ${styles.text.primary} mb-4`}>
-            Need a Custom Solution?
+            Ready to Get Your Custom Quote?
           </h3>
           <p className={`${styles.text.secondary} text-lg mb-6 max-w-2xl mx-auto`}>
-            Contact us for a tailored package that meets your specific requirements and scales with your business
+            Contact us with your project details and requirements. We'll provide a detailed, 
+            transparent quote within 24 hours, including project timeline and deliverables.
           </p>
-          <ActionButton
-            href={`mailto:${contactInfo.email}?subject=Custom Solution Inquiry`}
-            icon={<Star className="w-5 h-5" />}
-            variant="primary"
-          >
-            Contact Sales
-          </ActionButton>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <ActionButton
+              href={`mailto:${contactInfo.email}?subject=Custom Quote Request`}
+              icon={<Star className="w-5 h-5" />}
+              variant="primary"
+            >
+              Get Custom Quote
+            </ActionButton>
+            <ActionButton
+              href="#contact"
+              icon={<Star className="w-5 h-5" />}
+              variant="secondary"
+            >
+              Schedule Consultation
+            </ActionButton>
+          </div>
+        </motion.div>
+
+        {/* Pricing FAQ */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-16"
+        >
+          <h3 className={`text-2xl font-bold ${styles.text.primary} text-center mb-8`}>
+            Pricing FAQ
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                question: "Why is all pricing custom?",
+                answer: "Every project has unique requirements, complexity, and scope. Custom pricing ensures you pay exactly for what you need and get maximum value."
+              },
+              {
+                question: "How quickly can I get a quote?",
+                answer: "We provide detailed quotes within 24 hours of receiving your project requirements. Complex projects may take up to 48 hours for accurate estimation."
+              },
+              {
+                question: "Do you offer payment plans?",
+                answer: "Yes! We offer milestone-based payments and flexible payment plans for larger projects to help manage your cash flow effectively."
+              },
+              {
+                question: "What's included in the pricing?",
+                answer: "Our quotes include development, testing, deployment, documentation, and specified support period. No hidden fees or surprise charges."
+              }
+            ].map((faq, index) => (
+              <div key={index} className={`${styles.background.card} rounded-lg p-6 ${styles.glow.primary}`}>
+                <h4 className={`font-semibold ${styles.text.primary} mb-2`}>
+                  {faq.question}
+                </h4>
+                <p className={`${styles.text.secondary} text-sm`}>
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,129 +1,182 @@
-import { Bot, Zap, Shield, Rocket, Cloud, Lock, Globe, Smartphone } from 'lucide-react';
+import { Bot, Zap, Shield, Rocket, Cloud, Lock, Globe, Smartphone, Brain, Blocks, Share2, TestTube, Palette, Gamepad2 } from 'lucide-react';
 
 export interface PricingPlan {
   title: string;
   price: string;
   description: string;
-  icon: typeof Bot | typeof Zap | typeof Shield | typeof Rocket | typeof Cloud | typeof Lock | typeof Globe | typeof Smartphone;
+  icon: typeof Bot | typeof Zap | typeof Shield | typeof Rocket | typeof Cloud | typeof Lock | typeof Globe | typeof Smartphone | typeof Brain | typeof Blocks | typeof Share2 | typeof TestTube | typeof Palette | typeof Gamepad2;
   features: string[];
   isPopular?: boolean;
 }
 
 export const pricingPlans: PricingPlan[] = [
   {
-    title: "Starter",
+    title: "AI Automation Starter",
     price: "Custom",
-    description: "Perfect for small businesses starting their automation journey",
+    description: "Perfect for small businesses starting their AI automation journey",
     icon: Bot,
     features: [
-      "AI-powered chatbot",
+      "AI-powered chatbot integration",
       "Basic workflow automation",
-      "5 team members",
-      "8/5 support",
-      "1,000 API calls/month"
+      "Customer service automation",
+      "Email automation setup",
+      "Basic analytics dashboard",
+      "3 months support included"
     ]
   },
   {
-    title: "Web Development",
+    title: "Web Development Pro",
     price: "Custom",
-    description: "Comprehensive web development solutions for businesses",
+    description: "Comprehensive web development solutions for modern businesses",
     icon: Globe,
     features: [
-      "Responsive web design",
-      "SEO optimization",
+      "Responsive web design & development",
+      "SEO optimization & performance",
       "E-commerce integration",
       "Custom CMS development",
       "Cross-browser compatibility",
-      "Performance optimization"
-    ]
-  },
-  {
-    title: "Professional",
-    price: "Custom",
-    description: "Ideal for growing companies with advanced needs",
-    icon: Zap,
-    features: [
-      "Everything in Starter",
-      "Advanced AI integrations",
-      "20 team members",
-      "24/7 priority support",
-      "50,000 API calls/month",
-      "Custom workflow builder"
+      "6 months maintenance included"
     ],
     isPopular: true
   },
   {
-    title: "Enterprise",
+    title: "Mobile App Development",
     price: "Custom",
-    description: "Tailored solutions for large organizations",
-    icon: Shield,
+    description: "Native and cross-platform mobile solutions with AI integration",
+    icon: Smartphone,
     features: [
-      "Everything in Professional",
-      "Unlimited team members",
-      "Dedicated account manager",
-      "Custom AI model training",
-      "Unlimited API calls",
-      "SLA guarantee",
-      "On-premise deployment"
+      "Native iOS & Android development",
+      "Cross-platform React Native/Flutter",
+      "UI/UX design included",
+      "App store deployment assistance",
+      "Push notifications setup",
+      "API integration & backend"
     ]
   },
   {
-    title: "Mobile Development",
+    title: "AI & Machine Learning",
     price: "Custom",
-    description: "End-to-end mobile app development for iOS and Android",
-    icon: Smartphone, 
+    description: "Advanced AI solutions with custom model development",
+    icon: Brain,
     features: [
-      "Native iOS and Android apps",
-      "Cross-platform development",
-      "UI/UX design",
-      "App store deployment",
-      "Push notifications",
-      "API integration"
+      "Custom AI model development",
+      "Natural Language Processing",
+      "Computer vision solutions",
+      "Predictive analytics implementation",
+      "AI integration with existing systems",
+      "Model training & optimization"
     ]
   },
   {
-    title: "Scale",
+    title: "Blockchain Web 3.0",
     price: "Custom",
-    description: "For businesses requiring high-volume processing",
-    icon: Rocket,
+    description: "Decentralized applications and blockchain solutions",
+    icon: Blocks,
     features: [
-      "Everything in Professional",
-      "Up to 100 team members",
-      "1M API calls/month",
-      "Advanced analytics",
-      "Priority queue processing",
-      "Custom integrations",
-      "4-hour response time"
+      "Smart contract development",
+      "DeFi protocol creation",
+      "NFT marketplace development",
+      "Web3 integration & wallet connect",
+      "Blockchain consulting",
+      "Security audits included"
     ]
   },
   {
-    title: "Cloud",
+    title: "Social Media Marketing",
     price: "Custom",
-    description: "Cloud-optimized solution for distributed teams",
+    description: "Complete social media management and marketing solutions",
+    icon: Share2,
+    features: [
+      "Social media strategy development",
+      "Content creation & management",
+      "Paid advertising campaigns",
+      "Community management",
+      "Analytics & performance tracking",
+      "Brand reputation management"
+    ]
+  },
+  {
+    title: "Cloud & DevOps",
+    price: "Custom",
+    description: "Infrastructure automation and cloud optimization solutions",
     icon: Cloud,
     features: [
-      "Everything in Professional",
-      "50 team members",
-      "Multi-region deployment",
-      "Cloud storage included",
-      "Automated backups",
-      "Load balancing",
-      "99.9% uptime SLA"
+      "Cloud infrastructure setup (AWS/Azure/GCP)",
+      "DevOps & CI/CD pipeline implementation",
+      "Infrastructure as Code (Terraform)",
+      "Monitoring & logging setup",
+      "Security & compliance automation",
+      "24/7 infrastructure support"
     ]
   },
   {
-    title: "Security+",
+    title: "Software Testing & QA",
     price: "Custom",
-    description: "Enhanced security features for regulated industries",
-    icon: Lock,
+    description: "Comprehensive quality assurance and testing solutions",
+    icon: TestTube,
     features: [
-      "Everything in Professional",
-      "HIPAA compliance",
-      "End-to-end encryption",
-      "Audit logging",
-      "SSO integration",
-      "IP whitelisting",
-      "Security assessment"
+      "Automated testing framework setup",
+      "Manual testing & quality assurance",
+      "Performance & load testing",
+      "Security testing & vulnerability assessment",
+      "Mobile app testing across devices",
+      "Continuous testing integration"
+    ]
+  },
+  {
+    title: "UI/UX Design",
+    price: "Custom",
+    description: "User-centered design solutions for exceptional experiences",
+    icon: Palette,
+    features: [
+      "User experience research & design",
+      "User interface design & prototyping",
+      "Mobile app design (iOS/Android)",
+      "Web design & responsive layouts",
+      "Design system creation",
+      "Usability testing & optimization"
+    ]
+  },
+  {
+    title: "Game Development",
+    price: "Custom",
+    description: "End-to-end game development for multiple platforms",
+    icon: Gamepad2,
+    features: [
+      "Mobile game development (Unity/Unreal)",
+      "Web-based game development",
+      "PC & console game development",
+      "Game art & character design",
+      "Multiplayer backend systems",
+      "Game analytics & monetization"
+    ]
+  },
+  {
+    title: "Enterprise Solution",
+    price: "Custom",
+    description: "Comprehensive enterprise-grade solutions with full support",
+    icon: Shield,
+    features: [
+      "Multi-service integration package",
+      "Dedicated project manager",
+      "Custom solution architecture",
+      "Enterprise security implementation",
+      "Scalable infrastructure design",
+      "12 months premium support"
+    ]
+  },
+  {
+    title: "Startup Package",
+    price: "Custom",
+    description: "Complete technology stack for startups and growing businesses",
+    icon: Rocket,
+    features: [
+      "MVP development (Web + Mobile)",
+      "Cloud infrastructure setup",
+      "Basic AI automation integration",
+      "Social media presence setup",
+      "Analytics & monitoring tools",
+      "Growth-focused development approach"
     ]
   }
 ];
