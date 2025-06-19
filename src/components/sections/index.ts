@@ -1,6 +1,6 @@
 import Home from './Home';
 import AIAutomation from './AIAutomation';
-import CustomDevelopment from '../CustomDevelopment';
+import CustomDevelopment from './CustomDevelopment';
 import Solutions from './Solutions';
 import CaseStudies from './CaseStudies';
 import About from './About';
