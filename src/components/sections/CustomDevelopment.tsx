@@ -5,6 +5,7 @@ import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
 import { ActionButton } from '../ui/ActionButton';
 import { contactInfo } from '../../data/contact';
+import { additionalServices } from '../../data/services';
 
 const CustomDevelopment = () => {
   const { theme } = useTheme();
@@ -108,7 +109,7 @@ const CustomDevelopment = () => {
         </motion.div>
 
         {/* Web Services Grid */}
-        <h3 className={`text-2xl font-bold ${styles.text.primary} mb-8`}>Web & Mobile Development</h3>
+        <h3 className={`text-2xl font-bold ${styles.text.primary} mb-8`}>Core Development Services</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {webServices.map((service, index) => (
             <motion.div
@@ -193,6 +194,67 @@ const CustomDevelopment = () => {
           </div>
         </motion.div>
 
+        {/* Additional Services */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-20"
+        >
+          <h3 className={`text-2xl font-bold ${styles.text.primary} mb-8`}>Specialized Services</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {additionalServices.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`${styles.background.card} rounded-xl p-6 ${styles.glow.primary}`}
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-lg flex items-center justify-center">
+                    <service.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className={`text-xl font-semibold ${styles.text.primary}`}>
+                      {service.name}
+                    </h4>
+                    <p className={`${styles.text.secondary} text-sm`}>
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  {service.sub_services.map((subService, subIndex) => (
+                    <div key={subIndex} className={`${styles.background.secondary} rounded-lg p-4`}>
+                      <h5 className={`font-semibold ${styles.text.primary} mb-2`}>
+                        {subService.name}
+                      </h5>
+                      <div className="flex flex-wrap gap-2">
+                        {subService.solutions.map((solution, solutionIndex) => (
+                          <span
+                            key={solutionIndex}
+                            className={`text-xs px-2 py-1 rounded-full ${
+                              theme === 'dark' 
+                                ? 'bg-violet-500/20 text-violet-300' 
+                                : 'bg-violet-100 text-violet-700'
+                            }`}
+                          >
+                            {solution}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Development Process */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -264,17 +326,17 @@ const CustomDevelopment = () => {
         >
           <div className={`${styles.background.card} rounded-xl p-8 ${styles.glow.primary}`}>
             <h3 className={`text-2xl font-bold ${styles.text.primary} mb-4`}>
-              Ready to Build Your Custom Solution?
+              Ready to Transform Your Business?
             </h3>
             <p className={`${styles.text.secondary} text-lg mb-6 max-w-2xl mx-auto`}>
-              Let's discuss your project requirements and create a solution that perfectly fits your needs.
+              Let's discuss your requirements and create solutions that perfectly fit your business needs across all our service areas.
             </p>
             <ActionButton
-              href={`mailto:${contactInfo.email}?subject=Custom Development Inquiry`}
+              href={`mailto:${contactInfo.email}?subject=Services Inquiry`}
               icon={<Code className="w-5 h-5" />}
               variant="primary"
             >
-              Start Your Project
+              Get Started Today
             </ActionButton>
           </div>
         </motion.div>
