@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './theme/ThemeContext';
 import CustomCursor from './components/ui/CustomCursor';
 import Navbar from './components/Navbar';
@@ -32,14 +32,55 @@ const LoadingFallback = React.memo(() => {
 
 LoadingFallback.displayName = 'LoadingFallback';
 
+// Error Boundary Component
+class ErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Route error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg"
+            >
+              Go Home
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 function App() {
   return (
     <ThemeProvider>
+      <ErrorBoundary>
       <Router>
         <div className="transition-colors duration-200 md:cursor-glow overflow-x-hidden">
           <CustomCursor />
           <Navbar />
           <div className="hidden lg:block">
+              {/* Catch all route - redirect to home */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             <ThemeToggle />
           </div>
           
@@ -109,6 +150,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }
