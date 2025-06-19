@@ -13,9 +13,9 @@
 /*.css  /:splat.css  200
 /*.js  /:splat.js  200
 
-# Services page routing - specific routes first
-/services-details  /index.html  200
-/services  /index.html  200
+# Redirect old services routes to home page with services section
+/services-details  /#services  301
+/services  /#services  301
 
 # All other routes - serve index.html for SPA routing
 /*  /index.html  200

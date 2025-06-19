@@ -7,7 +7,6 @@ import ThemeToggle from './components/ThemeToggle';
 
 // Import pages directly (no lazy loading)
 import HomePage from './pages/HomePage';
-import ServicesPage from './pages/ServicesPage';
 
 function App() {
   return (
@@ -21,12 +20,12 @@ function App() {
           </div>
           
           <Routes>
-            {/* Home Page */}
+            {/* Home Page - Everything in one page */}
             <Route path="/" element={<HomePage />} />
             
-            {/* Services Page */}
-            <Route path="/services-details" element={<ServicesPage />} />
-            <Route path="/services" element={<Navigate to="/services-details" replace />} />
+            {/* Redirect old services routes to home with hash */}
+            <Route path="/services-details" element={<Navigate to="/#services" replace />} />
+            <Route path="/services" element={<Navigate to="/#services" replace />} />
             
             {/* Catch all route - redirect to home */}
             <Route path="*" element={<Navigate to="/" replace />} />
