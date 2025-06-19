@@ -36,7 +36,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className={`${styles.background.primary} py-12`}>
+    <section id="contact" className={`${styles.background.primary} py-12 overflow-hidden`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -198,7 +198,7 @@ const Contact = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             onSubmit={handleSubmit}
-            className={`space-y-4 ${styles.background.card} p-6 rounded-xl ${styles.glow.primary}`}
+            className={`space-y-4 ${styles.background.card} p-6 rounded-xl ${styles.glow.primary} overflow-hidden`}
           >
             <h3 className={`text-xl font-bold ${styles.text.primary} mb-4`}>Send Us a Message</h3>
             
