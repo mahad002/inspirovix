@@ -4,6 +4,7 @@ import { ThemeProvider } from './theme/ThemeContext';
 import CustomCursor from './components/ui/CustomCursor';
 import Navbar from './components/Navbar';
 import ThemeToggle from './components/ThemeToggle';
+import Footer from './components/Footer';
 
 // Lazy load pages
 const HomePage = React.lazy(() => import('./pages/HomePage'));
@@ -45,6 +46,8 @@ function App() {
               <Route path="/blog" element={<BlogPage />} />
             </Routes>
           </Suspense>
+          
+          <Footer />
         </div>
       </Router>
     </ThemeProvider>
