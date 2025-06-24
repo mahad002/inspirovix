@@ -1,5 +1,4 @@
 import emailjs from '@emailjs/browser';
-import { SecurityValidator } from './security';
 
 interface ContactFormData {
   name: string;
@@ -14,44 +13,30 @@ interface PricingInquiryData {
   email: string;
 }
 
-// EmailJS configuration - Update these with your actual values
-const EMAILJS_CONFIG = {
-  PUBLIC_KEY: "7TpUFIasS5eHoxLh_", // Your public key
-  SERVICE_ID: "service_inspirovix", // Your service ID
-  CONTACT_TEMPLATE_ID: "template_contact", // Your contact template ID
-  PRICING_TEMPLATE_ID: "template_pricing" // Your pricing template ID
-};
-
-// Initialize EmailJS
-emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+// Initialize EmailJS with your public key
+emailjs.init("7TpUFIasS5eHoxLh_");
 
 export const sendContactEmail = async (data: ContactFormData) => {
   console.log('Starting email send process...', { data });
   
-  // Security validation
-  const validation = SecurityValidator.validateFormData(data);
+  // Basic validation only
+  const { name, email, message } = data;
   
-  if (!validation.isValid) {
-    console.error('Security validation failed:', validation.errors, validation.globalErrors);
+  if (!name.trim() || !email.trim() || !message.trim()) {
     return { 
       success: false, 
-      error: 'Invalid input detected. Please check your data and try again.',
-      securityErrors: validation.errors
+      error: 'Please fill in all required fields.'
     };
   }
 
-  // Rate limiting check
-  const rateLimit = SecurityValidator.checkRateLimit(validation.sanitizedData.email);
-  if (!rateLimit.allowed) {
-    const resetTime = new Date(rateLimit.resetTime).toLocaleTimeString();
+  // Basic email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
     return { 
       success: false, 
-      error: `Too many attempts. Please try again after ${resetTime}.`,
-      rateLimited: true
+      error: 'Please enter a valid email address.'
     };
   }
-
-  const { name, email, message } = validation.sanitizedData;
   
   // Get current date in a readable format
   const today = new Date().toLocaleDateString('en-US', {
@@ -65,26 +50,25 @@ export const sendContactEmail = async (data: ContactFormData) => {
   // Template parameters that match your EmailJS template
   const templateParams = {
     to_name: "Inspirovix Team",
-    from_name: name,
-    from_email: email,
-    user_email: email, // Alternative field name
-    message: message,
-    user_message: message, // Alternative field name
+    from_name: name.trim(),
+    from_email: email.trim(),
+    user_email: email.trim(),
+    message: message.trim(),
+    user_message: message.trim(),
     date: today,
     company_name: 'Inspirovix',
-    reply_to: email,
-    subject: `New Contact Form Submission from ${name}`,
-    // Additional fallback fields
-    name: name,
-    email: email
+    reply_to: email.trim(),
+    subject: `New Contact Form Submission from ${name.trim()}`,
+    name: name.trim(),
+    email: email.trim()
   };
   
   console.log('Sending email with params:', templateParams);
   
   try {
     const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
+      "service_inspirovix",
+      "template_contact",
       templateParams
     );
     
@@ -119,30 +103,24 @@ export const sendContactEmail = async (data: ContactFormData) => {
 export const sendPricingInquiryEmail = async (data: PricingInquiryData) => {
   console.log('Starting pricing inquiry email...', { data });
   
-  // Security validation
-  const validation = SecurityValidator.validateFormData(data);
+  // Basic validation only
+  const { planName, price, features, email } = data;
   
-  if (!validation.isValid) {
-    console.error('Security validation failed:', validation.errors, validation.globalErrors);
+  if (!planName.trim() || !email.trim()) {
     return { 
       success: false, 
-      error: 'Invalid input detected. Please check your data and try again.',
-      securityErrors: validation.errors
+      error: 'Please fill in all required fields.'
     };
   }
 
-  // Rate limiting check
-  const rateLimit = SecurityValidator.checkRateLimit(validation.sanitizedData.email);
-  if (!rateLimit.allowed) {
-    const resetTime = new Date(rateLimit.resetTime).toLocaleTimeString();
+  // Basic email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
     return { 
       success: false, 
-      error: `Too many attempts. Please try again after ${resetTime}.`,
-      rateLimited: true
+      error: 'Please enter a valid email address.'
     };
   }
-
-  const { planName, price, features, email } = validation.sanitizedData;
   
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -154,27 +132,26 @@ export const sendPricingInquiryEmail = async (data: PricingInquiryData) => {
   
   const templateParams = {
     to_name: "Inspirovix Sales Team",
-    plan_name: planName,
-    service_name: planName, // Alternative field name
+    plan_name: planName.trim(),
+    service_name: planName.trim(),
     date: today,
-    from_email: email,
-    user_email: email, // Alternative field name
-    price: price,
-    features: features,
-    service_features: features, // Alternative field name
+    from_email: email.trim(),
+    user_email: email.trim(),
+    price: price.trim(),
+    features: features.trim(),
+    service_features: features.trim(),
     company_name: 'Inspirovix',
-    reply_to: email,
-    subject: `Pricing Inquiry for ${planName}`,
-    // Additional fallback fields
-    email: email
+    reply_to: email.trim(),
+    subject: `Pricing Inquiry for ${planName.trim()}`,
+    email: email.trim()
   };
   
   console.log('Sending pricing email with params:', templateParams);
   
   try {
     const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.PRICING_TEMPLATE_ID,
+      "service_inspirovix",
+      "template_pricing",
       templateParams
     );
     
@@ -219,8 +196,8 @@ export const testEmailJSConnection = async () => {
   
   try {
     const response = await emailjs.send(
-      EMAILJS_CONFIG.SERVICE_ID,
-      EMAILJS_CONFIG.CONTACT_TEMPLATE_ID,
+      "service_inspirovix",
+      "template_contact",
       testParams
     );
     

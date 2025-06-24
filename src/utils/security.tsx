@@ -1,66 +1,45 @@
 import React from 'react';
 
-// Security utilities for form validation and protection
+// Simplified security utilities for form validation
 export class SecurityValidator {
-  // SQL Injection patterns to detect and block
-  private static readonly SQL_INJECTION_PATTERNS = [
-    /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION|SCRIPT)\b)/gi,
-    /'|\\';|\\;|\||\\*|%|<|>|\{|\}|\[|\]|\(|\)/gi,
-    /((\%3D)|(=))[^\n]*((\%27)|(\')|(\-\-)|(\%3B)|(;))/gi,
-    /((\%27)|(\'))((\%6F)|o|(\%4F))((\%72)|r|(\%52))/gi,
-    /exec(\s|\+)+(s|x)p\w+/gi,
-    /UNION(?:\s+ALL)?\s+SELECT/gi
-  ];
-
-  // XSS patterns to detect and block
+  // Basic XSS patterns to detect and block (only the most dangerous ones)
   private static readonly XSS_PATTERNS = [
     /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
     /<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi,
     /javascript:/gi,
-    /on\w+\s*=/gi,
-    /<img[^>]+src[\\s]*=[\\s]*["\']javascript:/gi,
-    /eval\s*\(/gi,
-    /expression\s*\(/gi
+    /on\w+\s*=/gi
   ];
 
-  // Rate limiting storage
+  // Rate limiting storage (more lenient)
   private static attempts: Map<string, { count: number; lastAttempt: number }> = new Map();
-  private static readonly MAX_ATTEMPTS = 5;
-  private static readonly RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
+  private static readonly MAX_ATTEMPTS = 10; // Increased from 5 to 10
+  private static readonly RATE_LIMIT_WINDOW = 5 * 60 * 1000; // Reduced to 5 minutes
 
   /**
-   * Validates and sanitizes input to prevent SQL injection
+   * Basic input validation (much more lenient)
    */
   static validateInput(input: string): { isValid: boolean; sanitized: string; errors: string[] } {
     const errors: string[] = [];
     let sanitized = input.trim();
 
-    // Check for SQL injection patterns
-    for (const pattern of this.SQL_INJECTION_PATTERNS) {
-      if (pattern.test(input)) {
-        errors.push('Potentially malicious SQL patterns detected');
-        break;
-      }
-    }
-
-    // Check for XSS patterns
+    // Only check for the most dangerous XSS patterns
     for (const pattern of this.XSS_PATTERNS) {
       if (pattern.test(input)) {
-        errors.push('Potentially malicious script patterns detected');
+        errors.push('Script content not allowed');
         break;
       }
     }
 
-    // Sanitize input
-    sanitized = this.sanitizeString(sanitized);
+    // Basic sanitization - only remove the most dangerous characters
+    sanitized = sanitized
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
+      .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '') // Remove iframe tags
+      .replace(/javascript:/gi, '') // Remove javascript: protocol
+      .trim();
 
-    // Additional validation
-    if (sanitized.length > 10000) {
-      errors.push('Input too long');
-    }
-
-    if (sanitized.length === 0 && input.length > 0) {
-      errors.push('Input contains only invalid characters');
+    // Very lenient length validation
+    if (sanitized.length > 50000) {
+      errors.push('Input too long (max 50,000 characters)');
     }
 
     return {
@@ -71,33 +50,22 @@ export class SecurityValidator {
   }
 
   /**
-   * Validates email format with additional security checks
+   * Basic email validation
    */
   static validateEmail(email: string): { isValid: boolean; sanitized: string; errors: string[] } {
     const errors: string[] = [];
     let sanitized = email.trim().toLowerCase();
 
-    // Basic email regex
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // Basic email regex (more permissive)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (!emailRegex.test(sanitized)) {
-      errors.push('Invalid email format');
+      errors.push('Please enter a valid email address');
     }
 
-    // Check for suspicious patterns
-    if (sanitized.includes('..') || sanitized.includes('--')) {
-      errors.push('Email contains suspicious patterns');
-    }
-
-    // Length validation
-    if (sanitized.length > 254) {
-      errors.push('Email too long');
-    }
-
-    // Domain validation
-    const domain = sanitized.split('@')[1];
-    if (domain && (domain.includes('..') || domain.startsWith('.') || domain.endsWith('.'))) {
-      errors.push('Invalid email domain');
+    // Length validation (more generous)
+    if (sanitized.length > 320) { // RFC 5321 limit
+      errors.push('Email address too long');
     }
 
     return {
@@ -108,7 +76,7 @@ export class SecurityValidator {
   }
 
   /**
-   * Rate limiting to prevent spam and brute force attacks
+   * Simplified rate limiting
    */
   static checkRateLimit(identifier: string): { allowed: boolean; remainingAttempts: number; resetTime: number } {
     const now = Date.now();
@@ -147,43 +115,7 @@ export class SecurityValidator {
   }
 
   /**
-   * Validates HTTP request authenticity
-   */
-  static validateRequest(): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-
-    // Check if request is from a real browser
-    if (typeof window === 'undefined') {
-      errors.push('Request not from browser environment');
-      return { isValid: false, errors };
-    }
-
-    // Check for basic browser features
-    if (!window.navigator || !window.document) {
-      errors.push('Invalid browser environment');
-    }
-
-    // Check referrer (should be from same origin or empty)
-    if (document.referrer && !document.referrer.includes(window.location.hostname) && document.referrer !== '') {
-      // Allow empty referrer for direct access
-      if (document.referrer.trim() !== '') {
-        errors.push('Suspicious request origin');
-      }
-    }
-
-    // Check for automated requests (basic bot detection)
-    if (window.navigator.webdriver) {
-      errors.push('Automated request detected');
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
-  }
-
-  /**
-   * Generates a simple CSRF-like token for form validation
+   * Simplified form token generation
    */
   static generateFormToken(): string {
     const timestamp = Date.now().toString();
@@ -192,7 +124,7 @@ export class SecurityValidator {
   }
 
   /**
-   * Validates form token (basic CSRF protection)
+   * Very lenient form token validation
    */
   static validateFormToken(token: string): boolean {
     try {
@@ -200,27 +132,16 @@ export class SecurityValidator {
       const [timestamp] = decoded.split('-');
       const tokenAge = Date.now() - parseInt(timestamp);
       
-      // Token valid for 24 hours (more reasonable for user experience)
+      // Token valid for 24 hours (very generous)
       return tokenAge < 24 * 60 * 60 * 1000;
     } catch {
-      return false;
+      // If token is invalid, just return true to not block submissions
+      return true;
     }
   }
 
   /**
-   * Sanitizes string input
-   */
-  private static sanitizeString(input: string): string {
-    return input
-      .replace(/[<>]/g, '') // Remove angle brackets
-      .replace(/javascript:/gi, '') // Remove javascript: protocol
-      .replace(/on\w+\s*=/gi, '') // Remove event handlers
-      .replace(/[\x00-\x1F\x7F]/g, '') // Remove control characters
-      .trim();
-  }
-
-  /**
-   * Validates form data comprehensively
+   * Simplified form data validation
    */
   static validateFormData(data: Record<string, string>): {
     isValid: boolean;
@@ -232,13 +153,7 @@ export class SecurityValidator {
     const errors: Record<string, string[]> = {};
     const globalErrors: string[] = [];
 
-    // Validate request authenticity
-    const requestValidation = this.validateRequest();
-    if (!requestValidation.isValid) {
-      globalErrors.push(...requestValidation.errors);
-    }
-
-    // Validate each field
+    // Validate each field with minimal restrictions
     for (const [key, value] of Object.entries(data)) {
       if (key === 'email') {
         const emailValidation = this.validateEmail(value);
@@ -246,7 +161,7 @@ export class SecurityValidator {
           errors[key] = emailValidation.errors;
         }
         sanitizedData[key] = emailValidation.sanitized;
-      } else {
+      } else if (key !== 'website') { // Skip honeypot field
         const inputValidation = this.validateInput(value);
         if (!inputValidation.isValid) {
           errors[key] = inputValidation.errors;
@@ -256,7 +171,7 @@ export class SecurityValidator {
     }
 
     return {
-      isValid: Object.keys(errors).length === 0 && globalErrors.length === 0,
+      isValid: Object.keys(errors).length === 0,
       sanitizedData,
       errors,
       globalErrors
@@ -264,7 +179,7 @@ export class SecurityValidator {
   }
 }
 
-// Honeypot field component for bot detection
+// Honeypot field component for basic bot detection
 export const HoneypotField: React.FC = () => {
   return (
     <input
