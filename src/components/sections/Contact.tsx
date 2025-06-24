@@ -24,6 +24,8 @@ const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    console.log('Form submitted with data:', formData);
+    
     // Clear previous errors
     setValidationErrors({});
     setErrorMessage('');
@@ -46,12 +48,17 @@ const Contact = () => {
     
     try {
       const { website, ...cleanFormData } = formData;
+      console.log('Sending email with clean data:', cleanFormData);
       const result = await sendContactEmail(cleanFormData);
+      
+      console.log('Email result:', result);
       
       if (result.success) {
         setStatus('success');
         setFormData({ name: '', email: '', message: '', website: '' });
+        console.log('Email sent successfully!');
       } else {
+        console.error('Email sending failed:', result);
         if (result.rateLimited) {
           setStatus('rate-limited');
         } else if (result.securityErrors) {
@@ -63,6 +70,7 @@ const Contact = () => {
         setErrorMessage(result.error || 'Failed to send message');
       }
     } catch (error) {
+      console.error('Unexpected error:', error);
       setStatus('error');
       setErrorMessage(error instanceof Error ? error.message : 'Failed to send message');
     }
@@ -185,7 +193,7 @@ const Contact = () => {
               {/* Success Message */}
               {status === 'success' && (
                 <div className="text-green-500 text-sm">
-                  ✅ Message sent successfully! We'll get back to you soon.
+                  ✅ Message sent successfully! We'll get back to you within 24 hours.
                 </div>
               )}
 
@@ -209,7 +217,7 @@ const Contact = () => {
 
               {/* Security Footer */}
               <div className={`text-xs ${styles.text.secondary} text-center mt-2`}>
-                Protected by advanced security measures • Rate limited • Bot detection enabled
+                🔒 Secure & encrypted • Rate limited • Bot protection enabled
               </div>
             </form>
           </motion.div>
