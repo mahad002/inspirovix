@@ -5,7 +5,6 @@ import { sendPricingInquiryEmail } from '../../utils/emailService';
 import type { PricingPlan } from '../../data/pricing';
 import { useTheme } from '../../theme/ThemeContext';
 import { themes } from '../../theme/themes';
-import { SecurityValidator } from '../../utils/security';
 
 type RegularPricingCardProps = PricingPlan & { delay?: number };
 
@@ -20,29 +19,12 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
   const { theme } = useTheme();
   const styles = useMemo(() => themes[theme], [theme]);
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error' | 'rate-limited' | 'security-error'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [formToken, setFormToken] = useState(() => SecurityValidator.generateFormToken());
-  const [honeypot, setHoneypot] = useState('');
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Honeypot check
-    if (honeypot) {
-      setStatus('security-error');
-      setErrorMessage('Automated submission detected.');
-      return;
-    }
-
-    // Validate form token - if invalid, generate a new one and continue
-    if (!SecurityValidator.validateFormToken(formToken)) {
-      console.log('Form token expired, generating new one...');
-      const newToken = SecurityValidator.generateFormToken();
-      setFormToken(newToken);
-      // Don't block the submission, just use the new token
-    }
-
     setStatus('sending');
     setErrorMessage('');
     
@@ -58,27 +40,17 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
         setStatus('success');
         setEmail('');
       } else {
-        if (result.rateLimited) {
-          setStatus('rate-limited');
-        } else if (result.securityErrors) {
-          setStatus('security-error');
-        } else {
-          setStatus('error');
-        }
+        setStatus('error');
         setErrorMessage(result.error || 'Failed to send inquiry');
       }
     } catch (error) {
       setStatus('error');
       setErrorMessage('Network error. Please try again.');
     }
-  }, [honeypot, formToken, title, price, features, email]);
+  }, [title, price, features, email]);
 
   const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-  }, []);
-
-  const handleHoneypotChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setHoneypot(e.target.value);
   }, []);
 
   // Memoized feature list
@@ -124,35 +96,13 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
       {/* Hover Form - Optimized */}
       <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-navy-900/95 to-purple-900/95' : 'bg-gradient-to-b from-white/95 to-purple-50/95'} backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-6`}>
         <form onSubmit={handleSubmit} className="w-full space-y-4">
-          {/* Security Notice */}
-          <div className={`text-xs ${styles.text.secondary} text-center mb-2`}>
-            🔒 Secure inquiry form
-          </div>
-          
           <h4 className={`text-xl font-bold ${styles.text.primary} text-center mb-4`}>Get Started with {title}</h4>
-          
-          {/* Honeypot field */}
-          <input
-            type="text"
-            name="website"
-            value={honeypot}
-            onChange={handleHoneypotChange}
-            style={{
-              position: 'absolute',
-              left: '-9999px',
-              width: '1px',
-              height: '1px',
-              opacity: 0
-            }}
-            tabIndex={-1}
-            autoComplete="off"
-          />
           
           <input
             type="email"
             value={email}
             onChange={handleEmailChange}
-            placeholder="Enter your secure email"
+            placeholder="Enter your email"
             required
             maxLength={254}
             className={`w-full px-4 py-3 ${styles.background.secondary} border ${styles.border.primary} rounded-lg focus:ring-2 focus:ring-purple-500 ${styles.text.primary} placeholder-gray-400`}
@@ -160,27 +110,23 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
             autoComplete="email"
           />
           
-          <input type="hidden" name="formToken" value={formToken} />
-          
           <button
             type="submit"
-            disabled={status === 'sending' || status === 'rate-limited'}
+            disabled={status === 'sending'}
             className={`w-full px-4 py-3 rounded-lg ${styles.text.primary} font-semibold transition-all duration-200 ${
-              (status === 'sending' || status === 'rate-limited')
+              status === 'sending'
                 ? `${styles.button.primary} opacity-50 cursor-not-allowed`
                 : styles.button.primary
             }`}
           >
-            {status === 'sending' ? 'Sending...' : 
-             status === 'rate-limited' ? 'Rate Limited' : 
-             'Secure Inquiry'}
+            {status === 'sending' ? 'Sending...' : 'Get Quote'}
           </button>
 
           {status === 'success' && (
-            <p className="text-green-500 text-sm text-center">✅ Secure inquiry sent! We'll contact you soon.</p>
+            <p className="text-green-500 text-sm text-center">✅ Inquiry sent! We'll contact you soon.</p>
           )}
           
-          {(status === 'error' || status === 'security-error' || status === 'rate-limited') && (
+          {status === 'error' && (
             <p className="text-red-500 text-sm text-center">{errorMessage}</p>
           )}
         </form>
