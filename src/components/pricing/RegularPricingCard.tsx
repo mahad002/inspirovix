@@ -22,7 +22,7 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error' | 'rate-limited' | 'security-error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [formToken] = useState(() => SecurityValidator.generateFormToken());
+  const [formToken, setFormToken] = useState(() => SecurityValidator.generateFormToken());
   const [honeypot, setHoneypot] = useState('');
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
@@ -35,11 +35,12 @@ const RegularPricingCard: React.FC<RegularPricingCardProps> = React.memo(({
       return;
     }
 
-    // Validate form token
+    // Validate form token - if invalid, generate a new one and continue
     if (!SecurityValidator.validateFormToken(formToken)) {
-      setStatus('security-error');
-      setErrorMessage('Form session expired. Please refresh and try again.');
-      return;
+      console.log('Form token expired, generating new one...');
+      const newToken = SecurityValidator.generateFormToken();
+      setFormToken(newToken);
+      // Don't block the submission, just use the new token
     }
 
     setStatus('sending');

@@ -200,8 +200,8 @@ export class SecurityValidator {
       const [timestamp] = decoded.split('-');
       const tokenAge = Date.now() - parseInt(timestamp);
       
-      // Token valid for 1 hour
-      return tokenAge < 60 * 60 * 1000;
+      // Token valid for 24 hours (more reasonable for user experience)
+      return tokenAge < 24 * 60 * 60 * 1000;
     } catch {
       return false;
     }
