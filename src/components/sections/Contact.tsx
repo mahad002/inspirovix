@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Phone, Globe, Mail, Linkedin, Instagram, Clock, Facebook } from 'lucide-react';
 import { sendContactEmail } from '../../utils/emailService';
