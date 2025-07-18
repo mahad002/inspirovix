@@ -13,6 +13,7 @@ import CustomDevelopment from '../components/sections/CustomDevelopment';
 import About from '../components/sections/About';
 import Pricing from '../components/sections/Pricing';
 import Contact from '../components/sections/Contact';
+import FAQ from '../components/sections/FAQ';
 import Blog from '../components/sections/Blog';
 import Footer from '../components/sections/Footer';
 
@@ -51,6 +52,9 @@ const HomePage = () => {
 
       {/* 7. Call To Action */}
       <Contact />
+      
+      {/* 8. FAQ Section */}
+      <FAQ />
       
       {/* Footer */}
       <Footer />

@@ -8,5 +8,6 @@ export const menuItems = [
   { icon: Code, label: 'Services', href: '#services' },
   { icon: Users, label: 'About', href: '#about' },
   { icon: DollarSign, label: 'Pricing', href: '#pricing' },
+  { icon: FileText, label: 'FAQ', href: '#faq' },
   { icon: Phone, label: 'Contact', href: '#contact' },
 ];
