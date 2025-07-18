@@ -51,13 +51,29 @@ const Home = React.memo(() => {
 
   return (
     <section id="home" className={`relative ${styles.background.gradient} overflow-hidden`}>
+      {/* SEO Content - Hidden but readable by search engines */}
+      <div className="sr-only">
+        <h1>Leading Software Development Company - Custom AI, Web & Mobile Solutions</h1>
+        <p>Inspirovix is a premier software development company specializing in AI automation, custom web development, mobile applications, blockchain solutions, and digital transformation services. We help businesses worldwide streamline operations and drive growth through cutting-edge technology.</p>
+        <ul>
+          <li>Custom Software Development Services</li>
+          <li>AI Automation and Machine Learning Solutions</li>
+          <li>Web Development and E-commerce Platforms</li>
+          <li>Mobile App Development (iOS and Android)</li>
+          <li>Blockchain and Web3 Development</li>
+          <li>Cloud Solutions and DevOps Services</li>
+          <li>UI/UX Design and Digital Marketing</li>
+          <li>Software Testing and Quality Assurance</li>
+        </ul>
+      </div>
+      
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className={`text-4xl sm:text-5xl md:text-7xl font-bold ${styles.text.primary} mb-4 md:mb-6 font-display leading-tight`}>
+          <h2 className={`text-4xl sm:text-5xl md:text-7xl font-bold ${styles.text.primary} mb-4 md:mb-6 font-display leading-tight`}>
             {heroContent.title}{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               {heroContent.highlight}

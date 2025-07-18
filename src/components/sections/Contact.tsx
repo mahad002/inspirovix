@@ -50,6 +50,21 @@ const Contact = () => {
 
   return (
     <section id="contact" className={`${styles.background.primary} py-12 overflow-hidden`}>
+      {/* SEO Content */}
+      <div className="sr-only">
+        <h2>Contact Inspirovix - Get Your Custom Software Quote</h2>
+        <p>Ready to transform your business with custom software development? Contact our expert team for a free consultation and custom quote. We provide 24-hour response time and serve clients worldwide with offices in Pakistan, Middle East, and USA.</p>
+        <address>
+          <p>Inspirovix Software Development Company</p>
+          <p>Office: Office 805- 105, Owned by SHAIKH SUHAIL MAKTOUM JUMA ALMAKTOUM, Port Saeed, UAE</p>
+          <p>Phone: +92 3105589303 (Pakistan)</p>
+          <p>Phone: +974 7086 7033 (Middle East)</p>
+          <p>Phone: +1 (571) 508-9086 (USA)</p>
+          <p>Email: inspirovix@gmail.com</p>
+          <p>Website: inspirovix.com</p>
+        </address>
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

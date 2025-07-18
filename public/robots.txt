@@ -1,0 +1,47 @@
+# Robots.txt for Inspirovix - Software Development Company
+# https://inspirovix.com/robots.txt
+
+User-agent: *
+Allow: /
+
+# Important pages for SEO
+Allow: /#home
+Allow: /#ai-automation
+Allow: /#services
+Allow: /#case-studies
+Allow: /#solutions
+Allow: /#about
+Allow: /#pricing
+Allow: /#contact
+Allow: /#faq
+
+# Block unnecessary files
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /.git/
+Disallow: /dist/
+Disallow: /*.json$
+Disallow: /*.ts$
+Disallow: /*.tsx$
+Disallow: /vite.config.*
+Disallow: /package*.json
+Disallow: /tsconfig*.json
+
+# Allow important assets
+Allow: /assets/
+Allow: /images/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+Allow: /*.ico
+
+# Sitemap location
+Sitemap: https://inspirovix.com/sitemap.xml
+
+# Crawl delay (optional - helps with server load)
+Crawl-delay: 1

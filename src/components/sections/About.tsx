@@ -88,6 +88,20 @@ const About = React.memo(() => {
 
   return (
     <section id="about" className={`${styles.background.primary} py-20 overflow-hidden`}>
+      {/* SEO Content */}
+      <div className="sr-only">
+        <h2>About Inspirovix - Leading Software Development Company</h2>
+        <p>Inspirovix is a trusted software development company with 100+ clients worldwide, 98% client satisfaction rate, and 24/7 support. Founded with a vision to make enterprise-grade automation accessible to businesses of all sizes, we combine deep industry knowledge with cutting-edge technology to deliver solutions that drive real business results.</p>
+        <ul>
+          <li>100+ Satisfied Clients Worldwide</li>
+          <li>98% Client Satisfaction Rate</li>
+          <li>24/7 Technical Support Available</li>
+          <li>Expert Team of Software Developers</li>
+          <li>Proven Track Record in Digital Transformation</li>
+          <li>Sustainable and Eco-Friendly Development Practices</li>
+        </ul>
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div

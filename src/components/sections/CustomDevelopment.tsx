@@ -40,6 +40,22 @@ const CustomDevelopment = () => {
 
   return (
     <section id="services" className={`${styles.background.primary} py-12 md:py-20`}>
+      {/* SEO Content */}
+      <div className="sr-only">
+        <h2>Custom Software Development Services</h2>
+        <p>Comprehensive software development services including web development, mobile app development, AI and machine learning, blockchain and Web3, cloud solutions, DevOps, software testing, UI/UX design, and game development. Expert teams delivering scalable, maintainable solutions using latest technologies.</p>
+        <ul>
+          <li>Web Development - React, Vue, Angular, Node.js, Python, PHP</li>
+          <li>Mobile Development - Native iOS, Android, React Native, Flutter</li>
+          <li>AI & Machine Learning - NLP, Computer Vision, Predictive Analytics</li>
+          <li>Blockchain Development - Smart Contracts, DeFi, NFT, Web3</li>
+          <li>Cloud & DevOps - AWS, Azure, GCP, CI/CD, Infrastructure as Code</li>
+          <li>Software Testing - Automated Testing, Manual QA, Performance Testing</li>
+          <li>UI/UX Design - User Research, Interface Design, Prototyping</li>
+          <li>Game Development - Unity, Unreal Engine, Mobile Games</li>
+        </ul>
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

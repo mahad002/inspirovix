@@ -89,6 +89,20 @@ const CaseStudies = React.memo(() => {
 
   return (
     <section id="case-studies" className={`${styles.background.primary} py-20 overflow-hidden`}>
+      {/* SEO Content */}
+      <div className="sr-only">
+        <h2>Software Development Case Studies - Proven Results</h2>
+        <p>Real success stories from our software development projects. See how we've helped businesses achieve 156% sales increase, 85% customer engagement improvement, and 75% route efficiency optimization through custom software solutions, AI automation, and digital transformation.</p>
+        <ul>
+          <li>E-commerce Revenue Growth - 156% Sales Increase</li>
+          <li>Automotive Digital Transformation - 120% Lead Generation Increase</li>
+          <li>Fleet Management Optimization - 75% Route Efficiency Improvement</li>
+          <li>Custom Software Solutions for Various Industries</li>
+          <li>AI-Powered Business Process Automation</li>
+          <li>Mobile App Development Success Stories</li>
+        </ul>
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

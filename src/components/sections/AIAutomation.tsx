@@ -94,6 +94,12 @@ const AIAutomation = React.memo(() => {
 
   return (
     <section id="ai-automation" className={`${styles.background.primary} py-20 overflow-hidden`}>
+      {/* SEO Content */}
+      <div className="sr-only">
+        <h2>AI Automation Services - Transform Your Business Operations</h2>
+        <p>Our AI automation services help businesses reduce costs by 60%, improve response times by 80%, and increase conversion rates by 40%. We specialize in AI-powered customer interactions, intelligent chatbots, process automation, and predictive analytics.</p>
+      </div>
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Content */}
