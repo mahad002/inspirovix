@@ -78,7 +78,7 @@ const Home = React.memo(() => {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
               {heroContent.highlight}
             </span>
-          </h1>
+          </h2>
           
           <div className="mb-4 md:mb-8">
             <TypewriterEffect 
