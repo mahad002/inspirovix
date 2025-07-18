@@ -14,6 +14,13 @@ Allow: /#about
 Allow: /#pricing
 Allow: /#contact
 Allow: /#faq
+Allow: /#ai-software-development
+Allow: /#web-application-development
+Allow: /#mobile-app-development-services
+Allow: /#blockchain-development-services
+Allow: /#crm-software-development
+Allow: /#erp-development-services
+Allow: /#saas-development
 
 # Block unnecessary files
 Disallow: /node_modules/

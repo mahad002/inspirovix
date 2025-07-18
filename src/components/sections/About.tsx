@@ -90,14 +90,25 @@ const About = React.memo(() => {
     <section id="about" className={`${styles.background.primary} py-20 overflow-hidden`}>
       {/* SEO Content */}
       <div className="sr-only">
-        <h2>About Inspirovix - Leading Software Development Company</h2>
-        <p>Inspirovix is a trusted software development company with 100+ clients worldwide, 98% client satisfaction rate, and 24/7 support. Founded with a vision to make enterprise-grade automation accessible to businesses of all sizes, we combine deep industry knowledge with cutting-edge technology to deliver solutions that drive real business results.</p>
+        <h2>About Inspirovix - Custom Software Development Company with Expert Software Engineers</h2>
+        <p>Inspirovix is a trusted custom software development company with expert software engineers and software developers serving 100+ clients worldwide, maintaining a 98% client satisfaction rate, and providing 24/7 support. Founded with a vision to make enterprise-grade software development services accessible to businesses of all sizes, we combine deep industry knowledge with cutting-edge technology to deliver custom software solutions that drive real business results. Our software development company specializes in AI software development, web application development, mobile app development services, and enterprise software development.</p>
         <ul>
-          <li>100+ Satisfied Clients Worldwide</li>
+          <li>Custom Software Development Company with 100+ Satisfied Clients Worldwide</li>
+          <li>Expert Software Engineers and Software Developers</li>
           <li>98% Client Satisfaction Rate</li>
           <li>24/7 Technical Support Available</li>
-          <li>Expert Team of Software Developers</li>
-          <li>Proven Track Record in Digital Transformation</li>
+          <li>Comprehensive Software Development Services</li>
+          <li>AI Software Development and Machine Learning Expertise</li>
+          <li>Web Application Development Company</li>
+          <li>Mobile App Development Services</li>
+          <li>Blockchain Development Services</li>
+          <li>CRM Software Developers and ERP Development Services</li>
+          <li>SaaS Development and Cloud Solutions</li>
+          <li>Software Development Outsourcing Services</li>
+          <li>Enterprise Software Development Solutions</li>
+          <li>Healthcare and Financial Software Development</li>
+          <li>eCommerce Software Development Services</li>
+          <li>IT Solutions and Support Services</li>
           <li>Sustainable and Eco-Friendly Development Practices</li>
         </ul>
       </div>

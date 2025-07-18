@@ -52,16 +52,17 @@ const Contact = () => {
     <section id="contact" className={`${styles.background.primary} py-12 overflow-hidden`}>
       {/* SEO Content */}
       <div className="sr-only">
-        <h2>Contact Inspirovix - Get Your Custom Software Quote</h2>
-        <p>Ready to transform your business with custom software development? Contact our expert team for a free consultation and custom quote. We provide 24-hour response time and serve clients worldwide with offices in Pakistan, Middle East, and USA.</p>
+        <h2>Contact Inspirovix - Custom Software Development Company</h2>
+        <p>Ready to transform your business with custom software development services? Contact our expert software engineers and software developers for a free consultation and custom quote. Our software development company provides 24-hour response time and serves clients worldwide with offices in Pakistan, Middle East, and USA. Get in touch for AI software development, web application development, mobile app development services, blockchain development services, CRM software development, ERP development services, SaaS development, and all your custom software development needs.</p>
         <address>
-          <p>Inspirovix Software Development Company</p>
+          <p>Inspirovix - Custom Software Development Company</p>
           <p>Office: Office 805- 105, Owned by SHAIKH SUHAIL MAKTOUM JUMA ALMAKTOUM, Port Saeed, UAE</p>
           <p>Phone: +92 3105589303 (Pakistan)</p>
           <p>Phone: +974 7086 7033 (Middle East)</p>
           <p>Phone: +1 (571) 508-9086 (USA)</p>
           <p>Email: inspirovix@gmail.com</p>
           <p>Website: inspirovix.com</p>
+          <p>Services: Custom Software Development, AI Software Development, Web Application Development, Mobile App Development Services, Blockchain Development Services, CRM Software Development, ERP Development Services, SaaS Development, Software Development Outsourcing, Enterprise Software Development, Healthcare Software Development, Financial Software Development, eCommerce Software Development Services, IT Solutions</p>
         </address>
       </div>
       

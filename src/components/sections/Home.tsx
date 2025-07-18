@@ -53,17 +53,23 @@ const Home = React.memo(() => {
     <section id="home" className={`relative ${styles.background.gradient} overflow-hidden`}>
       {/* SEO Content - Hidden but readable by search engines */}
       <div className="sr-only">
-        <h1>Leading Software Development Company - Custom AI, Web & Mobile Solutions</h1>
-        <p>Inspirovix is a premier software development company specializing in AI automation, custom web development, mobile applications, blockchain solutions, and digital transformation services. We help businesses worldwide streamline operations and drive growth through cutting-edge technology.</p>
+        <h1>Custom Software Development Company - AI, Web & Mobile App Development Services</h1>
+        <p>Inspirovix is a leading custom software development company with expert software engineers and software developers specializing in AI software development, web application development, mobile app development services, blockchain development services, and enterprise software solutions. We provide comprehensive software development services including CRM software development, ERP development services, SaaS development, and software development outsourcing for businesses worldwide.</p>
         <ul>
-          <li>Custom Software Development Services</li>
-          <li>AI Automation and Machine Learning Solutions</li>
-          <li>Web Development and E-commerce Platforms</li>
-          <li>Mobile App Development (iOS and Android)</li>
-          <li>Blockchain and Web3 Development</li>
-          <li>Cloud Solutions and DevOps Services</li>
-          <li>UI/UX Design and Digital Marketing</li>
-          <li>Software Testing and Quality Assurance</li>
+          <li>Custom Software Development Company with Expert Software Engineers</li>
+          <li>AI Software Development and Machine Learning Solutions</li>
+          <li>Web Application Development Company - Responsive Websites</li>
+          <li>Mobile App Development Services - iOS and Android Apps</li>
+          <li>Blockchain Development Services and Web3 Solutions</li>
+          <li>CRM Software Developers - Customer Management Systems</li>
+          <li>ERP Development Company - Enterprise Resource Planning</li>
+          <li>SaaS Development - Cloud-Based Software Solutions</li>
+          <li>Software Development Outsourcing Services</li>
+          <li>Enterprise Software Development for Large Businesses</li>
+          <li>Healthcare Software Development Solutions</li>
+          <li>Financial Software Development Services</li>
+          <li>eCommerce Software Development Services</li>
+          <li>IT Solutions and Support Services</li>
         </ul>
       </div>
       

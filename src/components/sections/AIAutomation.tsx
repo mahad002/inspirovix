@@ -96,8 +96,18 @@ const AIAutomation = React.memo(() => {
     <section id="ai-automation" className={`${styles.background.primary} py-20 overflow-hidden`}>
       {/* SEO Content */}
       <div className="sr-only">
-        <h2>AI Automation Services - Transform Your Business Operations</h2>
-        <p>Our AI automation services help businesses reduce costs by 60%, improve response times by 80%, and increase conversion rates by 40%. We specialize in AI-powered customer interactions, intelligent chatbots, process automation, and predictive analytics.</p>
+        <h2>AI Software Development Services - Custom AI Automation Solutions</h2>
+        <p>Our AI software development services help businesses reduce costs by 60%, improve response times by 80%, and increase conversion rates by 40%. We are expert software developers specializing in AI-powered customer interactions, intelligent chatbots, process automation, and predictive analytics. Our software engineers create custom AI software development solutions for businesses of all sizes.</p>
+        <ul>
+          <li>AI Software Development - Custom AI Solutions</li>
+          <li>Machine Learning Software Development</li>
+          <li>AI-Powered Business Process Automation</li>
+          <li>Intelligent Chatbot Development Services</li>
+          <li>Predictive Analytics Software Development</li>
+          <li>Natural Language Processing (NLP) Solutions</li>
+          <li>Computer Vision Software Development</li>
+          <li>AI Integration Services for Existing Systems</li>
+        </ul>
       </div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

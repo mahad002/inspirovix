@@ -42,17 +42,26 @@ const CustomDevelopment = () => {
     <section id="services" className={`${styles.background.primary} py-12 md:py-20`}>
       {/* SEO Content */}
       <div className="sr-only">
-        <h2>Custom Software Development Services</h2>
-        <p>Comprehensive software development services including web development, mobile app development, AI and machine learning, blockchain and Web3, cloud solutions, DevOps, software testing, UI/UX design, and game development. Expert teams delivering scalable, maintainable solutions using latest technologies.</p>
+        <h2>Custom Software Development Services - Expert Software Engineers</h2>
+        <p>Comprehensive custom software development services delivered by expert software engineers and software developers. We specialize in web application development, mobile app development services, AI software development, blockchain development services, cloud solutions, DevOps, software testing, UI/UX design, and game development. Our software development company delivers scalable, maintainable solutions using the latest technologies for businesses worldwide.</p>
         <ul>
-          <li>Web Development - React, Vue, Angular, Node.js, Python, PHP</li>
-          <li>Mobile Development - Native iOS, Android, React Native, Flutter</li>
-          <li>AI & Machine Learning - NLP, Computer Vision, Predictive Analytics</li>
-          <li>Blockchain Development - Smart Contracts, DeFi, NFT, Web3</li>
+          <li>Web Application Development Company - React, Vue, Angular, Node.js, Python, PHP</li>
+          <li>Mobile App Development Services - Native iOS, Android, React Native, Flutter</li>
+          <li>AI Software Development - NLP, Computer Vision, Predictive Analytics</li>
+          <li>Blockchain Development Services - Smart Contracts, DeFi, NFT, Web3</li>
+          <li>CRM Software Developers - Custom Customer Management Systems</li>
+          <li>ERP Development Company - Enterprise Resource Planning Solutions</li>
+          <li>SaaS Development - Software as a Service Solutions</li>
+          <li>eCommerce Software Development Services - Online Store Solutions</li>
+          <li>Healthcare Software Development - Medical Software Solutions</li>
+          <li>Financial Software Development - Fintech Applications</li>
+          <li>Enterprise Software Development - Large-Scale Business Solutions</li>
           <li>Cloud & DevOps - AWS, Azure, GCP, CI/CD, Infrastructure as Code</li>
-          <li>Software Testing - Automated Testing, Manual QA, Performance Testing</li>
-          <li>UI/UX Design - User Research, Interface Design, Prototyping</li>
-          <li>Game Development - Unity, Unreal Engine, Mobile Games</li>
+          <li>Software Testing Services - Automated Testing, Manual QA, Performance Testing</li>
+          <li>UI/UX Design Services - User Research, Interface Design, Prototyping</li>
+          <li>Game Development Services - Unity, Unreal Engine, Mobile Games</li>
+          <li>Software Development Outsourcing - Dedicated Development Teams</li>
+          <li>IT Solutions and Support Services - Technical Consulting</li>
         </ul>
       </div>
       
