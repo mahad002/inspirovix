@@ -58,6 +58,12 @@ const companies = [
     logo: "https://inspirovix.s3.us-east-2.amazonaws.com/gurusonline_logo.webp",
     description: "Your guide to Personal Growth and Mandarin Mastery",
     website: "https://guruisonline.com"
+  },
+  {
+    name: "Housing Disrepair Compensations",
+    logo: "https://cdn-icons-png.flaticon.com/512/1048/1048955.png",
+    description: "Professional Housing Disrepair Legal Services",
+    website: "https://www.housingdisrepaircompensations.co.uk"
   }
 ];
 
