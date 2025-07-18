@@ -48,12 +48,6 @@ const companies = [
     website: "https://unlockrealestate.com"
   },
   {
-    name: "AutoShield Insurance",
-    logo: "https://cdn-icons-png.flaticon.com/512/1048/1048955.png",
-    description: "Comprehensive Auto Insurance Solutions",
-    website: "https://www.your-goshorty.com"
-  },
-  {
     name: "GuruisOnline",
     logo: "https://inspirovix.s3.us-east-2.amazonaws.com/gurusonline_logo.webp",
     description: "Your guide to Personal Growth and Mandarin Mastery",
