@@ -25,7 +25,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&family=Big+Shoulders+Display:wght@500..800&family=Archivo:wdth,wght@75..100,400..700&family=Geist+Mono:wght@400..500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500..800&family=Archivo:wdth,wght@75..100,400..700&family=Geist+Mono:wght@400..500&display=swap" rel="stylesheet">
 <script>/* add ?still to the address to see the page with no motion or reveals */if(!/[?&]still\b/.test(location.search))document.documentElement.classList.add('js')</script>
 <link rel="stylesheet" href="assets/css/site.css?v=20261114">
 <link rel="stylesheet" href="assets/css/world.css?v=20261114">
@@ -37,6 +37,9 @@
   <symbol id="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="arr-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></symbol>
   <symbol id="wa" viewBox="0 0 24 24"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/><path fill="#fff" d="M17.3 14.6c-.3-.2-1.7-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a6.6 6.6 0 0 1-3.3-2.9c-.3-.4.2-.4.6-1.3.1-.2 0-.3 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4 3.3 3.3 0 0 0-1 2.4 5.8 5.8 0 0 0 1.2 3.1 13 13 0 0 0 5 4.4c1.9.8 2.6.9 3.5.7a3 3 0 0 0 2-1.4 2.4 2.4 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3Z"/></symbol>
+  <symbol id="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="chev-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="chev-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></symbol>
   <symbol id="ok" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
 </svg>
 
@@ -244,56 +247,98 @@
       <button type="button" class="chip" aria-pressed="false" data-f="platform">Platforms <sup>1</sup></button>
       <button type="button" class="chip" aria-pressed="false" data-f="ai">WhatsApp and AI <sup>3</sup></button>
     </div>
-    <ul class="work" id="workGrid">
-      <li class="proj is-wide" data-cat="company" data-rv>
-        <a href="https://www.gwm-pakistan.com" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/gwm.jpg" width="1200" height="750" alt="GWM Pakistan's website, showing the Haval H6" loading="lazy"><img class="full" src="assets/img/work/gwm-full.jpg" width="720" height="3298" alt="" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><span class="mono proj__feat">Featured build</span><h3>GWM Pakistan</h3><p>Brand site for Haval, ORA and TANK, built to book test drives</p><ul class="proj__pts"><li>Model pages with specs, colours and galleries</li><li>Test-drive and dealer booking</li><li>Find-a-dealer and after-sales sections</li></ul><span class="proj__where"><img src="assets/img/flags/pk.svg" alt="" width="20" height="15">Pakistan</span></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="store" data-rv>
-        <a href="https://www.somaralabs.com" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/live-somara.jpg" width="1200" height="750" alt="Somara Labs' online store" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><h3>Somara Labs</h3><p>Online store for red-light therapy devices</p><span class="proj__where"><img src="assets/img/flags/pk.svg" alt="" width="20" height="15">Pakistan</span></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="store ai" data-rv style="--d:80ms">
-        <a href="https://bunaisilai.com" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/live-bunai.jpg" width="1200" height="750" alt="Bunai Silai's hand-knit clothing store" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><h3>Bunai Silai</h3><p>Hand-knit store with WhatsApp orders</p><span class="proj__where"><img src="assets/img/flags/pk.svg" alt="" width="20" height="15">Pakistan</span></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="company" data-rv>
-        <a href="https://execchauffeurgroup.co.uk" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/live-exec.jpg" width="1200" height="750" alt="Exec Chauffeur Group's website" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><h3>Exec Chauffeur Group</h3><p>Booking site for executive cars</p><span class="proj__where"><img src="assets/img/flags/gb.svg" alt="" width="20" height="15">United Kingdom</span></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="company ai" data-rv style="--d:80ms">
-        <a href="https://www.isra-ai.co" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/live-isra.jpg" width="1200" height="750" alt="ISRA AI's website" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><h3>ISRA AI</h3><p>Company site for an AI studio</p></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="platform" data-rv>
-        <a href="https://guruisonline.com" target="_blank" rel="noopener">
-          <div class="proj__shot"><img src="assets/img/work/live-guru.jpg" width="1200" height="750" alt="GuruIsOnline's learning platform" loading="lazy"><span class="proj__go"><svg><use href="#arr-up"/></svg></span></div>
-          <div class="proj__meta"><div><h3>GuruIsOnline</h3><p>Learning platform for Mandarin lessons</p><span class="proj__where"><img src="assets/img/flags/sg.svg" alt="" width="20" height="15">Singapore</span></div><span class="live">Live</span></div>
-        </a>
-      </li>
-      <li class="proj" data-cat="company ai" data-rv style="--d:80ms">
-        <div>
-          <div class="proj__shot"><img src="assets/img/work/majorwerks.jpg" width="1200" height="750" alt="MajorWerks' website" loading="lazy"></div>
-          <div class="proj__meta"><div><h3>MajorWerks</h3><p>Site for an AI and automation consultancy</p><span class="proj__where"><img src="assets/img/flags/ae.svg" alt="" width="20" height="15">United Arab Emirates</span></div></div>
+  </div>
+  <!-- the street: walk along it, click a lit window for the case study -->
+  <div class="ave" id="ave">
+    <ul class="ave__track" id="aveTrack" aria-label="Client work">
+      <li class="store" data-id="gwm" data-cat="company" style="--k:0">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/gwm.webp" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="gwm" aria-label="Read the GWM Pakistan case study"><img src="assets/img/work/gwm.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>GWM Pakistan</h3>
+          <p>Brand site, Pakistan</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="gwm">Case study</button><a class="btn btn--gh btn--sm" href="https://www.gwm-pakistan.com" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens gwm-pakistan.com in a new tab)</span></a></div>
         </div>
       </li>
-      <li class="proj" data-cat="store" data-rv>
-        <div>
-          <div class="proj__shot"><img src="assets/img/work/phone2door.jpg" width="850" height="531" alt="Phone2Door's online store" loading="lazy"></div>
-          <div class="proj__meta"><div><h3>Phone2Door</h3><p>Online store for phone accessories</p><span class="proj__where"><img src="assets/img/flags/de.svg" alt="" width="20" height="15">Germany</span></div></div>
+      <li class="store" data-id="bunai" data-cat="store ai" style="--k:1">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/bunai.png" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="bunai" aria-label="Read the Bunai Silai case study"><img src="assets/img/work/live-bunai.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>Bunai Silai</h3>
+          <p>Online store, Pakistan</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="bunai">Case study</button><a class="btn btn--gh btn--sm" href="https://bunaisilai.com" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens bunaisilai.com in a new tab)</span></a></div>
+        </div>
+      </li>
+      <li class="store" data-id="somara" data-cat="store" style="--k:2">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/somara.png" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="somara" aria-label="Read the Somara Labs case study"><img src="assets/img/work/live-somara.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>Somara Labs</h3>
+          <p>Online store, Pakistan</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="somara">Case study</button><a class="btn btn--gh btn--sm" href="https://www.somaralabs.com" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens somaralabs.com in a new tab)</span></a></div>
+        </div>
+      </li>
+      <li class="store" data-id="exec" data-cat="company" style="--k:3">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/exec.png" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="exec" aria-label="Read the Exec Chauffeur Group case study"><img src="assets/img/work/live-exec.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>Exec Chauffeur Group</h3>
+          <p>Company site, United Kingdom</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="exec">Case study</button><a class="btn btn--gh btn--sm" href="https://execchauffeurgroup.co.uk" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens execchauffeurgroup.co.uk in a new tab)</span></a></div>
+        </div>
+      </li>
+      <li class="store" data-id="isra" data-cat="company ai" style="--k:4">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/isra.png" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="isra" aria-label="Read the ISRA AI case study"><img src="assets/img/work/live-isra.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>ISRA AI</h3>
+          <p>Company site, United Kingdom</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="isra">Case study</button><a class="btn btn--gh btn--sm" href="https://www.isra-ai.co" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens isra-ai.co in a new tab)</span></a></div>
+        </div>
+      </li>
+      <li class="store" data-id="guru" data-cat="platform" style="--k:5">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><img src="assets/img/logos/guru.png" alt="" loading="lazy"></div>
+        <button class="store__win" type="button" data-case="guru" aria-label="Read the GuruIsOnline case study"><img src="assets/img/work/live-guru.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>GuruIsOnline</h3>
+          <p>Learning platform, Singapore</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="guru">Case study</button><a class="btn btn--gh btn--sm" href="https://guruisonline.com" target="_blank" rel="noopener">Visit site<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="vh"> (opens guruisonline.com in a new tab)</span></a></div>
+        </div>
+      </li>
+      <li class="store" data-id="majorwerks" data-cat="company ai" style="--k:6">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><b>MajorWerks</b></div>
+        <button class="store__win" type="button" data-case="majorwerks" aria-label="Read the MajorWerks case study"><img src="assets/img/work/majorwerks.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>MajorWerks</h3>
+          <p>Company site, United Arab Emirates</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="majorwerks">Case study</button><span class="store__off">Not online any more</span></div>
+        </div>
+      </li>
+      <li class="store" data-id="phone2door" data-cat="store" style="--k:7">
+        <div class="store__up" aria-hidden="true"></div>
+        <div class="store__sign" aria-hidden="true"><b>Phone2Door</b></div>
+        <button class="store__win" type="button" data-case="phone2door" aria-label="Read the Phone2Door case study"><img src="assets/img/work/phone2door.jpg" alt="" width="1200" height="750" loading="lazy"></button>
+        <div class="store__door">
+          <h3>Phone2Door</h3>
+          <p>Online store, Germany</p>
+          <div class="store__acts"><button class="btn btn--cy btn--sm" type="button" data-case="phone2door">Case study</button><span class="store__off">Not online any more</span></div>
         </div>
       </li>
     </ul>
+    <div class="ave__ui">
+      <button class="ave__btn" type="button" id="avePrev" aria-label="Previous project"><svg aria-hidden="true"><use href="#chev-l"/></svg></button>
+      <span class="ave__at" id="aveAt" aria-live="polite"></span>
+      <button class="ave__btn" type="button" id="aveNext" aria-label="Next project"><svg aria-hidden="true"><use href="#chev-r"/></svg></button>
+    </div>
+  </div>
+  <div class="wrap">
   </div>
 </section>
 
@@ -367,9 +412,16 @@
       <div class="map" id="map" data-rv style="--d:120ms"><span class="map__tip" id="mapTip"></span></div>
     </div>
     <div class="rfilter" id="rfilter" role="group" aria-label="Filter reviews by country"></div>
-    <figure class="quote" id="quote" data-rv></figure>
-    <ul class="rcards" id="rcards" aria-label="Client reviews"></ul>
-    <div class="rmore" id="rmore"><p id="rcount" aria-live="polite"></p><div><button type="button" class="btn btn--bl btn--sm" id="rmoreBtn">Show 12 more</button><button type="button" class="textbtn" id="rallBtn">Show all</button></div></div>
+    <div class="lanes" id="lanes">
+      <div class="lane"><ul class="lane__track" id="laneA" aria-label="Client reviews, first row"></ul></div>
+      <div class="lane lane--b"><ul class="lane__track" id="laneB" aria-label="Client reviews, second row"></ul></div>
+    </div>
+    <p class="rempty" id="rempty" hidden></p>
+    <div class="lanes__ui">
+      <button class="ave__btn" type="button" id="lanePrev" aria-label="Slide the reviews back"><svg aria-hidden="true"><use href="#chev-l"/></svg></button>
+      <button class="lanes__pause" type="button" id="lanePause" aria-pressed="false">Pause</button>
+      <button class="ave__btn" type="button" id="laneNext" aria-label="Slide the reviews on"><svg aria-hidden="true"><use href="#chev-r"/></svg></button>
+    </div>
     <p class="rnote">Every review is copied word for word from clients, August 2024 to August 2025, including the low ones.</p>
     <noscript><p class="rempty">Turn on JavaScript to browse all 96 reviews by country.</p></noscript>
   </div>
@@ -423,6 +475,24 @@
   </div>
 </section>
 
+<dialog class="case" id="case" aria-labelledby="caseTitle">
+  <div class="case__in">
+    <div class="case__shot" id="caseShot"></div>
+    <div class="case__body">
+      <p class="case__meta" id="caseMeta"></p>
+      <h3 id="caseTitle"></h3>
+      <p class="case__line" id="caseLine"></p>
+      <h4>What we built</h4>
+      <ul class="case__built" id="caseBuilt"></ul>
+      <p class="case__stack" id="caseStack"></p>
+      <p class="case__note" id="caseNote"></p>
+      <div class="case__acts"><a class="btn btn--cy" id="caseVisit" target="_blank" rel="noopener"></a><a class="btn btn--gh" href="https://wa.me/923105589303?text=Hi%20Inspirovix%2C%20I%27d%20like%20something%20like%20this%20built." id="caseAsk">Ask for one like it</a></div>
+      <div class="case__nav"><button class="ave__btn" type="button" id="casePrev" aria-label="Previous case study"><svg aria-hidden="true"><use href="#chev-l"/></svg></button><span id="caseAt"></span><button class="ave__btn" type="button" id="caseNext" aria-label="Next case study"><svg aria-hidden="true"><use href="#chev-r"/></svg></button></div>
+    </div>
+    <button class="case__x" type="button" id="caseX" aria-label="Close the case study"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+  </div>
+</dialog>
+
 <!-- ================= 10 CLOSE ================= -->
 <footer class="sec deep close" id="contact" data-rail="Contact" data-theme="dark">
   <div class="wrap">
@@ -452,6 +522,7 @@
   <a class="btn btn--gh" href="https://wa.me/923105589303"><svg class="wa-ic"><use href="#wa"/></svg>WhatsApp</a>
 </div>
 
+<script src="assets/js/work-data.js?v=20261114"></script>
 <script src="assets/js/map-data.js?v=20261114"></script>
 <script src="assets/js/reviews-data.js?v=20261114"></script>
 <script src="assets/js/site.js?v=20261114"></script>

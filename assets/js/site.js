@@ -138,16 +138,84 @@
     addEventListener('resize', update); update();
   })();
 
-  /* ---------- work: filter + scroll-inside-frame height ---------- */
-  (function work() {
-    const chips = $$('#workFilter .chip'), items = $$('#workGrid .proj');
+  /* ---------- work: the street. Walk along it; a lit window opens the case study ---------- */
+  (function street() {
+    const track = $('#aveTrack'), W = window.IV_WORK; if (!track || !W) return;
+    const all = $$('.store', track), at = $('#aveAt'), chips = $$('#workFilter .chip');
+    const vis = () => all.filter(s => !s.hidden);
+    let raf = 0, cur = 0;
+    /* each shop turns to face you as it reaches the middle of the street */
+    function shape() {
+      raf = 0;
+      const r = track.getBoundingClientRect(), mid = r.left + r.width / 2;
+      let best = 0, bd = 1e9;
+      vis().forEach((s, i) => {
+        const b = s.getBoundingClientRect(), d = (b.left + b.width / 2 - mid) / b.width;
+        const c = Math.max(-1, Math.min(1, d)), ad = Math.min(Math.abs(d), 2.2);
+        s.style.transform = `perspective(1300px) translateZ(${(-ad * 120).toFixed(1)}px) rotateY(${(-c * 46).toFixed(2)}deg)`;
+        s.style.setProperty('--lit', (1 - Math.min(Math.abs(d), 1.4) * .5).toFixed(3));
+        if (Math.abs(d) < bd) { bd = Math.abs(d); best = i; }
+      });
+      cur = best;
+      vis().forEach((s, i) => s.classList.toggle('is-here', i === best));
+      if (at) { const v = vis()[best]; at.textContent = v ? `${best + 1} of ${vis().length}: ${$('h3', v).textContent}` : ''; }
+    }
+    const req = () => { if (!raf) raf = requestAnimationFrame(shape); };
+    track.addEventListener('scroll', req, { passive: true });
+    addEventListener('resize', req);
+    const go = i => { const v = vis(); i = Math.max(0, Math.min(v.length - 1, i)); const s = v[i]; track.scrollTo({ left: s.offsetLeft - (track.clientWidth - s.offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); };
+    $('#avePrev')?.addEventListener('click', () => go(cur - 1));
+    $('#aveNext')?.addEventListener('click', () => go(cur + 1));
+    track.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); } if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); } });
+    /* a click on a shop at the side brings it to the middle first */
+    track.addEventListener('click', e => {
+      const s = e.target.closest('.store'); if (!s) return;
+      const i = vis().indexOf(s);
+      if (i !== cur && !e.target.closest('a')) { e.preventDefault(); e.stopPropagation(); go(i); }
+    }, true);
+    /* drag with a mouse; touch and trackpads scroll natively */
+    let dx = null, sl = 0, moved = false;
+    track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button) return; dx = e.clientX; sl = track.scrollLeft; moved = false; track.classList.add('is-drag'); });
+    addEventListener('pointermove', e => { if (dx === null) return; const m = e.clientX - dx; if (Math.abs(m) > 4) moved = true; track.scrollLeft = sl - m; });
+    addEventListener('pointerup', () => { if (dx === null) return; dx = null; track.classList.remove('is-drag'); if (moved) { go(cur); track.addEventListener('click', ev => { ev.preventDefault(); ev.stopPropagation(); }, { capture: true, once: true }); } });
     chips.forEach(c => c.addEventListener('click', () => {
       chips.forEach(x => x.setAttribute('aria-pressed', x === c));
       const f = c.dataset.f;
-      items.forEach(i => { i.hidden = !(f === 'all' || i.dataset.cat.split(' ').includes(f)); i.classList.add('in'); });
+      all.forEach(s => { s.hidden = !(f === 'all' || s.dataset.cat.split(' ').includes(f)); });
+      track.scrollLeft = 0; requestAnimationFrame(() => { go(0); req(); });
     }));
-    const fit = () => $$('.proj__shot').forEach(s => s.style.setProperty('--fh', s.clientHeight + 'px'));
-    fit(); addEventListener('resize', fit);
+    requestAnimationFrame(() => { go(0); shape(); });
+    setTimeout(shape, 300);
+
+    /* the case study */
+    const dlg = $('#case'); if (!dlg) return;
+    let open = 0;
+    function fill(i) {
+      const list = vis().map(s => W.find(w => w.id === s.dataset.id)); open = (i + list.length) % list.length;
+      const w = list[open];
+      $('#caseMeta').innerHTML = ''; const f = new Image(); f.src = `assets/img/flags/${w.cc}.svg`; f.alt = ''; f.width = 20; f.height = 15;
+      $('#caseMeta').append(f, `${w.kind}, ${w.where}`);
+      $('#caseTitle').textContent = w.title;
+      $('#caseLine').textContent = w.line;
+      $('#caseBuilt').innerHTML = ''; w.built.forEach(x => { const li = document.createElement('li'); li.textContent = x; $('#caseBuilt').appendChild(li); });
+      $('#caseStack').textContent = w.stack.length ? 'Built with ' + w.stack.join(', ') + '.' : ''; $('#caseStack').hidden = !w.stack.length;
+      $('#caseNote').textContent = w.note || ''; $('#caseNote').hidden = !w.note;
+      const v = $('#caseVisit'); v.hidden = !w.url;
+      if (w.url) { v.href = w.url; v.innerHTML = `Visit ${w.urlLabel}<svg class="ext" aria-hidden="true"><use href="#ext"/></svg>`; }
+      const shot = $('#caseShot'); shot.innerHTML = ''; shot.classList.toggle('is-full', !!w.full);
+      const im = new Image(); im.src = w.full || w.img; im.alt = w.full ? `${w.title}'s whole homepage` : `${w.title}'s website`; shot.appendChild(im);
+      if (w.full) { const h = document.createElement('p'); h.className = 'case__hint'; h.textContent = 'Scroll the whole homepage'; shot.appendChild(h); shot.scrollTop = 0; }
+      $('#caseAt').textContent = `${open + 1} of ${list.length}`;
+    }
+    $$('[data-case]').forEach(btn => btn.addEventListener('click', () => {
+      const s = btn.closest('.store'); if (vis().indexOf(s) !== cur && btn.classList.contains('store__win')) return;
+      fill(vis().indexOf(s)); dlg.showModal(); document.documentElement.style.overflow = 'hidden';
+    }));
+    $('#casePrev').addEventListener('click', () => fill(open - 1));
+    $('#caseNext').addEventListener('click', () => fill(open + 1));
+    $('#caseX').addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', () => { document.documentElement.style.overflow = ''; go(open); });
   })();
 
   /* ---------- trades: tabs ---------- */
@@ -174,8 +242,8 @@
     const codes = Object.keys(NAMES).sort((a, b) => (counts[b] || 0) - (counts[a] || 0) || NAMES[a].localeCompare(NAMES[b]));
     const flag = c => `assets/img/flags/${c}.svg`;
     const NS = 'http://www.w3.org/2000/svg';
-    const mapEl = $('#map'), tip = $('#mapTip'), filterEl = $('#rfilter'), quoteEl = $('#quote'), cards = $('#rcards'), more = $('#rmore'), countEl = $('#rcount'), moreBtn = $('#rmoreBtn'), allBtn = $('#rallBtn');
-    let cur = 'all', shown = 0, list = [];
+    const mapEl = $('#map'), tip = $('#mapTip'), filterEl = $('#rfilter'), laneA = $('#laneA'), laneB = $('#laneB'), empty = $('#rempty');
+    let cur = 'all';
 
     /* map */
     const svg = document.createElementNS(NS, 'svg');
@@ -206,7 +274,11 @@
       b.append(label); if (n) { const s = document.createElement('sup'); s.textContent = n; b.appendChild(s); }
       b.addEventListener('click', () => pick(c)); return b; };
     filterEl.appendChild(mk('all', 'All countries', R.length));
-    codes.forEach(c => filterEl.appendChild(mk(c, NAMES[c], counts[c] || '')));
+    codes.forEach((c, i) => { const b = mk(c, NAMES[c], counts[c] || ''); if (i >= 7) b.classList.add('is-more'); filterEl.appendChild(b); });
+    const moreC = document.createElement('button'); moreC.type = 'button'; moreC.className = 'chip chip--more'; moreC.setAttribute('aria-expanded', 'false');
+    moreC.textContent = `${codes.length - 7} more countries`;
+    moreC.addEventListener('click', () => { const o = moreC.getAttribute('aria-expanded') !== 'true'; moreC.setAttribute('aria-expanded', o); filterEl.classList.toggle('is-open', o); moreC.textContent = o ? 'Fewer countries' : `${codes.length - 7} more countries`; });
+    filterEl.appendChild(moreC);
 
     /* cards */
     function who(r, k) {
@@ -217,38 +289,81 @@
       p.append(a, f, t); return p;
     }
     function stars(r) { const p = document.createElement('p'); p.className = 'stars'; const full = Math.round(r.r); p.setAttribute('aria-label', r.r + ' out of 5 stars'); p.innerHTML = '★'.repeat(full) + (full < 5 ? `<span class="off">${'★'.repeat(5 - full)}</span>` : '') + (r.r < 5 ? `<span class="sc">${r.r.toFixed(1)}</span>` : ''); return p; }
-    function card(r, k) { const li = document.createElement('li'); li.className = 'rv is-new'; const q = document.createElement('p'); q.textContent = r.t; li.append(stars(r), q, who(r, k)); return li; }
-    function add(n) {
-      const end = Math.min(list.length, shown + n), frag = document.createDocumentFragment();
-      for (let k = shown; k < end; k++) frag.appendChild(card(list[k], k));
-      cards.appendChild(frag); shown = end;
-      const total = list.length + (quoteEl.hidden ? 0 : 1), now = shown + (quoteEl.hidden ? 0 : 1);
-      countEl.textContent = `Showing ${now} of ${total} ${total === 1 ? 'review' : 'reviews'}${cur === 'all' ? '' : ' from ' + NAMES[cur]}`;
-      more.hidden = shown >= list.length;
-      allBtn.textContent = `Show all ${total}`;
+    function card(r, k, dup) {
+      const li = document.createElement('li'); li.className = 'rv' + (r.f >= 0 ? ' rv--lit' : '') + (r.t.length > 220 ? ' rv--long' : r.t.length < 70 ? ' rv--short' : '');
+      if (dup) li.setAttribute('aria-hidden', 'true');
+      const q = document.createElement('p'); q.textContent = r.t; li.append(stars(r), q, who(r, k)); return li;
     }
+    /* two lanes of reviews drift past in opposite directions, like traffic on the street.
+       Hover or focus stops them; the arrows and a drag move them by hand. */
+    const LANES = [{ el: laneA, dir: -1, x: 0, w: 0, nudge: 0 }, { el: laneB, dir: 1, x: 0, w: 0, nudge: 0 }];
+    const pauseBtn = $('#lanePause'); let paused = reduce, hold = false, last = 0, raf = 0, still = false;
+    function fillLane(L, items) {
+      L.el.innerHTML = ''; L.x = 0; L.w = 0; L.nudge = 0; L.el.style.transform = '';
+      if (!items.length) { L.el.parentElement.hidden = true; return; }
+      L.el.parentElement.hidden = false;
+      /* a lane moving right reveals what sits to its left, so it is laid out right to left:
+         the first reviews start in view and the later ones arrive after them */
+      const seq = L.dir > 0 && !still ? [...items].reverse() : items;
+      seq.forEach((r, k) => L.el.appendChild(card(r, k)));
+      if (still) return;
+      /* repeat until one set is wider than the screen, then once more so the loop has no seam */
+      const one = () => L.el.scrollWidth;
+      let guard = 0; while (one() < innerWidth * 1.15 && guard++ < 8) seq.forEach((r, k) => L.el.appendChild(card(r, k, true)));
+      L.w = one();
+      [...L.el.children].forEach(li => { const c = li.cloneNode(true); c.setAttribute('aria-hidden', 'true'); L.el.appendChild(c); });
+      L.x = L.dir > 0 ? -(L.w - L.el.parentElement.clientWidth) : 0;
+    }
+    function frame(ts) {
+      raf = 0; const dt = Math.min(64, ts - (last || ts)); last = ts;
+      LANES.forEach(L => {
+        if (!L.w) return;
+        const n = L.nudge * .14; L.nudge -= n;
+        L.x += (L.dir < 0 ? -1 : 1) * (paused || hold ? 0 : 0.034 * dt) + n;
+        if (L.x <= -L.w) L.x += L.w; if (L.x > 0) L.x -= L.w;
+        L.el.style.transform = `translate3d(${L.x.toFixed(1)}px,0,0)`;
+      });
+      if (!document.hidden && LANES.some(L => L.w)) raf = requestAnimationFrame(frame);
+    }
+    const run = () => { if (!raf && !still) { last = 0; raf = requestAnimationFrame(frame); } };
+    const lanesEl = $('#lanes');
+    lanesEl.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hold = true; });
+    lanesEl.addEventListener('pointerleave', () => { hold = false; });
+    lanesEl.addEventListener('focusin', () => { hold = true; });
+    lanesEl.addEventListener('focusout', () => { hold = false; });
+    let gx = null;
+    lanesEl.addEventListener('pointerdown', e => { gx = e.clientX; lanesEl.setPointerCapture?.(e.pointerId); lanesEl.classList.add('is-drag'); });
+    lanesEl.addEventListener('pointermove', e => { if (gx === null) return; const m = e.clientX - gx; gx = e.clientX; LANES.forEach(L => { L.x += m; }); run(); });
+    const up = () => { gx = null; lanesEl.classList.remove('is-drag'); };
+    lanesEl.addEventListener('pointerup', up); lanesEl.addEventListener('pointercancel', up);
+    $('#lanePrev').addEventListener('click', () => { LANES.forEach(L => L.nudge += 360); run(); });
+    $('#laneNext').addEventListener('click', () => { LANES.forEach(L => L.nudge -= 360); run(); });
+    pauseBtn.addEventListener('click', () => { paused = !paused; pauseBtn.setAttribute('aria-pressed', paused); pauseBtn.textContent = paused ? 'Play' : 'Pause'; run(); });
+    if (reduce) { pauseBtn.setAttribute('aria-pressed', 'true'); pauseBtn.textContent = 'Play'; }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) run(); });
+
     function pick(c) {
       cur = c;
-      $$('.chip', filterEl).forEach(b => b.setAttribute('aria-pressed', b.dataset.c === c));
+      $$('.chip', filterEl).forEach(b => b.dataset.c && b.setAttribute('aria-pressed', b.dataset.c === c));
       mapEl.classList.toggle('has-sel', c !== 'all');
       Object.entries(groups).forEach(([k, g]) => g.classList.toggle('sel', k === c));
-      const pool = c === 'all' ? R : R.filter(r => r.c === c);
-      cards.innerHTML = ''; shown = 0; $('.rempty', cards.parentElement)?.remove();
-      if (!pool.length) {
-        quoteEl.hidden = true; list = []; more.hidden = true;
-        const d = document.createElement('p'); d.className = 'rempty'; d.innerHTML = `No written reviews from ${NAMES[c]} yet. Our client there is GuruIsOnline: <a href="#work">see the work</a>.`; cards.before(d); return;
+      let pool = R.filter(r => c === 'all' || r.c === c);
+      if (c === 'all') { /* the lit (featured) reviews are spread out, one in every few cards */
+        const lit = R.filter(r => r.f >= 0).sort((a, b) => a.f - b.f), rest = R.filter(r => r.f < 0); pool = [];
+        rest.forEach((r, i) => { if (i % 3 === 0 && lit.length) pool.push(lit.shift()); pool.push(r); }); pool.push(...lit);
       }
-      /* the lead quote: a strong, short, five-star one */
-      const lead = c === 'all' ? pool.find(r => r.f === 0) : (pool.find(r => r.r === 5 && r.t.length > 40 && r.t.length < 240) || pool[0]);
-      quoteEl.hidden = false; quoteEl.innerHTML = '';
-      const bq = document.createElement('blockquote'); bq.textContent = lead.t.length > 260 ? lead.t.slice(0, 250).replace(/\s+\S*$/, '') + '…' : lead.t;
-      const w = who(lead, 0); quoteEl.append(bq, w);
-      const rest = pool.filter(r => r !== lead);
-      list = c === 'all' ? [...rest.filter(r => r.f >= 0).sort((a, b) => a.f - b.f), ...rest.filter(r => r.f < 0)] : rest;
-      add(c === 'all' ? 6 : 9);
+      empty.hidden = true;
+      if (!pool.length) {
+        LANES.forEach(L => fillLane(L, [])); $('.lanes__ui').hidden = true;
+        empty.hidden = false; empty.innerHTML = `No written reviews from ${NAMES[c]} yet. Our client there is GuruIsOnline: <a href="#work">see the work</a>.`; return;
+      }
+      /* a handful of reviews sit still in one row; more than that slide */
+      still = pool.length <= 4;
+      lanesEl.classList.toggle('is-still', still); $('.lanes__ui').hidden = still;
+      const a = [], b = [];
+      if (pool.length <= 8) a.push(...pool); else pool.forEach((r, i) => (i % 2 ? b : a).push(r));
+      fillLane(LANES[0], a); fillLane(LANES[1], b); run();
     }
-    moreBtn.addEventListener('click', () => add(12));
-    allBtn.addEventListener('click', () => add(list.length));
     pick('all');
   })();
 })();
