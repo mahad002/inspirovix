@@ -1,5 +1,17 @@
 [
   {
+    "file": "figma.svg",
+    "icon": "logos:figma",
+    "name": "Figma",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.figma.com/"
+  },
+  {
     "file": "flutter.svg",
     "icon": "logos:flutter-icon",
     "name": "Flutter",
@@ -130,6 +142,30 @@
     "url": "https://github.com/gilbarbara/logos",
     "trademark": true,
     "markUrl": "https://nodejs.org/"
+  },
+  {
+    "file": "openai.svg",
+    "icon": "logos:openai-icon",
+    "name": "OpenAI",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://openai.com/"
+  },
+  {
+    "file": "photoshop.svg",
+    "icon": "logos:adobe-photoshop",
+    "name": "Photoshop",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.adobe.com/products/photoshop.html"
   },
   {
     "file": "postgres.svg",
