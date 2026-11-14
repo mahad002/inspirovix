@@ -69,7 +69,7 @@
     const c = $('#rain'); if (!c || reduce) return;
     const ctx = c.getContext('2d'); let w = 0, h = 0, raf = 0, visible = true; const D = [];
     function size() {
-      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const dpr = 1;
       w = c.clientWidth; h = c.clientHeight; c.width = w * dpr; c.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const n = Math.round(Math.min(130, Math.max(40, w / 11)));
       D.length = 0; for (let i = 0; i < n; i++) D.push({ x: Math.random() * w, y: Math.random() * h, l: 9 + Math.random() * 17, v: 9 + Math.random() * 8, a: .05 + Math.random() * .13 });
@@ -149,8 +149,9 @@
       raf = 0;
       const r = track.getBoundingClientRect(), mid = r.left + r.width / 2;
       let best = 0, bd = 1e9;
-      vis().forEach((s, i) => {
-        const b = s.getBoundingClientRect(), d = (b.left + b.width / 2 - mid) / b.width;
+      const list = vis(), boxes = list.map(s => s.getBoundingClientRect());
+      list.forEach((s, i) => {
+        const b = boxes[i], d = (b.left + b.width / 2 - mid) / b.width;
         const c = Math.max(-1, Math.min(1, d)), ad = Math.min(Math.abs(d), 2.2);
         s.style.transform = `perspective(1300px) translateZ(${(-ad * 120).toFixed(1)}px) rotateY(${(-c * 46).toFixed(2)}deg)`;
         s.style.setProperty('--lit', (1 - Math.min(Math.abs(d), 1.4) * .5).toFixed(3));
@@ -296,6 +297,8 @@
     }
     /* two lanes of reviews drift past in opposite directions, like traffic on the street.
        Hover or focus stops them; the arrows and a drag move them by hand. */
+    let deck = false;
+    let built = false;
     const LANES = [{ el: laneA, dir: -1, x: 0, w: 0, nudge: 0 }, { el: laneB, dir: 1, x: 0, w: 0, nudge: 0 }];
     const pauseBtn = $('#lanePause'); let paused = reduce, hold = false, last = 0, raf = 0, still = false;
     function fillLane(L, items) {
@@ -314,6 +317,7 @@
       [...L.el.children].forEach(li => { const c = li.cloneNode(true); c.setAttribute('aria-hidden', 'true'); L.el.appendChild(c); });
       L.x = L.dir > 0 ? -(L.w - L.el.parentElement.clientWidth) : 0;
     }
+    let onScreen = false;
     function frame(ts) {
       raf = 0; const dt = Math.min(64, ts - (last || ts)); last = ts;
       LANES.forEach(L => {
@@ -323,9 +327,9 @@
         if (L.x <= -L.w) L.x += L.w; if (L.x > 0) L.x -= L.w;
         L.el.style.transform = `translate3d(${L.x.toFixed(1)}px,0,0)`;
       });
-      if (!document.hidden && LANES.some(L => L.w)) raf = requestAnimationFrame(frame);
+      if (!document.hidden && onScreen && LANES.some(L => L.w)) raf = requestAnimationFrame(frame);
     }
-    const run = () => { if (!raf && !still) { last = 0; raf = requestAnimationFrame(frame); } };
+    const run = () => { if (!raf && !still && onScreen && !deck) { last = 0; raf = requestAnimationFrame(frame); } };
     const lanesEl = $('#lanes');
     lanesEl.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') hold = true; });
     lanesEl.addEventListener('pointerleave', () => { hold = false; });
@@ -345,7 +349,7 @@
 
     /* phones: one review at a time, swiped like a deck, the next one peeking in.
        It moves on by itself every few seconds and stops while you touch it. */
-    const phoneQ = matchMedia('(max-width: 700px)'); let deck = false, timer = 0, idle = 0;
+    const phoneQ = matchMedia('(max-width: 700px)'); let timer = 0, idle = 0;
     const deckEl = laneA.parentElement, atEl = $('#laneAt');
     const cardsIn = () => [...laneA.children];
     const nowAt = () => { const c = cardsIn(), mid = deckEl.scrollLeft + deckEl.clientWidth / 2; let best = 0, bd = 1e9; c.forEach((li, i) => { const d = Math.abs(li.offsetLeft + li.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } }); return best; };
@@ -362,7 +366,7 @@
     ['lanePrev', 'laneNext'].forEach(id => $('#' + id).addEventListener('click', () => { idle = Date.now(); }));
     phoneQ.addEventListener('change', () => pick(cur));
     function pick(c) {
-      cur = c;
+      cur = c; built = true;
       $$('.chip', filterEl).forEach(b => b.dataset.c && b.setAttribute('aria-pressed', b.dataset.c === c));
       mapEl.classList.toggle('has-sel', c !== 'all');
       Object.entries(groups).forEach(([k, g]) => g.classList.toggle('sel', k === c));
@@ -394,6 +398,9 @@
       if (pool.length <= 8) a.push(...pool); else pool.forEach((r, i) => (i % 2 ? b : a).push(r));
       fillLane(LANES[0], a); fillLane(LANES[1], b); run();
     }
-    pick('all');
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && !built) { built = true; pick('all'); }
+    }), { rootMargin: '600px 0px' }).observe(lanesEl);
+    new IntersectionObserver(es => es.forEach(e => { onScreen = e.isIntersecting; if (onScreen) run(); else { cancelAnimationFrame(raf); raf = 0; } })).observe(lanesEl);
   })();
 })();

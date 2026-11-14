@@ -343,7 +343,8 @@ h3, .faq summary { font-family: var(--f-display); font-weight: 700; letter-spaci
 .store__sign b { font-family: var(--f-display); font-weight: 700; font-size: 1.375rem; letter-spacing: .08em; text-transform: uppercase; color: #FFE7C2; opacity: calc(.4 + var(--lit) * .6); }
 .store__win { display: block; width: 100%; margin-top: 12px; padding: 0; border: 0; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 3px; background: #0C1424; cursor: pointer;
   box-shadow: 0 0 0 3px #0B1220, 0 0 0 4px rgba(255, 205, 140, calc(.1 + var(--lit) * .35)), 0 0 90px -12px rgba(255, 190, 110, calc(var(--lit) * .55));
-  filter: brightness(calc(.38 + var(--lit) * .62)) saturate(calc(.6 + var(--lit) * .4)); }
+  position: relative; }
+.store__win::after { content: ""; position: absolute; inset: 0; background: #05080F; opacity: calc((1 - var(--lit)) * .62); pointer-events: none; }
 .store__win img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .6s var(--ease); }
 .store.is-here .store__win:hover img { transform: scale(1.035); }
 .store__door { padding: 18px 2px 22px; opacity: calc(.2 + var(--lit) * .8); }
@@ -445,3 +446,6 @@ h3, .faq summary { font-family: var(--f-display); font-weight: 700; letter-spaci
 .lanes.is-deck .lane { position: relative; }
 /* a picked country: the others dim, and their outline rings stay hidden */
 .map.has-sel .c:not(.sel) .pin { opacity: 0; }
+
+/* sections far below the first screen are laid out only when they come near */
+#images, #trades, #process, #faq { content-visibility: auto; contain-intrinsic-size: auto 1100px; }
