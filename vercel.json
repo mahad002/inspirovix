@@ -4,7 +4,6 @@
   "buildCommand": "",
   "installCommand": "",
   "outputDirectory": ".",
-  "cleanUrls": true,
   "redirects": [
     { "source": "/services", "destination": "/#services", "permanent": true },
     { "source": "/services-details", "destination": "/#services", "permanent": true }

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://inspirovix.com/sitemap.xml
+Sitemap: https://www.inspirovix.com/sitemap.xml
