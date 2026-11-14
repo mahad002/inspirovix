@@ -1,0 +1,289 @@
+/* ==========================================================================
+   inspirovix. — "After hours"
+   The high street at night. Shops are closed, the windows are still lit, and
+   the enquiry still gets its answer. Lit windows are real client sites.
+   Cobalt is the blue hour, amber is anything lit or answered, silver is dawn.
+   Loaded after site.css.
+   ========================================================================== */
+
+:root {
+  --night: #05080F;
+  --night-1: #070C17;
+  --night-2: #0A1120;
+  --card: #0E1727;
+  --card-2: #142036;
+  --cobalt: #1F56A8;
+  --sky: #8DB8FF;
+  --amber: #FFB23E;
+  --amber-2: #FFD08A;
+  --silver: #D5D9E1;
+
+  --navy-950: var(--night);
+  --navy-900: var(--night-2);
+  --navy-800: #121D31;
+  --navy-700: #1C2D4A;
+  --cyan: var(--amber);
+  --on-dark: #EDF1F8;
+  --on-dark-2: #A2B0C8;
+  --line-d: rgba(150, 172, 212, .17);
+  --on-accent: #1C1303;
+
+  --f-display: "Big Shoulders Display", "Arial Narrow", system-ui, sans-serif;
+  --f-text: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-sign: "Tilt Neon", "Big Shoulders Display", system-ui, sans-serif;
+  --t-h2: clamp(2.75rem, 1.3rem + 5vw, 5.75rem);
+  --t-h3: clamp(1.625rem, 1.3rem + 1vw, 2.25rem);
+  --r-xl: 16px; --r-lg: 14px; --r-md: 10px;
+  --hz: 71%;                    /* the horizon of the street */
+}
+
+html { background: var(--night); scrollbar-color: #24344F var(--night); }
+body { background: var(--night); color: var(--on-dark); font-variation-settings: "wdth" 96; }
+::selection { background: var(--amber); color: var(--on-accent); }
+:focus-visible, .paper :focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 6px; }
+.skip { background: var(--amber); color: var(--on-accent); border-radius: 8px; }
+
+/* every section is night. The white "screens" drawn inside them stay lit */
+.paper, .paper-2, .dark, .deep {
+  --ink: var(--on-dark); --ink-2: var(--on-dark-2); --line-l: var(--line-d);
+  --paper: var(--night-1); --paper-2: var(--night-2); --blue: var(--sky);
+  color: var(--on-dark);
+}
+.paper { background: var(--night-1); }
+.paper-2 { background: var(--night-2); }
+.dark { background: var(--night-2); }
+.deep { background: var(--night); }
+:is(.saved, .sheet, .dash, .claim, .chipic, .chat, .phone, .mini, .trade__shot, .proj__go) {
+  --ink: #0E2240; --ink-2: #44566F; --line-l: rgba(14, 34, 64, .13);
+  --paper: #F5F7FA; --paper-2: #E8EDF4; --blue: #1F56A8;
+}
+
+/* ---------- type ---------- */
+.display { font-family: var(--f-display); font-weight: 700; letter-spacing: .004em; line-height: .94; font-variation-settings: normal; text-transform: uppercase; text-wrap: balance; }
+h2.display { letter-spacing: .004em; line-height: .94; }
+h3, .faq summary { font-family: var(--f-display); font-weight: 700; letter-spacing: .012em; line-height: 1.04; font-variation-settings: normal; }
+.lead { line-height: 1.5; }
+.mono { font-family: var(--f-text); font-size: .875rem; letter-spacing: 0; text-transform: none; }
+.live, .scene__replay, .bubbles .log, .sheet__head span, .demo-tag, .chip sup { font-family: var(--f-text); letter-spacing: 0; text-transform: none; }
+.live { font-size: .8125rem; font-weight: 500; }
+.bubbles .log, .demo-tag { font-size: .8125rem; }
+.foot h4 { font-family: var(--f-text); font-size: .875rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.flow__steps .mono, .steps .mono { font-weight: 600; }
+.sec-head p { text-wrap: pretty; }
+
+/* ---------- buttons: lit signs ---------- */
+.btn { --bg: var(--amber); --fg: var(--on-accent); border-radius: 8px; font-weight: 600; letter-spacing: .005em; }
+.btn--cy, .btn--bl { --bg: var(--amber); --fg: var(--on-accent); box-shadow: 0 10px 34px -12px rgba(255, 178, 62, .7); }
+.btn--cy:hover, .btn--bl:hover { --bg: var(--amber-2); }
+.btn--gh { --fg: var(--on-dark); border-color: rgba(190, 208, 240, .34); background: rgba(8, 13, 24, .5); }
+.btn--gh:hover { border-color: var(--on-dark); }
+
+/* ---------- nav ---------- */
+.logo { font-family: var(--f-text); font-variation-settings: "wdth" 100; font-weight: 700; letter-spacing: -.035em; }
+.nav.is-solid { background: rgba(5, 8, 15, .84); box-shadow: 0 1px 0 var(--line-d); }
+.menu { background: var(--night); }
+.menu a { font-family: var(--f-display); font-weight: 700; letter-spacing: .01em; text-transform: uppercase; }
+.menu a.btn { display: flex; padding: 0 22px; min-height: 56px; border-bottom: 0; font-family: var(--f-text); font-size: 1.0625rem; font-weight: 600; letter-spacing: 0; text-transform: none; justify-content: center; }
+.dock { background: rgba(5, 8, 15, .92); }
+.rail { display: none !important; }
+
+/* one entrance only: the street lights coming on. Everything below is simply there */
+.js main [data-rv], .js [data-rv] { opacity: 1; transform: none; transition: none; }
+
+/* ==========================================================================
+   HERO: the street
+   ========================================================================== */
+.hero {
+  min-height: max(100svh, 820px); display: flex; flex-direction: column; overflow: hidden; isolation: isolate;
+  background:
+    radial-gradient(60% 26% at 50% var(--hz), rgba(96, 150, 255, .5), rgba(31, 86, 168, 0) 70%),
+    linear-gradient(180deg, #04060C 0%, #060D1D 30%, #0B1F45 52%, #17407F var(--hz), #070B14 calc(var(--hz) + .1%), #04060C 100%);
+}
+.hero__rain { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; }
+
+.street { position: absolute; inset: 0; z-index: 0; perspective: 1250px; perspective-origin: calc(50% + var(--mx, 0) * -22px) var(--hz); pointer-events: none; }
+.wall {
+  --wh: 124svh; --ww: 84vw;
+  position: absolute; top: calc(var(--hz) - var(--wh) * .915); width: var(--ww); height: var(--wh);
+  background: linear-gradient(180deg, #05080F, #080E1B 70%, #0A1222);
+}
+.wall--l { left: -25vw; transform-origin: 0 50%; transform: rotateY(51deg); }
+.wall--r { right: -25vw; transform-origin: 100% 50%; transform: rotateY(-51deg); }
+/* air between you and the far end of the street */
+.wall::after { content: ""; position: absolute; inset: 0 0 -100% 0; pointer-events: none; }
+.wall--l::after { background: linear-gradient(90deg, rgba(5, 8, 15, .5), rgba(5, 8, 15, 0) 22%, rgba(26, 70, 150, 0) 45%, rgba(30, 82, 170, .62) 100%); }
+.wall--r::after { background: linear-gradient(270deg, rgba(5, 8, 15, .5), rgba(5, 8, 15, 0) 22%, rgba(26, 70, 150, 0) 45%, rgba(30, 82, 170, .62) 100%); }
+.wall__row { display: flex; height: 100%; }
+.wall--r .wall__row, .wall--r .wall__mirror { flex-direction: row-reverse; }
+
+.shop { flex: 1; min-width: 0; margin: 0; padding: 0 2.4% 3.2%; display: flex; flex-direction: column; justify-content: flex-end; box-shadow: inset 1px 0 0 rgba(140, 168, 220, .07); }
+/* upper floors: a grid of windows, a few still lit */
+.shop__up {
+  flex: 1; margin: 10% 6% 7%;
+  --lit: linear-gradient(#E9B25E, #C98A33); --dim: linear-gradient(#22395F, #182A49); --w: 20% 15.5%;
+  background:
+    var(--lit) 25% 59.17% / var(--w) no-repeat,
+    var(--dim) 75% 39.45% / var(--w) no-repeat,
+    var(--lit) 100% 78.9% / var(--w) no-repeat,
+    var(--dim) 0 98.6% / var(--w) no-repeat,
+    #0B1321;
+  -webkit-mask: linear-gradient(90deg, #000 56%, transparent 0) 0 0 / 20% 100%, linear-gradient(#000 60%, transparent 0) 0 0 / 100% 16.66%;
+          mask: linear-gradient(90deg, #000 56%, transparent 0) 0 0 / 20% 100%, linear-gradient(#000 60%, transparent 0) 0 0 / 100% 16.66%;
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.shop:nth-child(2) .shop__up { background: var(--lit) 50% 78.9% / var(--w) no-repeat, var(--dim) 0 59.17% / var(--w) no-repeat, var(--lit) 100% 98.6% / var(--w) no-repeat, var(--dim) 25% 39.45% / var(--w) no-repeat, #0B1321; }
+.shop:nth-child(3) .shop__up { background: var(--lit) 0 78.9% / var(--w) no-repeat, var(--dim) 75% 98.6% / var(--w) no-repeat, var(--lit) 75% 59.17% / var(--w) no-repeat, var(--dim) 50% 39.45% / var(--w) no-repeat, #0B1321; }
+.shop__sign { height: 6.2%; display: grid; place-items: center; background: #0A1120; box-shadow: inset 0 0 0 1px rgba(255, 190, 110, .4), 0 0 34px -6px rgba(255, 178, 62, .5); border-radius: 3px; }
+.shop__sign img { height: 44%; width: auto; max-width: 60%; object-fit: contain; filter: brightness(0) invert(1) drop-shadow(0 0 7px rgba(255, 200, 130, .9)); }
+.shop__sign img.tall { height: 66%; }
+.shop__win { display: block; margin-top: 2.6%; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 2px; background: #0C1424; box-shadow: 0 0 0 3px #0B1220, 0 0 0 4px rgba(255, 205, 140, .4), 0 0 90px -8px rgba(255, 190, 110, .55); }
+.shop__win img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+/* the lights come on, one window after another */
+.shop__win, .shop__sign { animation: lights 1.5s both; animation-delay: calc(350ms + var(--i, 0) * 170ms); }
+@keyframes lights {
+  0% { filter: brightness(.1) saturate(.3); }
+  22% { filter: brightness(.95); } 30% { filter: brightness(.3) saturate(.6); }
+  46% { filter: brightness(1.12); } 54% { filter: brightness(.7); }
+  100% { filter: none; }
+}
+/* the wet road: each wall once more, upside down, soft and fading */
+.wall__mirror { position: absolute; left: 0; top: 100%; width: 100%; height: 100%; display: flex; transform: scaleY(-1); opacity: .58; filter: blur(3px) saturate(1.15);
+  -webkit-mask-image: linear-gradient(to top, #000 0, rgba(0, 0, 0, .5) 22%, transparent 52%); mask-image: linear-gradient(to top, #000 0, rgba(0, 0, 0, .5) 22%, transparent 52%); }
+.street__road { position: absolute; left: 0; right: 0; top: var(--hz); bottom: 0; background:
+  radial-gradient(34% 70% at 50% 0, rgba(110, 160, 255, .34), rgba(31, 86, 168, 0) 72%),
+  linear-gradient(180deg, rgba(23, 64, 127, .5), rgba(5, 8, 15, 0) 38%); }
+
+.hero__main { position: relative; z-index: 2; flex: none; display: block; text-align: center; padding-top: clamp(98px, 12svh, 124px); padding-bottom: 0; }
+/* the sign over the street */
+.hero h1.sign { max-width: none; }
+.sign { font-family: var(--f-sign); font-weight: 400; font-size: min(clamp(2.75rem, .9rem + 6.6vw, 6rem), 11.5svh); line-height: 1.02; letter-spacing: .005em; margin: 0; }
+.sign span { display: block; }
+.sign__a { color: #EAF2FF; text-shadow: 0 0 5px #B7D2FF, 0 0 16px #5C9BFF, 0 0 38px #2F6FE8, 0 0 84px rgba(47, 111, 232, .75); animation: tube 1.3s 120ms both; }
+.sign__b { color: #FFF4DF; text-shadow: 0 0 5px #FFD9A0, 0 0 16px #FFAE38, 0 0 40px #F08A00, 0 0 90px rgba(240, 138, 0, .7); animation: tube 1.6s 620ms both; }
+@keyframes tube {
+  0% { opacity: .14; text-shadow: none; } 9% { opacity: 1; } 13% { opacity: .22; text-shadow: none; }
+  21% { opacity: 1; } 27% { opacity: .5; } 33%, 100% { opacity: 1; }
+}
+.hero__lead { margin: 22px auto 0; max-width: 58ch; color: #C3CEE2; text-shadow: 0 1px 14px rgba(4, 6, 12, .9); }
+.hero__lead strong { color: #fff; font-weight: 600; }
+.hero__cta { justify-content: center; margin-top: 26px; }
+
+/* the phone in the middle of the road */
+.hero .scene { position: relative; z-index: 2; flex: 1; width: 100%; max-width: none; min-height: 340px; margin: 34px 0 0; aspect-ratio: auto; perspective: none; }
+.handset { position: absolute; left: 50%; top: 0; width: min(322px, 78vw); transform: translateX(-50%); padding: 9px 9px 0; border-radius: 42px 42px 0 0; background: #0A0E17; box-shadow: 0 0 0 1px rgba(170, 195, 240, .28), 0 -10px 110px -10px rgba(120, 170, 255, .55), 0 0 160px 10px rgba(47, 111, 232, .28); }
+.hero .chat { position: static; width: auto; transform: none; border-radius: 34px 34px 0 0; box-shadow: none; font-size: 13.5px; }
+.hero .chat__head { padding: 16px 16px 12px; }
+.hero .chat__body { min-height: 420px; padding: 14px 12px; gap: 7px; }
+.hero .saved { left: calc(50% + min(161px, 39vw) + 22px); right: auto; top: 196px; bottom: auto; transform: none; white-space: nowrap; box-shadow: 0 26px 70px -18px rgba(0, 0, 0, .9), 0 0 60px -10px rgba(255, 190, 110, .5); }
+.js .hero .scene .saved[data-t] { transform: translateY(10px) scale(.96); }
+.js .hero .scene .saved[data-t].on { transform: none; }
+.hero .scene__tag { left: calc(50% + min(161px, 39vw) + 22px); right: auto; top: 268px; transform: none; color: #C3CEE2; white-space: nowrap; }
+.scene__replay { border-color: rgba(190, 208, 240, .34); border-radius: 6px; font-size: .8125rem; background: rgba(5, 8, 15, .5); }
+.scene__replay:hover { border-color: var(--amber); }
+
+@media (max-width: 900px) {
+  :root { --hz: 66%; }
+  .wall { --ww: 200vw; --wh: 100svh; }
+  .wall--l { left: -84vw; transform: rotateY(57deg); } .wall--r { right: -84vw; transform: rotateY(-57deg); }
+  .hero .scene { text-align: center; margin-top: 22px; }
+  .hero .scene__tag { position: static; display: inline-flex; margin-bottom: 14px; }
+  .handset { position: relative; left: auto; transform: none; margin-inline: auto; text-align: left; }
+  .hero .saved { left: auto; right: max(10px, calc(50% - 200px)); top: 424px; text-align: left; }
+  .hero .chat__body { min-height: 440px; }
+}
+@media (prefers-reduced-motion: reduce) { .sign__a, .sign__b, .shop__win, .shop__sign { animation: none; } }
+
+/* ==========================================================================
+   TRADE BAND: a row of signs. Unlit tubes, lit ones in between
+   ========================================================================== */
+.band { background: var(--night); border-top: 1px solid var(--line-d); border-bottom: 1px solid var(--line-d); }
+.band__row { font-family: var(--f-sign); font-weight: 400; letter-spacing: .01em; font-variation-settings: normal; }
+.band__row span { color: transparent; -webkit-text-stroke: 1px rgba(141, 184, 255, .38); }
+.band__row span.fill { color: #FFF4DF; -webkit-text-stroke: 0; text-shadow: 0 0 6px #FFD9A0, 0 0 18px #FFAE38, 0 0 46px rgba(240, 138, 0, .8); }
+.band__row i { color: rgba(141, 184, 255, .5); }
+
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+/* services: four units in one building */
+.panel { background: var(--card); box-shadow: inset 0 0 0 1px var(--line-d); }
+.panel--tint { background: var(--card-2); }
+.panel--navy { background: #0B1322; }
+.panel--blue { background: linear-gradient(160deg, #2462BE, #17407F); color: #fff; box-shadow: none; }
+.panel--blue ul.pts li::before { background: var(--amber); }
+.panel p, .panel .dim { color: var(--on-dark-2); }
+.panel--blue p { color: #D6E4FB; }
+.tools .mono, .tools > span { color: var(--on-dark-2); }
+
+/* chips and tabs: the lit one is the open one */
+.chip { border-radius: 8px; color: var(--on-dark); }
+.chip[aria-pressed="true"], .tab[aria-selected="true"] { background: var(--amber); border-color: var(--amber); color: var(--on-accent); }
+.chip[aria-pressed="true"] sup { color: inherit; opacity: .7; }
+.tab { border-radius: 8px; }
+
+/* a hairline horizon between sections, and blue-hour air in the dark ones */
+.sec { box-shadow: inset 0 1px 0 rgba(150, 172, 212, .09); }
+#system { background: radial-gradient(70% 46% at 78% 18%, rgba(31, 86, 168, .34), rgba(31, 86, 168, 0) 70%), var(--night-2); }
+.score b, .hero__facts b { font-family: var(--f-display); font-weight: 700; letter-spacing: 0; font-variation-settings: normal; }
+
+/* reviews: the map is the world at night. Lit dots are where clients are */
+.map .b { fill: #1D2A44; }
+.map .c circle { fill: var(--amber); }
+.map .c:hover circle, .map .c:focus-visible circle { fill: #FFE2B0; }
+.map .c.sel circle { fill: #FFE2B0; }
+.map .pin { stroke: var(--amber); }
+.map svg { filter: drop-shadow(0 0 14px rgba(255, 178, 62, .22)); }
+.map__tip { background: #F4F6FA; color: #0E2240; border-radius: 8px; }
+.stars { color: var(--amber); }
+/* the feature quote is the one fully lit window on the page */
+.quote { background: linear-gradient(165deg, #FFCB7A, #FFAE38 62%, #F59A1C); color: #1C1303; box-shadow: 0 40px 120px -30px rgba(255, 170, 50, .45); }
+.quote::before { color: #1C1303; opacity: .14; }
+.quote blockquote { font-family: var(--f-display); font-weight: 700; letter-spacing: .008em; line-height: 1.02; font-size: clamp(1.875rem, 1.2rem + 2.8vw, 3.75rem); max-width: 24ch; }
+.quote .who small { opacity: .8; }
+.rv { background: var(--card); box-shadow: inset 0 0 0 1px var(--line-d); }
+.rv p { color: #D5DDEC; }
+.rempty { background: var(--card); box-shadow: inset 0 0 0 1px var(--line-d); }
+
+/* founder: the blue hour again */
+#founder { background: radial-gradient(54% 60% at 24% 78%, rgba(47, 111, 232, .42), rgba(31, 86, 168, 0) 72%), linear-gradient(180deg, var(--night-2), #0A1630 55%, var(--night-2)); }
+.portrait::before { background: radial-gradient(circle at 50% 40%, #2F6FE8, rgba(31, 86, 168, 0) 68%); }
+.founder blockquote { font-family: var(--f-display); font-weight: 700; letter-spacing: .006em; line-height: .96; font-variation-settings: normal; text-transform: uppercase; max-width: 14ch; }
+.portrait .tag { color: var(--on-accent); border-radius: 8px; }
+
+/* process: the line ends where the lights go on */
+.steps::after { background: linear-gradient(90deg, var(--sky), var(--amber)); }
+.steps li:last-child::before { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 6px rgba(255, 178, 62, .16), 0 0 26px rgba(255, 178, 62, .7); }
+.steps li:last-child .mono { color: var(--amber); }
+.faq details[open] summary i { background: var(--amber); color: var(--on-accent); }
+
+/* close: the sign once more, and first light on the horizon */
+.close { background: radial-gradient(90% 34% at 50% 100%, rgba(213, 217, 225, .26), rgba(120, 150, 205, .12) 46%, rgba(31, 86, 168, 0) 74%), linear-gradient(180deg, var(--night) 0%, #070E1E 52%, #0D1D3D 100%); }
+.close::before { display: none; }
+.close h2.display { font-family: var(--f-sign); font-weight: 400; text-transform: none; letter-spacing: .005em; line-height: 1.04; font-size: clamp(2.75rem, 1rem + 6.4vw, 6rem); max-width: 13ch;
+  color: #FFF4DF; text-shadow: 0 0 5px #FFD9A0, 0 0 16px #FFAE38, 0 0 40px #F08A00, 0 0 90px rgba(240, 138, 0, .6); }
+.close h2 em { color: inherit; }
+.wordmark { font-family: var(--f-text); font-variation-settings: "wdth" 100; font-weight: 700; letter-spacing: -.05em; line-height: .86; font-size: clamp(3.75rem, 20vw, 20rem); color: var(--silver); padding-bottom: .2em; margin-bottom: 0; }
+.wordmark i { color: var(--amber); }
+@media (max-width: 700px) { .wordmark { font-size: 19vw; } }
+.rv .stars { color: var(--amber); }
+
+/* lit things glow amber, never teal */
+.phone { box-shadow: 0 0 0 1px rgba(170, 195, 240, .28), 0 50px 120px -30px rgba(0, 0, 0, .8), 0 0 120px -30px rgba(120, 170, 255, .5); }
+.js .stage[data-step="4"] .sheet { box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .8), 0 0 0 2px var(--amber), 0 0 80px -10px rgba(255, 178, 62, .45); }
+.node--core { color: var(--on-accent); border-radius: 8px; box-shadow: 0 0 0 8px rgba(255, 178, 62, .13), 0 0 80px rgba(255, 178, 62, .42); }
+.node--core svg { stroke: var(--on-accent); }
+.node { border-radius: 8px; }
+.bubbles p.out { color: var(--on-accent); }
+:root { --green: #17834A; }
+.flow__steps li { opacity: .5; }
+.flow__steps li.is-on { opacity: 1; }
+.tools > span:first-child, .tools .mono { color: var(--on-dark-2); opacity: 1; }
+
+/* founder, without the photo: the line on the left, the facts on the right */
+.founder--nophoto { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) {
+  .founder--nophoto > div { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); column-gap: var(--s-9); align-items: start; }
+  .founder--nophoto blockquote { grid-row: 1 / span 2; max-width: 11ch; font-size: clamp(3.5rem, 1.6rem + 5.4vw, 6rem); }
+  .founder--nophoto .founder__p { margin-top: 10px; }
+}
+#founder { background: radial-gradient(54% 70% at 18% 60%, rgba(47, 111, 232, .36), rgba(31, 86, 168, 0) 72%), linear-gradient(180deg, var(--night-2), #0A1630 55%, var(--night-2)); }
