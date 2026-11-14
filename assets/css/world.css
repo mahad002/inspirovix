@@ -420,3 +420,28 @@ h3, .faq summary { font-family: var(--f-display); font-weight: 700; letter-spaci
 @media (max-width: 640px) { .lane__track .rv { width: 280px; } .lane__track .rv--long { width: 320px; } .lane__track .rv--short { width: 230px; } }
 .lanes { grid-template-columns: minmax(0, 1fr); }
 .lane { min-width: 0; }
+
+/* short reviews read bigger, so every card carries its weight */
+.rv--short p:not(.stars):not(.who) { font-family: var(--f-display); font-weight: 700; font-size: 1.625rem; line-height: 1.12; letter-spacing: .008em; }
+
+/* phones: the reviews are a deck you swipe, one at a time, the next one peeking in */
+.lanes__at { min-width: 6.5rem; text-align: center; color: var(--on-dark-2); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+.lanes__at[hidden] { display: none; }
+.lanes.is-deck { width: auto; margin-left: calc(var(--gut) * -1); margin-right: calc(var(--gut) * -1); cursor: auto; touch-action: auto; user-select: auto; -webkit-mask: none; mask: none; }
+.lanes.is-deck .lane { overflow-y: hidden; transition: height .35s var(--ease); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; padding: 4px 0 8px; }
+.lanes.is-deck .lane::-webkit-scrollbar { display: none; }
+.lanes.is-deck .lane__track { width: max-content; align-items: flex-start; gap: 12px; padding-inline: var(--gut); transform: none !important; }
+.lanes.is-deck .lane__track .rv { width: calc(100vw - 2 * var(--gut) - 28px); scroll-snap-align: center; align-content: start; grid-template-rows: auto 1fr auto; }
+.lanes.is-deck .rv p:not(.stars):not(.who) { font-size: 1.0625rem; line-height: 1.5; }
+.lanes.is-deck .rv--short p:not(.stars):not(.who) { font-size: 1.75rem; line-height: 1.12; }
+@media (max-width: 700px) {
+  .rfilter .chip.is-more { display: inline-flex; }
+  .rfilter .chip--more { display: none; }
+  #reviews .map { margin-inline: calc(var(--gut) * -.5); }
+  .lanes__ui { margin-top: 18px; }
+}
+@media (max-width: 700px) { .lanes.is-still .lane__track { width: 100%; } .lanes.is-still .lane__track .rv { width: 100%; } }
+
+.lanes.is-deck .lane { position: relative; }
+/* a picked country: the others dim, and their outline rings stay hidden */
+.map.has-sel .c:not(.sel) .pin { opacity: 0; }

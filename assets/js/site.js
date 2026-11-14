@@ -332,16 +332,35 @@
     lanesEl.addEventListener('focusin', () => { hold = true; });
     lanesEl.addEventListener('focusout', () => { hold = false; });
     let gx = null;
-    lanesEl.addEventListener('pointerdown', e => { gx = e.clientX; lanesEl.setPointerCapture?.(e.pointerId); lanesEl.classList.add('is-drag'); });
+    lanesEl.addEventListener('pointerdown', e => { if (deck) return; gx = e.clientX; lanesEl.setPointerCapture?.(e.pointerId); lanesEl.classList.add('is-drag'); });
     lanesEl.addEventListener('pointermove', e => { if (gx === null) return; const m = e.clientX - gx; gx = e.clientX; LANES.forEach(L => { L.x += m; }); run(); });
     const up = () => { gx = null; lanesEl.classList.remove('is-drag'); };
     lanesEl.addEventListener('pointerup', up); lanesEl.addEventListener('pointercancel', up);
-    $('#lanePrev').addEventListener('click', () => { LANES.forEach(L => L.nudge += 360); run(); });
-    $('#laneNext').addEventListener('click', () => { LANES.forEach(L => L.nudge -= 360); run(); });
-    pauseBtn.addEventListener('click', () => { paused = !paused; pauseBtn.setAttribute('aria-pressed', paused); pauseBtn.textContent = paused ? 'Play' : 'Pause'; run(); });
+    $('#lanePrev').addEventListener('click', () => { if (deck) return step(-1); LANES.forEach(L => L.nudge += 360); run(); });
+    $('#laneNext').addEventListener('click', () => { if (deck) return step(1); LANES.forEach(L => L.nudge -= 360); run(); });
+    pauseBtn.addEventListener('click', () => { paused = !paused; pauseBtn.setAttribute('aria-pressed', paused); pauseBtn.textContent = paused ? 'Play' : 'Pause'; run(); tick(); });
     if (reduce) { pauseBtn.setAttribute('aria-pressed', 'true'); pauseBtn.textContent = 'Play'; }
     document.addEventListener('visibilitychange', () => { if (!document.hidden) run(); });
 
+
+    /* phones: one review at a time, swiped like a deck, the next one peeking in.
+       It moves on by itself every few seconds and stops while you touch it. */
+    const phoneQ = matchMedia('(max-width: 700px)'); let deck = false, timer = 0, idle = 0;
+    const deckEl = laneA.parentElement, atEl = $('#laneAt');
+    const cardsIn = () => [...laneA.children];
+    const nowAt = () => { const c = cardsIn(), mid = deckEl.scrollLeft + deckEl.clientWidth / 2; let best = 0, bd = 1e9; c.forEach((li, i) => { const d = Math.abs(li.offsetLeft + li.offsetWidth / 2 - mid); if (d < bd) { bd = d; best = i; } }); return best; };
+    const showAt = () => {
+      if (!deck) return; const i = nowAt(), c = cardsIn()[i];
+      if (atEl) atEl.textContent = `${i + 1} of ${cardsIn().length}`;
+      /* the deck is as tall as the review in front, so a short one leaves no empty card */
+      if (c) deckEl.style.height = (c.offsetHeight + 12) + 'px';
+    };
+    function step(d) { const c = cardsIn(); if (!c.length) return; let i = nowAt() + d; if (i >= c.length) i = 0; if (i < 0) i = c.length - 1; deckEl.scrollTo({ left: c[i].offsetLeft - (deckEl.clientWidth - c[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' }); }
+    function tick() { clearInterval(timer); if (deck && !paused && !still) timer = setInterval(() => { const r = lanesEl.getBoundingClientRect(), seen = r.top < innerHeight * .8 && r.bottom > innerHeight * .2; if (seen && Date.now() - idle > 6000 && !document.hidden) step(1); }, 4800); }
+    deckEl.addEventListener('scroll', () => { if (deck) requestAnimationFrame(showAt); }, { passive: true });
+    ['touchstart', 'pointerdown', 'wheel'].forEach(ev => deckEl.addEventListener(ev, () => { idle = Date.now(); }, { passive: true }));
+    ['lanePrev', 'laneNext'].forEach(id => $('#' + id).addEventListener('click', () => { idle = Date.now(); }));
+    phoneQ.addEventListener('change', () => pick(cur));
     function pick(c) {
       cur = c;
       $$('.chip', filterEl).forEach(b => b.dataset.c && b.setAttribute('aria-pressed', b.dataset.c === c));
@@ -360,6 +379,17 @@
       /* a handful of reviews sit still in one row; more than that slide */
       still = pool.length <= 4;
       lanesEl.classList.toggle('is-still', still); $('.lanes__ui').hidden = still;
+      deck = phoneQ.matches && !still;
+      lanesEl.classList.toggle('is-deck', deck);
+      if (atEl) atEl.hidden = !deck;
+      if (deck) {
+        cancelAnimationFrame(raf); raf = 0;
+        LANES.forEach(L => { L.w = 0; L.el.style.transform = ''; });
+        laneA.innerHTML = ''; laneB.innerHTML = ''; laneB.parentElement.hidden = true; laneA.parentElement.hidden = false;
+        pool.forEach((r, k) => laneA.appendChild(card(r, k)));
+        deckEl.scrollLeft = 0; idle = Date.now(); showAt(); tick(); return;
+      }
+      clearInterval(timer); deckEl.style.height = '';
       const a = [], b = [];
       if (pool.length <= 8) a.push(...pool); else pool.forEach((r, i) => (i % 2 ? b : a).push(r));
       fillLane(LANES[0], a); fillLane(LANES[1], b); run();
